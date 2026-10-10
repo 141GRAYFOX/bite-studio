@@ -1,0 +1,19 @@
+# Local caches and dependencies
+node_modules/
+.codebase-memory/
+.cache/
+work/
+
+# Local-only files
+.env
+.env.*
+*.local.bite
+*.log
+*.zip
+
+# OS/editor files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/
