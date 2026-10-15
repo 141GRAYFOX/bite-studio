@@ -18,6 +18,9 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 .mockup-heading h2{margin-top:7px;font-size:21px}
 #mockupDescription{margin:12px 0 18px}
 .mockup-toolbar{justify-content:flex-start;margin-bottom:14px}
+.mockup-layers{display:flex;gap:8px;margin-bottom:12px}
+.mockup-layers [aria-pressed="true"]{background:var(--green);border-color:var(--green);color:white}
+.mockup-fields .mockup-field-name{font-size:11px;color:var(--ink)}
 #mockupSize{margin-left:auto;color:var(--muted);font-size:11px}
 .mockup-view{height:min(53vh,530px);min-height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:12px}
 .mockup-empty{display:flex;flex-direction:column;align-items:center;gap:15px;padding:25px;text-align:center;color:var(--muted);font-size:12px}

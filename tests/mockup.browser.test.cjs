@@ -57,6 +57,53 @@ async function run(){
     const pixels=await page.evaluate(async base64=>{const im=await createImageBitmap(await(await fetch('data:image/png;base64,'+base64)).blob()),c=new OffscreenCanvas(im.width,im.height),x=c.getContext('2d');x.drawImage(im,0,0);const d=x.getImageData(0,0,c.width,c.height).data;let changed=0,handles=0,white=0;for(let i=0;i<d.length;i+=4){if(d[i]!==96||d[i+1]!==112||d[i+2]!==128)changed++;if(d[i]===39&&d[i+1]===100&&d[i+2]===83)handles++;if(d[i]===255&&d[i+1]===255&&d[i+2]===255)white++;}return {w:im.width,h:im.height,changed,handles,white,corner:[...d.slice(0,4)]};},png.toString('base64'));
     assert.equal(pixels.w,1200);assert.equal(pixels.h,800);assert.ok(pixels.changed>1000);assert.ok(pixels.white>100);assert.equal(pixels.handles,0);assert.deepEqual(pixels.corner,[96,112,128,255]);
     assert.equal(await page.evaluate(()=>JSON.stringify(BiteStudio.getState())),initial,'mockup leaves source workspace unchanged');
+    // Background transforms are independent and share the preview/export coordinate system.
+    const stickerTransform=(await state()).transform;
+    await page.locator('#mockupBackgroundLayer').click();
+    assert.equal(await page.locator('#mockupBackgroundLayer').getAttribute('aria-pressed'),'true');
+    assert.equal(await page.locator('#mockupScaleNumber').inputValue(),'100');
+    await edit('mockupScaleNumber',60);await edit('mockupAngleNumber',25);
+    box=await page.locator('#mockupControls').boundingBox();
+    await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width*.6,box.y+box.height*.55,{steps:5});await page.mouse.up();
+    let bg=(await state()).backgroundTransform;
+    assert.equal(bg.scale,.6);assert.equal(bg.angle,25);assert.ok(Math.abs(bg.x-.6)<.01&&Math.abs(bg.y-.55)<.01);
+    assert.deepEqual((await state()).transform,stickerTransform,'background drag does not move sticker');
+    const [bgSaved]=await Promise.all([page.waitForEvent('download'),page.locator('#mockupSave').click()]);
+    const bgPixels=await page.evaluate(async base64=>{const im=await createImageBitmap(await(await fetch('data:image/png;base64,'+base64)).blob()),c=new OffscreenCanvas(im.width,im.height),x=c.getContext('2d');x.drawImage(im,0,0);const d=x.getImageData(0,0,c.width,c.height).data;let transparent=0,photo=0;for(let i=0;i<d.length;i+=4){if(!d[i+3])transparent++;if(d[i]===96&&d[i+1]===112&&d[i+2]===128&&d[i+3]===255)photo++;}return {w:im.width,h:im.height,transparent,photo,corner:[...d.slice(0,4)]};},(await readDownload(bgSaved)).toString('base64'));
+    assert.equal(bgPixels.w,1200);assert.equal(bgPixels.h,800);assert.ok(bgPixels.transparent>100000);assert.ok(bgPixels.photo>10000);assert.equal(bgPixels.corner[3],0,'moved background reveals transparent export canvas');
+    // Reopening preserves both transforms and selected layer.
+    await page.locator('#mockupClose').click();await page.locator('#testSticker').click();await waitReady();
+    assert.equal((await state()).selected,'background');assert.deepEqual((await state()).backgroundTransform,bg);assert.deepEqual((await state()).transform,stickerTransform);
+    await page.locator('#mockupReset').click();
+    assert.deepEqual((await state()).backgroundTransform,{x:.5,y:.5,scale:1,angle:0});assert.deepEqual((await state()).transform,stickerTransform,'background reset preserves sticker');
+    await edit('mockupScaleNumber',60);
+    // At 60% the unrotated photo corners are visible at 20% and 80% of the canvas.
+    await page.mouse.move(box.x+box.width*.8,box.y+box.height*.8);await page.mouse.down();await page.mouse.move(box.x+box.width*.9,box.y+box.height*.9,{steps:5});await page.mouse.up();
+    assert.ok((await state()).backgroundTransform.scale>.75,'background corner resize');
+    await page.keyboard.down('Alt');await page.mouse.move(box.x+box.width*.5,box.y+box.height*.3);await page.mouse.down();await page.mouse.move(box.x+box.width*.7,box.y+box.height*.5,{steps:5});await page.mouse.up();await page.keyboard.up('Alt');
+    assert.ok(Math.abs((await state()).backgroundTransform.angle)>45,'background rotation');
+    const bgScale=(await state()).backgroundTransform.scale;await page.mouse.wheel(0,-150);await page.waitForTimeout(100);assert.ok((await state()).backgroundTransform.scale>bgScale);
+    await page.locator('#mockupReset').click();
+    await touch('touchStart',[[1,cx-35,cy],[2,cx+35,cy]]);await touch('touchMove',[[1,cx-60,cy-25],[2,cx+80,cy+35]]);await touch('touchEnd',[]);
+    bg=(await state()).backgroundTransform;assert.ok(bg.scale>1.5);assert.ok(bg.angle>10);assert.ok(bg.x>.5);assert.deepEqual((await state()).transform,stickerTransform,'background pinch leaves sticker fixed');
+    await page.locator('#mockupReset').click();await page.locator('#mockupControls').focus();await page.keyboard.press('Shift+ArrowRight');
+    assert.ok(Math.abs((await state()).backgroundTransform.x-(.5+10/1200))<1e-9,'background keyboard micro adjustment');
+    await page.locator('#mockupReset').click();await page.locator('#mockupStickerLayer').click();
+    assert.equal(await page.locator('#mockupScaleNumber').inputValue(),'45');assert.equal(await page.locator('#mockupAngleNumber').inputValue(),'27');
+    assert.equal(await page.evaluate(()=>JSON.stringify(BiteStudio.getState())),initial,'both test layers leave main workspace unchanged');
+    // Asymmetric colors make a 90-degree background rotation observable in preview and PNG.
+    const patterned=Buffer.from(await page.evaluate(()=>{const c=document.createElement('canvas');c.width=1200;c.height=800;const x=c.getContext('2d');x.fillStyle='#ff0000';x.fillRect(0,0,600,800);x.fillStyle='#0000ff';x.fillRect(600,0,600,800);return c.toDataURL('image/png').split(',')[1];}),'base64');
+    await upload(patterned);assert.equal((await state()).selected,'sticker');assert.deepEqual((await state()).backgroundTransform,{x:.5,y:.5,scale:1,angle:0});
+    await edit('mockupScaleNumber',1);await page.locator('#mockupBackgroundLayer').click();await edit('mockupScaleNumber',50);await edit('mockupAngleNumber',90);
+    await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+    const previewSamples=await page.evaluate(()=>{const c=document.getElementById('mockupArt'),x=c.getContext('2d');return [[.5,.25],[.5,.75],[.25,.5]].map(([px,py])=>[...x.getImageData(Math.floor(c.width*px),Math.floor(c.height*py),1,1).data]);});
+    assert.deepEqual(previewSamples,[[255,0,0,255],[0,0,255,255],[0,0,0,0]]);
+    const [patternSaved]=await Promise.all([page.waitForEvent('download'),page.locator('#mockupSave').click()]);
+    const outputSamples=await page.evaluate(async base64=>{const im=await createImageBitmap(await(await fetch('data:image/png;base64,'+base64)).blob()),c=new OffscreenCanvas(im.width,im.height),x=c.getContext('2d');x.drawImage(im,0,0);return [[600,200],[600,600],[300,400]].map(([px,py])=>[...x.getImageData(px,py,1,1).data]);},(await readDownload(patternSaved)).toString('base64'));
+    assert.deepEqual(outputSamples,previewSamples,'background rotation and scale match preview pixels');
+    const bgBeforeStickerReset=(await state()).backgroundTransform;await page.locator('#mockupStickerLayer').click();await page.locator('#mockupReset').click();assert.deepEqual((await state()).backgroundTransform,bgBeforeStickerReset,'sticker reset preserves background');
+    await upload(photo); // Replacement resets both layers to their default placement.
+    assert.deepEqual((await state()).backgroundTransform,{x:.5,y:.5,scale:1,angle:0});assert.equal((await state()).transform.angle,0);
     // Invalid images preserve the previous usable background.
     await page.locator('#mockupFile').setInputFiles({name:'bad.txt',mimeType:'text/plain',buffer:Buffer.from('bad')});
     assert.ok((await page.locator('#mockupStatus').textContent()).includes('请选择'));
@@ -92,7 +139,7 @@ async function run(){
     await page.evaluate(()=>BiteRenderer.decode=originalDecode);
     assert.equal(await page.locator('#mockupSave').isEnabled(),true);
     await page.locator('#mockupClose').click();
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({passed:true,checks:'merged snapshot, upload, number controls, drag, wheel, corner scale, rotation handle, two-finger pinch, reset, export pixels, no controls in PNG, source isolation, invalid file recovery, refreshed snapshot, background reuse, mobile overflow, Escape, empty snapshot rejection, close/reopen cancellation, no browser errors',pixels}));
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({passed:true,checks:'independent sticker/background transforms, layer selection, mouse and touch gestures, number controls, independent reset, transformed background PNG pixels and transparency, original workspace isolation, upload recovery, reopen persistence, mobile layout, empty snapshot rejection, cancellation, no browser errors',pixels,bgPixels}));
   }finally{await browser.close();server.close();}
 }
 run().catch(e=>{console.error(e);server.close();process.exitCode=1;});
