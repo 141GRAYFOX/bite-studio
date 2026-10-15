@@ -37,4 +37,19 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 #mockupDialog .mockup-hint{margin:8px 0 15px;font-size:10px}
 #mockupStatus{margin:0;flex:1;min-width:160px;font-size:11px;color:var(--green)}
 #mockupDialog .mockup-note{margin:13px 0 0;font-size:10px}
+@media(min-width:951px){
+  #mockupDialog{width:80vw;height:80dvh;max-width:none;max-height:80dvh}
+  #mockupDialog[open]{display:grid;grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:auto auto auto minmax(150px,1fr) auto auto auto;grid-template-areas:"heading heading" "description description" "toolbar layers" "view fields" "view hint" "view bottom" "note note";column-gap:22px}
+  .mockup-heading{grid-area:heading}
+  #mockupDescription{grid-area:description}
+  .mockup-toolbar{grid-area:toolbar}
+  .mockup-layers{grid-area:layers;align-items:center}
+  .mockup-view{grid-area:view;height:auto;min-height:180px}
+  .mockup-fields{grid-area:fields;display:flex;flex-direction:column;gap:8px;align-self:start}
+  .mockup-fields .field{margin:8px 0}
+  #mockupDialog .mockup-hint{grid-area:hint}
+  .mockup-bottom{grid-area:bottom;flex-direction:column;align-items:stretch;gap:12px}
+  #mockupStatus{min-width:0;flex:none}
+  #mockupDialog .mockup-note{grid-area:note}
+}
 @media(max-width:640px){#mockupDialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);padding:16px}.mockup-heading h2{font-size:18px}.mockup-toolbar{gap:8px}.mockup-toolbar .button{font-size:11px;padding:10px}.mockup-view{height:42vh;min-height:160px}.mockup-fields{gap:14px}.mockup-fields .range-number{gap:5px}.mockup-fields .range-number>input[type=number]{width:59px}#mockupDialog .mockup-hint{line-height:1.8}.mockup-empty{gap:12px;padding:18px}.mockup-empty strong{font-size:16px}}
