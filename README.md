@@ -11,6 +11,7 @@
 - 「整体移动」同步移动嘴部与物品，保留相对位置。
 - 独立调整嘴部，开启咬合遮挡、白牙与线条颜色、粗细。
 - 自定义透明 PNG 导出尺寸，默认 4003 × 3764，生成平滑外描边，颜色可自定义，默认白色。
+- 贴纸效果测试：上传背景照片，将当前作品整体放上去，支持拖动、缩放、旋转和保存合成效果图。
 - IndexedDB 自动暂存、命名暂存、撤销与重做；`.bite` 工程保留原素材和全部参数，可再次编辑。
 - 桌面、平板和手机响应式布局；触屏手势已实现，Android 真机兼容性仍需验证。
 
@@ -52,6 +53,8 @@ node tests/renderer.test.cjs
 
 修改 `src/` 后重新构建，刷新浏览器即可使用。构建同时更新独立主程序和 `docs/index.html`；提交并推送到 `main` 后，GitHub Pages 自动发布 `docs/`。当前数值回归测试为 22 项，覆盖默认白色与自定义描边颜色、半透明颜色混合、边缘透明度、杂点排除、淡图回退，以及旋转/翻转后收紧边界时的像素位置保持。
 
+效果测试的浏览器回归可运行 `node tests/mockup.browser.test.cjs`，需要开发环境提供 Playwright 与 Chromium。可通过 `BITE_PLAYWRIGHT_PATH` 指定 Playwright 模块路径、`BITE_CHROME_PATH` 指定本机 Chrome/Chromium 可执行文件。测试自行启动临时预览服务，覆盖鼠标/双指操作、合成 PNG 像素、空贴纸与关闭窗口的恢复；正式程序不需要这些测试依赖。
+
 ## 目录
 
 | 路径 | 内容 |
@@ -59,7 +62,9 @@ node tests/renderer.test.cjs
 | `src/index.html` | 界面结构 |
 | `src/style.css` | 响应式样式 |
 | `src/app.js` | 图层交互、工程、暂存、导出 |
+| `src/mockup.js` | 照片效果测试、贴纸整体变换、合成效果图导出 |
 | `src/renderer.js` | Canvas 合成、可见边界检测、平滑描边 |
+| `tests/mockup.browser.test.cjs` | 效果测试浏览器交互与合成 PNG 验证（需 Playwright） |
 | `tests/renderer.test.cjs` | 无依赖数值回归测试 |
 | `build.cjs` | 单文件打包 |
 | `server.cjs` | 本机预览服务 |

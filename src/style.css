@@ -11,3 +11,27 @@ dialog{border:1px solid var(--line);border-radius:16px;padding:28px;background:v
 .bounds-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.bounds-tools small{color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:640px){.bounds-tools{grid-column:1/-1;margin-top:0}}
 
 footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:11px;text-decoration:none;font-weight:500}.github-link:hover{text-decoration:underline}
+
+#testSticker{border-color:#b8cdbd;background:#edf3e8;color:var(--green)}
+#mockupDialog{width:min(1060px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
+.mockup-heading,.mockup-toolbar,.mockup-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mockup-heading h2{margin-top:7px;font-size:21px}
+#mockupDescription{margin:12px 0 18px}
+.mockup-toolbar{justify-content:flex-start;margin-bottom:14px}
+#mockupSize{margin-left:auto;color:var(--muted);font-size:11px}
+.mockup-view{height:min(53vh,530px);min-height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:12px}
+.mockup-empty{display:flex;flex-direction:column;align-items:center;gap:15px;padding:25px;text-align:center;color:var(--muted);font-size:12px}
+.mockup-empty strong{font-size:18px;color:var(--green)}
+.mockup-empty small{font-size:10px}
+#mockupEmpty[hidden],#mockupStage[hidden]{display:none}
+#mockupStage{position:relative;flex:none;box-shadow:0 4px 24px #0002}
+#mockupStage canvas{position:absolute;inset:0;width:100%;height:100%}
+#mockupControls{touch-action:none;cursor:grab}
+#mockupControls:active{cursor:grabbing}
+.mockup-fields{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.mockup-fields .field{margin:18px 0 8px}
+.mockup-fields .range-number>input[type=number]{width:76px}
+#mockupDialog .mockup-hint{margin:8px 0 15px;font-size:10px}
+#mockupStatus{margin:0;flex:1;min-width:160px;font-size:11px;color:var(--green)}
+#mockupDialog .mockup-note{margin:13px 0 0;font-size:10px}
+@media(max-width:640px){#mockupDialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);padding:16px}.mockup-heading h2{font-size:18px}.mockup-toolbar{gap:8px}.mockup-toolbar .button{font-size:11px;padding:10px}.mockup-view{height:42vh;min-height:160px}.mockup-fields{gap:14px}.mockup-fields .range-number{gap:5px}.mockup-fields .range-number>input[type=number]{width:59px}#mockupDialog .mockup-hint{line-height:1.8}.mockup-empty{gap:12px;padding:18px}.mockup-empty strong{font-size:16px}}

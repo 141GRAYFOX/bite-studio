@@ -272,6 +272,18 @@
   await load(state,{track:false});
   try{const previous=await transaction('readonly',st=>st.get('autosave'));if(previous){const s=validateProject({format:'bite-studio',version:1,state:previous.state});await load(s,{track:false});toast('已恢复上次自动暂存的画布。');}}catch(_){/* User can always save portable files. */}
   undo=[];redo=[];historyButtons();await refreshDrafts();initialized=true;queueSave();document.querySelector('.workspace').inert=false;document.querySelector('.top-actions').inert=false;
+  const mockup=window.BiteMockup({download,createSticker:async()=>{
+    const s=clone(state),source=await R.decode(s.src);let rendered;
+    try{
+      const factor=Math.min(1,1800/Math.max(s.width,s.height));
+      rendered=await R.render(s,source,{width:Math.max(1,Math.round(s.width*factor)),height:Math.max(1,Math.round(s.height*factor)),preview:true,cooperative:true});
+      let bounds;try{bounds=await R.visibleBounds(rendered,{alphaThreshold:0});}catch(_){throw new Error('当前画布没有可见贴纸，请先调整物品位置。');}
+      const merged=R.canvas(bounds.width,bounds.height);
+      merged.getContext('2d').drawImage(rendered,bounds.x,bounds.y,bounds.width,bounds.height,0,0,bounds.width,bounds.height);
+      return merged;
+    }finally{if(source.close)source.close();if(rendered)rendered.width=rendered.height=1;}
+  }});
+  $('testSticker').onclick=()=>mockup.open();
   // Small inspection surface for repeatable integration tests; no file or network access.
-  window.BiteStudio={getState:()=>clone(state),ready:true,validateProject,render:async(w,h)=>R.blob(await R.render({...clone(state),width:w,height:h},image)),defaultState:defaults};
+  window.BiteStudio={getState:()=>clone(state),ready:true,validateProject,render:async(w,h)=>R.blob(await R.render({...clone(state),width:w,height:h},image)),defaultState:defaults,mockup};
 })();

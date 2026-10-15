@@ -12,6 +12,30 @@ dialog{border:1px solid var(--line);border-radius:16px;padding:28px;background:v
 .bounds-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.bounds-tools small{color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:640px){.bounds-tools{grid-column:1/-1;margin-top:0}}
 
 footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:11px;text-decoration:none;font-weight:500}.github-link:hover{text-decoration:underline}
+
+#testSticker{border-color:#b8cdbd;background:#edf3e8;color:var(--green)}
+#mockupDialog{width:min(1060px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
+.mockup-heading,.mockup-toolbar,.mockup-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mockup-heading h2{margin-top:7px;font-size:21px}
+#mockupDescription{margin:12px 0 18px}
+.mockup-toolbar{justify-content:flex-start;margin-bottom:14px}
+#mockupSize{margin-left:auto;color:var(--muted);font-size:11px}
+.mockup-view{height:min(53vh,530px);min-height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:12px}
+.mockup-empty{display:flex;flex-direction:column;align-items:center;gap:15px;padding:25px;text-align:center;color:var(--muted);font-size:12px}
+.mockup-empty strong{font-size:18px;color:var(--green)}
+.mockup-empty small{font-size:10px}
+#mockupEmpty[hidden],#mockupStage[hidden]{display:none}
+#mockupStage{position:relative;flex:none;box-shadow:0 4px 24px #0002}
+#mockupStage canvas{position:absolute;inset:0;width:100%;height:100%}
+#mockupControls{touch-action:none;cursor:grab}
+#mockupControls:active{cursor:grabbing}
+.mockup-fields{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.mockup-fields .field{margin:18px 0 8px}
+.mockup-fields .range-number>input[type=number]{width:76px}
+#mockupDialog .mockup-hint{margin:8px 0 15px;font-size:10px}
+#mockupStatus{margin:0;flex:1;min-width:160px;font-size:11px;color:var(--green)}
+#mockupDialog .mockup-note{margin:13px 0 0;font-size:10px}
+@media(max-width:640px){#mockupDialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);padding:16px}.mockup-heading h2{font-size:18px}.mockup-toolbar{gap:8px}.mockup-toolbar .button{font-size:11px;padding:10px}.mockup-view{height:42vh;min-height:160px}.mockup-fields{gap:14px}.mockup-fields .range-number{gap:5px}.mockup-fields .range-number>input[type=number]{width:59px}#mockupDialog .mockup-hint{line-height:1.8}.mockup-empty{gap:12px;padding:18px}.mockup-empty strong{font-size:16px}}
 </style></head>
 <body>
 <header class="topbar"><a class="brand" href="#"><span class="brand-icon">◡</span><span>Bite<span class="brand-light"> Studio</span><small>叼物贴纸工坊</small></span></a><div class="top-note"><span class="dot"></span> 本地创作 · 图片不会上传</div><div class="top-actions"><button id="openProject" class="button quiet"><span data-icon="folder"></span><span>打开工程</span></button><button id="saveProject" class="button quiet"><span data-icon="save"></span><span>保存工程</span></button><button id="export" class="button primary"><span data-icon="download"></span><span>导出 PNG</span></button></div></header>
@@ -22,7 +46,7 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 <div class="section-line"><h2>图层</h2><span>点击切换编辑</span></div><button class="layer active" id="objectLayer"><span class="layer-thumb" id="sourceThumb"></span><span><strong id="sourceName">奶油吐司</strong><small>拖拽移动 · 调整物品</small></span><span class="layer-dot"></span></button><button class="layer" id="mouthLayer"><span class="layer-thumb mouth-thumb">◡</span><span><strong>叼嘴模板</strong><small>按图1弧线与小白牙重绘</small></span><span class="layer-dot"></span></button>
 <div class="bounds-tools"><button id="tightenBounds" class="button quiet small" title="按可见物品重新检测边界，排除外围透明留白">收紧物品选框</button><small id="boundsInfo"></small></div>
 <div class="tip"><span data-icon="spark"></span><p><strong>一点小技巧</strong>让物品稍微穿过嘴线，开启「咬合遮挡」，会更像真的被叼住。</p></div><button id="newProject" class="button quiet new-project"><span data-icon="plus"></span> 新建作品</button></aside>
-<section class="editor"><div class="editor-heading"><div><span class="eyebrow">CANVAS</span><h2>创作画布 <span class="tag">透明背景</span></h2></div><div class="history"><button id="undo" class="icon-button" title="撤销 Ctrl+Z" aria-label="撤销"><span data-icon="undo"></span></button><button id="redo" class="icon-button" title="重做 Ctrl+Shift+Z" aria-label="重做"><span data-icon="redo"></span></button><span class="divider"></span><button id="moveTogether" class="button quiet small" aria-pressed="false" title="开启后，拖动画布会同时移动嘴部和物品">整体移动</button><button id="fit" class="button quiet small">适应画布</button></div></div>
+<section class="editor"><div class="editor-heading"><div><span class="eyebrow">CANVAS</span><h2>创作画布 <span class="tag">透明背景</span></h2></div><div class="history"><button id="undo" class="icon-button" title="撤销 Ctrl+Z" aria-label="撤销"><span data-icon="undo"></span></button><button id="redo" class="icon-button" title="重做 Ctrl+Shift+Z" aria-label="重做"><span data-icon="redo"></span></button><span class="divider"></span><button id="moveTogether" class="button quiet small" aria-pressed="false" title="开启后，拖动画布会同时移动嘴部和物品">整体移动</button><button id="fit" class="button quiet small">适应画布</button><button id="testSticker" class="button quiet small" title="将当前贴纸贴到照片上查看效果">效果测试</button></div></div>
 <div class="canvas-area" id="canvasArea"><div class="preview-controls"><span>预览底色</span><button data-bg="checker" class="swatch checker selected" aria-label="透明网格"></button><button data-bg="light" class="swatch light" aria-label="浅色"></button><button data-bg="dark" class="swatch dark" aria-label="深色"></button><span class="preview-only">仅预览</span></div><div class="stage-wrap" id="stageWrap"><div id="stage" class="stage checker"><canvas id="art"></canvas><canvas id="controls" tabindex="0" aria-label="编辑画布，拖拽物品，四角缩放，四个金色手柄旋转，旋转手柄始终位于画布内"></canvas></div></div><div class="canvas-caption"><span><span class="dot"></span><span id="resolutionLabel">4003 × 3764 px</span></span><span id="selectionLabel">正在调整：物品</span></div><div id="dropOverlay" class="drop-overlay">松开，添加你的物品</div></div>
 <div id="gestureHint" class="gesture-hint" title="按住 Alt 在画布任意位置拖动旋转；Alt + 滚轮缩放"><span data-icon="move"></span> 拖拽移动 <span>·</span> 四角缩放 <span>·</span> 四个金色手柄旋转 <span>·</span> 双指缩放 / 旋转</div>
 <section class="draft-section"><div class="section-line"><h2>我的暂存 <span id="saveStatus" class="save-status">自动暂存准备中</span></h2><button id="saveDraft" class="button quiet small"><span data-icon="plus"></span> 暂存一份</button></div><div id="drafts" class="drafts"><p class="empty">留住每一个好点子。暂存后可继续编辑。</p></div></section></section>
@@ -34,6 +58,17 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 </aside></main>
 <footer><span>BITE STUDIO <span class="footer-dot">/</span> 让灵感，咬一口。</span><span class="footer-note">工程文件保留原素材与全部参数，可再次打开编辑。</span><a class="github-link" href="https://github.com/141GRAYFOX/bite-studio" target="_blank" rel="noopener noreferrer" title="查看项目源代码与使用说明">GitHub · 141GRAYFOX/bite-studio ↗</a></footer>
 <dialog id="studioDialog"><form id="dialogForm"><h2 id="dialogTitle"></h2><p id="dialogDescription"></p><input id="dialogName" type="text" maxlength="80" aria-label="暂存名称"><div class="dialog-actions"><button id="dialogCancel" type="button" class="button quiet">取消</button><button id="dialogConfirm" type="submit" class="button primary">暂存</button></div></form></dialog>
+<dialog id="mockupDialog" aria-labelledby="mockupTitle" aria-describedby="mockupDescription">
+<div class="mockup-heading"><div><span class="eyebrow">TRY IT ON</span><h2 id="mockupTitle">贴纸效果测试</h2></div><button id="mockupClose" class="button quiet small" type="button">返回编辑</button></div>
+<p id="mockupDescription">把当前贴纸贴到你的照片上，看看实际效果。每次打开时会重新合成当前作品。</p>
+<div class="mockup-toolbar"><button id="mockupUpload" class="button primary" type="button">上传 / 更换背景图</button><button id="mockupReset" class="button quiet" type="button" disabled>重置贴纸位置</button><span id="mockupSize"></span></div>
+<div id="mockupView" class="mockup-view checker"><div id="mockupEmpty" class="mockup-empty"><strong>选张照片，试试贴在哪里</strong><span>车身、电脑、杯子……都可以成为你的背景。</span><button id="mockupEmptyUpload" class="button primary" type="button">上传背景图</button><small>PNG / JPEG / WebP · 也可拖入图片</small></div><div id="mockupStage" hidden><canvas id="mockupArt"></canvas><canvas id="mockupControls" tabindex="0" aria-label="效果测试画布：拖动移动贴纸，四角缩放，金色手柄旋转，双指缩放旋转，方向键微调"></canvas></div></div>
+<div class="mockup-fields"><div class="field"><label for="mockupScale">贴纸大小 <span>相对背景宽度 %</span></label><div class="range-number"><input id="mockupScale" type="range" min="1" max="500" step="0.1" disabled><input id="mockupScaleNumber" type="number" min="1" max="500" step="0.1" aria-label="效果测试贴纸大小百分比" disabled></div></div><div class="field"><label for="mockupAngle">旋转角度 <span>°</span></label><div class="range-number"><input id="mockupAngle" type="range" min="-180" max="180" step="0.1" disabled><input id="mockupAngleNumber" type="number" min="-180" max="180" step="0.1" aria-label="效果测试贴纸旋转角度" disabled></div></div></div>
+<p class="mockup-hint">拖动移动 · 四角缩放 · 金色手柄旋转 · 滚轮缩放 · 双指缩放 / 旋转</p>
+<div class="mockup-bottom"><p id="mockupStatus" role="status" aria-live="polite"></p><button id="mockupSave" class="button primary" type="button" disabled>保存效果图</button></div>
+<p class="mockup-note">图片仅在当前浏览器内处理。测试位置不影响原作品；背景和测试位置仅在本次页面中保留。</p>
+<input id="mockupFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+</dialog>
 <input type="file" id="imageFile" accept="image/png,image/webp,image/jpeg" hidden><input type="file" id="projectFile" accept=".bite,.json" hidden><div id="toast" role="status" aria-live="polite"></div><div id="exportProgress" class="export-progress" hidden><div><span class="spinner"></span><h2>正在制作你的贴纸</h2><p id="progressText">高质量渲染中…</p><button id="cancelExport" class="button secondary">取消导出</button></div></div>
 <script>
 (function (root) {
@@ -168,6 +203,178 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds };
   }
   root.BiteRendererFactory = createRenderer; root.BiteRenderer = createRenderer();
+})(globalThis);
+
+</script><script>
+/* Composite the current sticker onto a local photo for placement testing. */
+(function (root) {
+  'use strict';
+  root.BiteMockup = function ({createSticker, download}) {
+    const $ = id => document.getElementById(id), R = root.BiteRenderer;
+    const dialog = $('mockupDialog'), art = $('mockupArt'), controls = $('mockupControls');
+    let background, sticker, transform = {x:.5,y:.5,scale:.35,angle:0};
+    let busy = false, serial = 0, gesture, frame = 0;
+    const pointers = new Map();
+    const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+    const normalize = a => ((a+180)%360+360)%360-180;
+    const distance = (a,b) => Math.hypot(a.x-b.x,a.y-b.y);
+    const angle = (a,b) => Math.atan2(b.y-a.y,b.x-a.x);
+    function message(text) { $('mockupStatus').textContent = text; }
+    function ready() { return !!(background && sticker && !busy); }
+    function sync() {
+      $('mockupScale').value = transform.scale*100;
+      $('mockupScaleNumber').value = +(transform.scale*100).toFixed(1);
+      $('mockupAngle').value = transform.angle;
+      $('mockupAngleNumber').value = +transform.angle.toFixed(1);
+      for (const id of ['mockupScale','mockupScaleNumber','mockupAngle','mockupAngleNumber','mockupReset','mockupSave']) $(id).disabled = !ready();
+      $('mockupUpload').disabled = busy;
+      $('mockupEmptyUpload').disabled = busy;
+      $('mockupEmpty').hidden = !!background;
+      $('mockupStage').hidden = !background;
+      $('mockupSize').textContent = background ? background.width+' × '+background.height+' px' : '';
+    }
+    function composite(ctx,w,h) {
+      ctx.clearRect(0,0,w,h);
+      if (!background) return;
+      ctx.drawImage(background,0,0,w,h);
+      if (!sticker) return;
+      const sw = transform.scale*w, sh = sw*sticker.height/sticker.width;
+      ctx.save();ctx.translate(transform.x*w,transform.y*h);ctx.rotate(transform.angle*Math.PI/180);
+      ctx.drawImage(sticker,-sw/2,-sh/2,sw,sh);ctx.restore();
+    }
+    function geometry() {
+      const b = controls.getBoundingClientRect(), w = b.width*transform.scale, h = w*sticker.height/sticker.width;
+      const cx = transform.x*b.width, cy = transform.y*b.height, a = transform.angle*Math.PI/180;
+      const point = (x,y) => ({x:cx+x*Math.cos(a)-y*Math.sin(a),y:cy+x*Math.sin(a)+y*Math.cos(a)});
+      const anchor = point(0,-h/2), rotation = point(0,-h/2-30);
+      return {cx,cy,corners:[point(-w/2,-h/2),point(w/2,-h/2),point(w/2,h/2),point(-w/2,h/2)],anchor,
+        rotation:{x:clamp(rotation.x,14,b.width-14),y:clamp(rotation.y,14,b.height-14)}};
+    }
+    function draw() {
+      frame = 0;
+      if (!dialog.open || !background) return;
+      composite(art.getContext('2d'),art.width,art.height);
+      const ctx = controls.getContext('2d'), b = controls.getBoundingClientRect();
+      ctx.clearRect(0,0,controls.width,controls.height);
+      if (!ready() || !b.width || !b.height) return;
+      const g = geometry();ctx.save();ctx.scale(controls.width/b.width,controls.height/b.height);
+      ctx.strokeStyle = '#276453';ctx.lineWidth = 1.5;ctx.setLineDash([5,4]);
+      ctx.beginPath();g.corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.stroke();ctx.setLineDash([]);
+      for (const p of g.corners) {ctx.fillStyle='#fffdf9';ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);ctx.fill();ctx.stroke();}
+      ctx.strokeStyle='#ab742a';ctx.beginPath();ctx.moveTo(g.anchor.x,g.anchor.y);ctx.lineTo(g.rotation.x,g.rotation.y);ctx.stroke();
+      ctx.fillStyle='#fff4dc';ctx.beginPath();ctx.arc(g.rotation.x,g.rotation.y,12,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#80561f';ctx.font='17px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('↻',g.rotation.x,g.rotation.y);
+      ctx.restore();
+    }
+    function schedule() { if (!frame) frame=requestAnimationFrame(draw); }
+    function size() {
+      if (!dialog.open || !background) return;
+      const box = $('mockupView').getBoundingClientRect(), k = Math.min((box.width-16)/background.width,(box.height-16)/background.height);
+      const w = Math.max(1,Math.floor(background.width*k)), h = Math.max(1,Math.floor(background.height*k));
+      $('mockupStage').style.width=w+'px';$('mockupStage').style.height=h+'px';
+      const density=Math.min(devicePixelRatio||1,2,1600/Math.max(w,h));
+      for (const c of [art,controls]) {c.width=Math.max(1,Math.round(w*density));c.height=Math.max(1,Math.round(h*density));}
+      schedule();
+    }
+    function reset() {
+      // Fit to both photo dimensions, including narrow portrait backgrounds.
+      transform={x:.5,y:.5,scale:sticker&&background?Math.min(.4,.55*background.height/background.width*sticker.width/sticker.height):.35,angle:0};
+      transform.scale=clamp(transform.scale,.01,5);sync();schedule();
+    }
+    async function refreshSticker() {
+      if (busy) return;
+      const request=++serial;busy=true;sync();message('正在合成当前贴纸…');
+      if (sticker) {sticker.width=sticker.height=1;sticker=undefined;schedule();}
+      let next;
+      try {
+        next=await createSticker();
+        if (request!==serial) {next.width=next.height=1;return;}
+        sticker=next;
+        message(background?'拖动贴纸调整位置，拖动四角缩放，金色手柄旋转。':'贴纸已合成，请上传一张背景图开始测试。');
+      } catch(e) {if(request===serial)message('贴纸合成失败：'+e.message);}
+      finally {if(request===serial){busy=false;sync();size();}}
+    }
+    async function upload(file) {
+      if (!file || busy) return;
+      if (!['image/png','image/jpeg','image/webp'].includes(file.type)) {message('请选择 PNG、JPEG 或 WebP 背景图。');return;}
+      if (file.size>30*1024*1024) {message('背景图请控制在 30 MB 以内。');return;}
+      const request=++serial,url=URL.createObjectURL(file);let decoded,next;
+      busy=true;sync();message('正在读取背景图…');
+      try {
+        decoded=await R.decode(url);
+        if (decoded.width>16384||decoded.height>16384||decoded.width*decoded.height>50000000) throw new Error('图片过大，请缩小至 5000 万像素以内。');
+        const k=Math.min(1,4096/Math.max(decoded.width,decoded.height),Math.sqrt(12000000/(decoded.width*decoded.height)));
+        next=R.canvas(Math.max(1,Math.round(decoded.width*k)),Math.max(1,Math.round(decoded.height*k)));
+        next.getContext('2d').drawImage(decoded,0,0,next.width,next.height);
+        if (request!==serial) {next.width=next.height=1;return;}
+        if (background) background.width=background.height=1;
+        background=next;reset();
+        message('背景已载入，拖动贴纸试试。'+(k<1?'大图已缩小，效果图按下方显示的尺寸保存。':''));
+      } catch(e) {if(next&&next!==background)next.width=next.height=1;if(request===serial)message('背景图读取失败：'+e.message);}
+      finally {if(decoded&&decoded.close)decoded.close();URL.revokeObjectURL(url);if(request===serial){busy=false;sync();size();}}
+    }
+    function update() {sync();schedule();}
+    for (const id of ['mockupScale','mockupScaleNumber','mockupAngle','mockupAngleNumber']) {
+      $(id).oninput=()=>{
+        if (!ready()||$(id).value==='') return;
+        const value=Number($(id).value);if(!Number.isFinite(value))return;
+        if(id.includes('Scale'))transform.scale=clamp(value/100,.01,5);else transform.angle=clamp(value,-180,180);
+        // Leave the active number field intact while typing a decimal or minus sign.
+        const active=document.activeElement,raw=active.value;update();if(active===$(id)&&active.type==='number')active.value=raw;
+      };
+      $(id).onchange=update;$(id).onblur=update;
+    }
+    function coords(e) {const b=controls.getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top};}
+    function begin() {
+      const points=[...pointers.values()],original={...transform},g=geometry();
+      if(points.length===2){const[a,b]=points;gesture={mode:'pinch',original,distance:Math.max(1,distance(a,b)),angle:angle(a,b),mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}};}
+      else if(points.length===1){const p=points[0];gesture={mode:distance(p,g.rotation)<22?'rotate':g.corners.some(c=>distance(p,c)<20)?'scale':'move',original,start:p,center:{x:g.cx,y:g.cy},distance:Math.max(1,distance(p,{x:g.cx,y:g.cy})),angle:angle({x:g.cx,y:g.cy},p)};}
+      else gesture=null;
+    }
+    controls.onpointerdown=e=>{
+      if(!ready()||pointers.size>=2)return;e.preventDefault();controls.focus({preventScroll:true});controls.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId,coords(e));begin();if(e.altKey&&pointers.size===1)gesture.mode='rotate';
+    };
+    controls.onpointermove=e=>{
+      if(!pointers.has(e.pointerId)||!gesture||!ready())return;
+      const p=coords(e);pointers.set(e.pointerId,p);const o=gesture.original,b=controls.getBoundingClientRect();
+      if(gesture.mode==='pinch'&&pointers.size===2){const[a,z]=[...pointers.values()];transform.scale=clamp(o.scale*distance(a,z)/gesture.distance,.01,5);transform.angle=normalize(o.angle+(angle(a,z)-gesture.angle)*180/Math.PI);transform.x=clamp(o.x+((a.x+z.x)/2-gesture.mid.x)/b.width,0,1);transform.y=clamp(o.y+((a.y+z.y)/2-gesture.mid.y)/b.height,0,1);}
+      else if(gesture.mode==='move'){transform.x=clamp(o.x+(p.x-gesture.start.x)/b.width,0,1);transform.y=clamp(o.y+(p.y-gesture.start.y)/b.height,0,1);}
+      else if(gesture.mode==='scale')transform.scale=clamp(o.scale*distance(p,gesture.center)/gesture.distance,.01,5);
+      else if(gesture.mode==='rotate')transform.angle=normalize(o.angle+(angle(gesture.center,p)-gesture.angle)*180/Math.PI);
+      update();
+    };
+    function end(e) {if(pointers.delete(e.pointerId))begin();}
+    controls.onpointerup=end;controls.onpointercancel=end;controls.onlostpointercapture=end;
+    controls.addEventListener('wheel',e=>{if(!ready())return;e.preventDefault();if(e.altKey)transform.angle=normalize(transform.angle+e.deltaY*.1);else transform.scale=clamp(transform.scale*Math.exp(-e.deltaY*.001),.01,5);update();},{passive:false});
+    controls.onkeydown=e=>{
+      if(!ready())return;const delta=e.shiftKey?10:1;
+      if(e.key==='ArrowLeft')transform.x=clamp(transform.x-delta/background.width,0,1);
+      else if(e.key==='ArrowRight')transform.x=clamp(transform.x+delta/background.width,0,1);
+      else if(e.key==='ArrowUp')transform.y=clamp(transform.y-delta/background.height,0,1);
+      else if(e.key==='ArrowDown')transform.y=clamp(transform.y+delta/background.height,0,1);
+      else return;e.preventDefault();update();
+    };
+    dialog.addEventListener('keydown',e=>e.stopPropagation());
+    for(const name of ['dragenter','dragleave','dragover'])dialog.addEventListener(name,e=>{e.preventDefault();e.stopPropagation();});
+    dialog.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();upload(e.dataTransfer.files[0]);});
+    $('mockupUpload').onclick=()=>$('mockupFile').click();
+    $('mockupEmptyUpload').onclick=()=>$('mockupFile').click();
+    $('mockupFile').onchange=e=>{upload(e.target.files[0]);e.target.value='';};
+    $('mockupReset').onclick=reset;
+    $('mockupClose').onclick=()=>dialog.close();
+    dialog.addEventListener('close',()=>{serial++;busy=false;pointers.clear();gesture=null;});
+    $('mockupSave').onclick=async()=>{
+      if(!ready())return;const request=++serial;busy=true;sync();message('正在保存效果图…');let c;
+      try{c=R.canvas(background.width,background.height);composite(c.getContext('2d'),c.width,c.height);const blob=await R.blob(c);if(request!==serial)return;await download(blob,'贴纸效果测试.png');if(request===serial)message('效果图已生成。');}
+      catch(e){if(request===serial)message('保存失败：'+e.message);}finally{if(c)c.width=c.height=1;if(request===serial){busy=false;sync();schedule();}}
+    };
+    new ResizeObserver(size).observe($('mockupView'));
+    return {
+      open(){if(dialog.open)return;dialog.showModal();sync();size();refreshSticker();},
+      getState:()=>({transform:{...transform},hasBackground:!!background,hasSticker:!!sticker,busy})
+    };
+  };
 })(globalThis);
 
 </script><script>
@@ -445,8 +652,20 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
   await load(state,{track:false});
   try{const previous=await transaction('readonly',st=>st.get('autosave'));if(previous){const s=validateProject({format:'bite-studio',version:1,state:previous.state});await load(s,{track:false});toast('已恢复上次自动暂存的画布。');}}catch(_){/* User can always save portable files. */}
   undo=[];redo=[];historyButtons();await refreshDrafts();initialized=true;queueSave();document.querySelector('.workspace').inert=false;document.querySelector('.top-actions').inert=false;
+  const mockup=window.BiteMockup({download,createSticker:async()=>{
+    const s=clone(state),source=await R.decode(s.src);let rendered;
+    try{
+      const factor=Math.min(1,1800/Math.max(s.width,s.height));
+      rendered=await R.render(s,source,{width:Math.max(1,Math.round(s.width*factor)),height:Math.max(1,Math.round(s.height*factor)),preview:true,cooperative:true});
+      let bounds;try{bounds=await R.visibleBounds(rendered,{alphaThreshold:0});}catch(_){throw new Error('当前画布没有可见贴纸，请先调整物品位置。');}
+      const merged=R.canvas(bounds.width,bounds.height);
+      merged.getContext('2d').drawImage(rendered,bounds.x,bounds.y,bounds.width,bounds.height,0,0,bounds.width,bounds.height);
+      return merged;
+    }finally{if(source.close)source.close();if(rendered)rendered.width=rendered.height=1;}
+  }});
+  $('testSticker').onclick=()=>mockup.open();
   // Small inspection surface for repeatable integration tests; no file or network access.
-  window.BiteStudio={getState:()=>clone(state),ready:true,validateProject,render:async(w,h)=>R.blob(await R.render({...clone(state),width:w,height:h},image)),defaultState:defaults};
+  window.BiteStudio={getState:()=>clone(state),ready:true,validateProject,render:async(w,h)=>R.blob(await R.render({...clone(state),width:w,height:h},image)),defaultState:defaults,mockup};
 })();
 
 </script></body></html>
