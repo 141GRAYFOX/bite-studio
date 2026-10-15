@@ -55,6 +55,16 @@ async function main(){
     assert.deepEqual(s.mouth,before.mouth);assert.equal(s.object.angle,angle);assert.equal(s.object.flip,flip);passed++;
   }
   delete globalThis.OffscreenCanvas;
+  const calibration={width:1000,height:700,mouth:{scale:.5,angle:0}},box={x:190,y:100,width:600,height:300};
+  assert.ok(Math.abs(R.mouthSpan(calibration)-Math.hypot(500,42.5))<1e-10,'measure endpoint chord including vertical separation');passed++;
+  const cm=R.printSize(calibration,box,6);
+  assert.ok(Math.abs(cm.width-600*6/Math.hypot(500,42.5))<1e-10);
+  assert.equal(cm.height,cm.width/2);
+  for(const angle of [-180,-27,90,180])assert.deepEqual(R.printSize({...calibration,mouth:{...calibration.mouth,angle}},box,6),cm,'mouth rotation does not change the calibration length');passed++;
+  assert.deepEqual(R.printSize({...calibration,width:2000,height:1400},{width:1200,height:600},6),cm,'export resolution is not a physical size');
+  assert.deepEqual(R.printSize(calibration,box,12),{width:cm.width*2,height:cm.height*2});
+  assert.deepEqual(R.printSize({...calibration,mouth:{scale:1}},box,6),{width:cm.width/2,height:cm.height/2});
+  for(const invalid of [null,0,-1,NaN,Infinity,'6'])assert.throws(()=>R.printSize(calibration,box,invalid),/大于 0/);passed++;
   console.log(passed+' renderer checks passed (outline colors and blending, alpha fringe, faint artwork, empty image, cancellation, reframe under rotation/flip).');
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

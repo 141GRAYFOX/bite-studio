@@ -19,8 +19,8 @@
     { name:'小鱼饼', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="850" height="600" viewBox="0 0 850 600"><defs><linearGradient id="f" x2="0" y2="1"><stop stop-color="#ffc765"/><stop offset="1" stop-color="#e79a3f"/></linearGradient></defs><path d="M206 214Q327 71 527 192L752 107 704 301 764 486 533 406Q332 536 188 390L87 306Z" fill="url(#f)" stroke="#74401f" stroke-width="16" stroke-linejoin="round"/><path d="m460 196-99-72-23 89m100 212-78 62-26-62" fill="#edaf55" stroke="#74401f" stroke-width="12" stroke-linejoin="round"/><path d="M491 210q-44 86 0 183m-99-146 17 19-17 18m51 24 18 19-18 19m-60 17 17 19-17 18m234-150 61 77-61 71" fill="none" stroke="#cb8635" stroke-width="9" stroke-linecap="round"/><circle cx="261" cy="270" r="18" fill="#573824"/><circle cx="266" cy="263" r="6" fill="#fff4dd"/><path d="m204 327q26 22 44 0" fill="none" stroke="#74401f" stroke-width="8" stroke-linecap="round"/><ellipse cx="268" cy="319" rx="22" ry="10" fill="#ef9870"/></svg>' },
     { name:'星星糖', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="620" height="950" viewBox="0 0 620 950"><path d="M314 490v402" stroke="#695344" stroke-width="40" stroke-linecap="round"/><path d="M314 490v402" stroke="#fff0cb" stroke-width="26" stroke-linecap="round"/><path d="m310 51 78 155 172 22-125 125 32 175-157-80-157 80 32-175L60 228l172-22Z" fill="#efaabb" stroke="#663e47" stroke-width="14" stroke-linejoin="round"/><path d="m310 94 58 140 142 17-106 88 32 139-126-70-126 70 32-139-106-88 142-17Z" fill="#f8c2c5"/><path d="m252 265 24-63" stroke="#fff7e4" stroke-width="20" stroke-linecap="round"/><circle cx="272" cy="329" r="10" fill="#694451"/><circle cx="352" cy="329" r="10" fill="#694451"/><path d="m297 360q15 19 30 0" fill="none" stroke="#694451" stroke-width="6" stroke-linecap="round"/></svg>' }
   ].map(x => ({name:x.name, src:svgData(x.svg)}));
-  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', name:'奶油吐司', src:samples[0].src,bounds:null,
-    object:{x:.5,y:.545,scale:.86,angle:0,flip:false}, mouth:{x:.5,y:.30,scale:.55,angle:0,weight:.023,color:'#5b140c',visible:true,bite:true,tooth:true} });
+  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, name:'奶油吐司', src:samples[0].src,bounds:null,
+    object:{x:.5,y:.545,scale:.86,angle:0,flip:false}, mouth:{x:.5,y:.30,scale:.55,angle:0,weight:.023,color:'#000000',visible:true,bite:true,tooth:true} });
   let state = defaults(), image, selected = 'object', undo = [], redo = [], savedSignature = '', toastTimer, saveTimer, previewTimer;
   let db, autosaveChain = Promise.resolve(), renderSerial = 0, worker, exporting = false, exportToken = 0;
   let framePending = false, busyPreview = false, pendingPreview = false;
@@ -28,6 +28,8 @@
   const individualHint=$('gestureHint').innerHTML;
   let thumbnailSource='',thumbnailBounds='';
   let boundsCacheSource='',boundsCache;
+  let printCache=null, printBusy=false, printError='', printKey='', printSource='';
+  const measurementKey=s=>JSON.stringify([s.width,s.height,s.outline,s.outlineColor,s.bounds,s.object,s.mouth]);
   let ratio = state.width / state.height;
   const clone = s => ({...s,bounds:s.bounds?{...s.bounds}:null,object:{...s.object},mouth:{...s.mouth}});
   const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
@@ -49,7 +51,7 @@
     $('scale').min=Math.min(5,t.scale*100);$('scale').max=Math.max(180,t.scale*100);$('scale').step=.1;$('scale').value=t.scale*100; $('scaleValue').value=(t.scale*100).toFixed(1)+'%'; $('angle').value=t.angle;
     if(document.activeElement!==$('angleNumber'))$('angleNumber').value=t.angle.toFixed(1); $('angleValue').value=t.angle.toFixed(1)+'°';
     if(document.activeElement!==$('posX'))$('posX').value=(t.x*100).toFixed(1); if(document.activeElement!==$('posY'))$('posY').value=(t.y*100).toFixed(1);
-    $('outline').value=state.outline; $('outlineValue').value=state.outline+' px'; $('outlineColor').value=state.outlineColor;
+    $('outline').max=Math.max(80,Math.ceil(state.outline));$('outline').value=state.outline; $('outlineValue').value=Number(state.outline.toFixed(2))+' px'; $('outlineColor').value=state.outlineColor;
     $('width').value=state.width; $('height').value=state.height; $('resolutionLabel').textContent=state.width+' × '+state.height+' px';
     $('mouthVisible').checked=state.mouth.visible; $('bite').checked=state.mouth.bite; $('tooth').checked=state.mouth.tooth;
     $('mouthColor').value=state.mouth.color; $('mouthWeight').value=state.mouth.weight; $('flip').disabled=selected!=='object';
@@ -59,7 +61,41 @@
     $('tightenBounds').disabled=state.src.startsWith('data:image/svg+xml');
     if(thumbnailSource!==state.src||thumbnailBounds!==cropKey){thumbnailSource=state.src;thumbnailBounds=cropKey;const thumb=document.createElement('canvas');thumb.width=thumb.height=76;thumb.style.width=thumb.style.height='100%';thumb.setAttribute('aria-label',state.name);const b=R.crop(state,image),fit=Math.min(70/b.width,70/b.height);thumb.getContext('2d').drawImage(image,b.x,b.y,b.width,b.height,(76-b.width*fit)/2,(76-b.height*fit)/2,b.width*fit,b.height*fit);$('sourceThumb').replaceChildren(thumb);}
     document.querySelectorAll('.sample').forEach((e,i)=>e.classList.toggle('selected',state.src===samples[i].src)); historyButtons();
+    syncPrintSize();
   }
+  function syncPrintSize() {
+    const key=measurementKey(state);
+    if(key!==printKey||state.src!==printSource){printKey=key;printSource=state.src;printError='';}
+    if(document.activeElement!==$('mouthDistanceCm'))$('mouthDistanceCm').value=state.mouthDistanceCm??'';
+    const valid=Number.isFinite(state.mouthDistanceCm)&&state.mouthDistanceCm>0;
+    $('mouthDistanceCm').setAttribute('aria-invalid',String(!valid&&$('mouthDistanceCm').value!==''));
+    $('calculatePrintSize').disabled=!valid||printBusy;
+    $('calculatePrintSize').textContent=printBusy?'正在测量图案…':'推算打印尺寸';
+    $('printResult').hidden=true;
+    let status=!valid?($('mouthDistanceCm').value===''?'输入距离后，点击推算打印尺寸。':'请输入大于 0 的有效距离。'):printBusy?'正在检测最终图案的非透明像素边界…':printCache?'作品已调整，请重新推算。':'点击推算，测量当前贴纸的实际图案。';
+    if(valid&&printCache&&printCache.key===key&&printCache.src===state.src){
+      try{
+        const size=R.printSize(state,printCache.bounds,state.mouthDistanceCm);
+        const format=v=>v<.01?'< 0.01':v.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
+        $('printWidth').textContent=format(size.width);$('printHeight').textContent=format(size.height);$('printResult').hidden=false;
+        status='按当前画布方向的图案宽、高计算。'+(state.mouth.visible?'':'嘴型已隐藏，使用保存的嘴型比例。');
+      }catch(e){status=e.message;}
+    }
+    $('printStatus').textContent=printError||status;
+  }
+  $('calculatePrintSize').onclick=async()=>{
+    if(printBusy||!image||!(state.mouthDistanceCm>0))return;
+    const s=clone(state),key=measurementKey(s);let source;
+    const stale=()=>key!==measurementKey(state)||s.src!==state.src;
+    printBusy=true;printError='';syncPrintSize();
+    try{
+      // Decode a separate image: loading another project may close the editor bitmap.
+      source=await R.decode(s.src);if(stale())return;
+      const bounds=await R.printBounds(s,source,{cancelled:stale});if(stale())return;
+      printCache={key,src:s.src,bounds};
+    }catch(e){if(!stale()){printCache=null;printError=/完全透明/.test(e.message)?'当前画布没有非透明图案，请先把贴纸移回画布。':'尺寸推算失败：'+e.message;}}
+    finally{if(source&&source.close)source.close();printBusy=false;syncPrintSize();}
+  };
   function changed() { sync(); schedule(); queueSave(); }
   function select(layer) { selected=layer; sync(); drawControls(); }
   function sizeStage() {
@@ -155,10 +191,16 @@
   $('outlineColor').oninput=()=>{if(!editingOutlineColor){remember();editingOutlineColor=true;}state.outlineColor=$('outlineColor').value;changed();};
   $('outlineColor').onchange=()=>{if(state.outlineColor!==$('outlineColor').value)$('outlineColor').oninput();editingOutlineColor=false;};
   $('outlineColor').onblur=()=>editingOutlineColor=false;
+  let editingPrintDistance=false;
+  $('mouthDistanceCm').oninput=()=>{
+    const v=$('mouthDistanceCm').valueAsNumber,next=Number.isFinite(v)&&v>0?v:null;
+    printError='';if(next!==state.mouthDistanceCm){if(!editingPrintDistance){remember();editingPrintDistance=true;}state.mouthDistanceCm=next;changed();}else syncPrintSize();
+  };
+  $('mouthDistanceCm').onblur=()=>{editingPrintDistance=false;syncPrintSize();};
   $('flip').onclick=()=>{remember();state.object.flip=!state.object.flip;changed();};
   $('resetTransform').onclick=()=>{remember();state[selected]={...state[selected],...defaults()[selected]};changed();};
   function validSize(w,h) {return Number.isInteger(w)&&Number.isInteger(h)&&w>=64&&h>=64&&w<=8192&&h<=8192&&w*h<=24000000;}
-  function resize(w,h) {if(!validSize(w,h)){toast('尺寸需要在 64–8192 像素之间，总像素不能超过 2400 万。');sync();return;}if(w===state.width&&h===state.height)return;remember();state.width=w;state.height=h;ratio=w/h;changed();sizeStage();}
+  function resize(w,h) {if(!validSize(w,h)){toast('尺寸需要在 64–8192 像素之间，总像素不能超过 2400 万。');sync();return;}if(w===state.width&&h===state.height)return;remember();state.outline*=w/state.width;state.width=w;state.height=h;ratio=w/h;changed();sizeStage();}
   $('width').onchange=()=>{const w=Math.round(Number($('width').value));resize(w,$('lockRatio').checked?Math.round(w/ratio):state.height);};
   $('height').onchange=()=>{const h=Math.round(Number($('height').value));resize($('lockRatio').checked?Math.round(h*ratio):state.width,h);};
   $('width').onblur=$('width').onchange;$('height').onblur=$('height').onchange;
@@ -172,6 +214,7 @@
     if(serial!==loadSerial){if(next.close)next.close();return;}
     if(next.width*next.height>50000000||next.width>16384||next.height>16384){if(next.close)next.close();throw new Error('素材分辨率过大，请先缩小图片。');}
     const prepared=clone(s);if(prepared.outlineColor===undefined)prepared.outlineColor=defaults().outlineColor;
+    if(prepared.mouthDistanceCm===undefined)prepared.mouthDistanceCm=null;
     try{
       const before=R.crop(prepared,next);
       if(before.x<0||before.y<0||before.width<1||before.height<1||before.x+before.width>next.width||before.y+before.height>next.height)throw new Error('工程中的素材边界无效。');
@@ -239,7 +282,9 @@
     // Reject user SVG from project files: only the exact built-in vectors are trusted.
     if(s.src.startsWith('data:image/svg+xml')&&!samples.some(x=>x.src===s.src))throw new Error('外部工程中的 SVG 不受支持，请改用透明 PNG。');
     const d=defaults();for(const layer of ['object','mouth']){const t=s[layer];if(!t)throw new Error('工程缺少图层参数。');for(const key of ['x','y','scale','angle'])if(!Number.isFinite(t[key]))throw new Error('工程含无效变换。');const isObject=layer==='object';if(t.x < (isObject?-2:-1)||t.x>(isObject?3:2)||t.y < (isObject?-2:-1)||t.y>(isObject?3:2)||t.scale<(isObject?.000001:.05)||t.scale>(isObject?4:1.8)||t.angle < -180||t.angle>180)throw new Error('工程变换超出支持范围。');d[layer]={...d[layer],x:t.x,y:t.y,scale:t.scale,angle:t.angle};}
-    if(!Number.isFinite(s.outline)||s.outline<0||s.outline>80)throw new Error('描边参数无效。');
+    if(!Number.isFinite(s.outline)||s.outline<0||s.outline>10240)throw new Error('描边参数无效。');
+    if(s.mouthDistanceCm!=null&&(!Number.isFinite(s.mouthDistanceCm)||s.mouthDistanceCm<=0))throw new Error('嘴型端点距离无效。');
+    d.mouthDistanceCm=s.mouthDistanceCm??null;
     if(s.outlineColor!==undefined&&(typeof s.outlineColor!=='string'||!/^#[0-9a-f]{6}$/i.test(s.outlineColor)))throw new Error('描边颜色无效。');
     if(!/^#[0-9a-f]{6}$/i.test(s.mouth.color)||!Number.isFinite(s.mouth.weight)||s.mouth.weight<.005||s.mouth.weight>.06)throw new Error('嘴部参数无效。');
     for(const key of ['visible','bite','tooth'])d.mouth[key]=!!s.mouth[key];d.mouth.color=s.mouth.color;d.mouth.weight=s.mouth.weight;d.object.flip=!!s.object.flip;

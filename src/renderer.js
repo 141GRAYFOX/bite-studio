@@ -3,6 +3,28 @@
   function createRenderer() {
     const lip = 'M -.5 -.035 C -.48 .035 -.43 .07 -.39 .075 C -.29 .105 -.24 .01 -.12 .02 C .07 .05 .26 .065 .39 -.01 C .445 -.035 .475 -.08 .5 -.12';
     const tooth = 'M .25 .046 Q .27 .16 .303 .157 Q .33 .15 .353 .008 Q .303 .03 .25 .046 Z';
+    // Lip centreline endpoints: calibrate against the chord, not the curve length.
+    function mouthSpan(s) { return s.mouth.scale * s.width * Math.hypot(1, .085); }
+    function printSize(s, bounds, distanceCm) {
+      if (!Number.isFinite(distanceCm) || distanceCm <= 0) throw new Error('请输入大于 0 的嘴型端点距离。');
+      const span = mouthSpan(s), cmPerPixel = distanceCm / span;
+      if (!Number.isFinite(span) || span <= 0 || !bounds || bounds.width <= 0 || bounds.height <= 0) throw new Error('无法测量当前图案。');
+      const width = bounds.width * cmPerPixel, height = bounds.height * cmPerPixel;
+      if (!Number.isFinite(width) || !Number.isFinite(height)) throw new Error('输入距离过大，请减小数值。');
+      return {width, height};
+    }
+    async function printBounds(s, image, {cancelled}={}) {
+      // A fixed measurement precision avoids tying cm values to export raster rounding.
+      // The longest side stays bounded even for very tall or wide canvases.
+      const factor=4003/Math.max(s.width,s.height),width=Math.max(1,Math.round(s.width*factor)),height=Math.max(1,Math.round(s.height*factor));
+      const measured={...s,width,height,outline:s.outline*width/s.width};let c;
+      try{
+        c=await render(measured,image,{cooperative:true,cancelled});
+        if(cancelled&&cancelled())throw new Error('已取消渲染');
+        const b=await visibleBounds(c,{alphaThreshold:0}),k=s.width/width;
+        return {x:b.x*k,y:b.y*k,width:b.width*k,height:b.height*k};
+      }finally{if(c)c.width=c.height=1;}
+    }
     function canvas(w, h) {
       if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
       const c = document.createElement('canvas'); c.width = w; c.height = h; return c;
@@ -127,7 +149,7 @@
       if (c.convertToBlob) return c.convertToBlob({ type: 'image/png' });
       return new Promise((resolve, reject) => c.toBlob(b => b ? resolve(b) : reject(new Error('PNG 编码失败，请降低分辨率重试。')), 'image/png'));
     }
-    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds };
+    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds };
   }
   root.BiteRendererFactory = createRenderer; root.BiteRenderer = createRenderer();
 })(globalThis);
