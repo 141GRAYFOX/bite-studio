@@ -20,6 +20,16 @@ async function main(){
     assert.deepEqual([...c.data.slice((4*13+5)*4,(4*13+5)*4+3)],[235,90,30],'source color retained');passed++;
   }
   const empty=fakeCanvas(11,9,[]);await R.outline(empty,3);assert.ok(empty.data.every(v=>v===0));passed++;
+  for(const [color,rgb] of [[undefined,[255,255,255]],['#ffffff',[255,255,255]],['#27A4e1',[39,164,225]],['#000000',[0,0,0]]]){
+    const c=fakeCanvas(9,9,[[4,4,128]]),source=[235,90,30];
+    await R.outline(c,2,null,false,null,color);
+    const center=(4*9+4)*4,edge=(4*9+6)*4;
+    assert.deepEqual([...c.data.slice(center,center+3)],source.map((channel,i)=>Math.round((channel*128+rgb[i]*127)/255)),'translucent source blends over outline '+color);
+    assert.equal(c.data[center+3],255);
+    assert.deepEqual([...c.data.slice(edge,edge+3)],rgb,'outline edge uses selected color '+color);
+    assert.ok(c.data[edge+3]>0&&c.data[edge+3]<255,'colored edge remains antialiased');
+    assert.deepEqual([...c.data.slice(0,4)],[0,0,0,0],'background remains transparent');passed++;
+  }
   const untouched=fakeCanvas(5,5,[[2,2,160]]),before=untouched.data.slice();await R.outline(untouched,0);assert.deepEqual(untouched.data,before);passed++;
   await assert.rejects(()=>R.outline(fakeCanvas(10,10,[[5,5]]),2,null,true,()=>true),/已取消/);passed++;
   // A bounded Canvas adapter tests alpha scanning across strip boundaries in Node.
@@ -45,6 +55,6 @@ async function main(){
     assert.deepEqual(s.mouth,before.mouth);assert.equal(s.object.angle,angle);assert.equal(s.object.flip,flip);passed++;
   }
   delete globalThis.OffscreenCanvas;
-  console.log(passed+' renderer checks passed (outline, alpha fringe, faint artwork, empty image, cancellation, reframe under rotation/flip).');
+  console.log(passed+' renderer checks passed (outline colors and blending, alpha fringe, faint artwork, empty image, cancellation, reframe under rotation/flip).');
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

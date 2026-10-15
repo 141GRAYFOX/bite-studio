@@ -80,8 +80,9 @@
       k = 0;
       for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; const p = v[k]; d[q] = (q - p) * (q - p) + f[p]; }
     }
-    async function outline(c, radius, progress, cooperative, cancelled) {
+    async function outline(c, radius, progress, cooperative, cancelled, color = '#ffffff') {
       if (radius <= 0) return c;
+      const rgb = [1, 3, 5].map(start => parseInt(color.slice(start, start + 2), 16));
       const ctx = c.getContext('2d', { willReadFrequently: true }); const w = c.width, h = c.height;
       const pixels = ctx.getImageData(0, 0, w, h), data = pixels.data, field = new Float32Array(w * h);
       const n = Math.max(w, h), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
@@ -101,7 +102,11 @@
           const i = (y * w + x) * 4, a = data[i + 3] / 255;
           const edge = Math.max(0, Math.min(1, radius + .5 - Math.sqrt(d[y])));
           const alpha = a + edge * (1 - a);
-          if (alpha > 0) { const ratio = a / alpha; data[i] *= ratio; data[i + 1] *= ratio; data[i + 2] *= ratio; data[i + 3] = Math.round(alpha * 255); }
+          if (alpha > 0) {
+            const ratio = a / alpha, border = edge * (1 - a) / alpha;
+            for (let channel = 0; channel < 3; channel++) data[i + channel] = data[i + channel] * ratio + rgb[channel] * border;
+            data[i + 3] = Math.round(alpha * 255);
+          }
         }
         if (x % 128 === 0 && cooperative) await yieldUI();
       }
@@ -114,7 +119,7 @@
       const rw = Math.round(w * factor), rh = Math.round(h * factor), c = canvas(rw, rh);
       paint(c.getContext('2d'), s, image, rw, rh);
       if (options.progress) options.progress(15);
-      await outline(c, s.outline * rw / s.width, options.progress, options.cooperative, options.cancelled);
+      await outline(c, s.outline * rw / s.width, options.progress, options.cooperative, options.cancelled, s.outlineColor);
       if (rw === w && rh === h) return c;
       const out = canvas(w, h), ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, w, h); c.width = c.height = 1; return out;
     }
