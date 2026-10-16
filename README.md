@@ -20,13 +20,13 @@
 
 ### 手机 / 在线使用
 
-直接打开 **[Bite Studio 在线编辑器](https://141grayfox.github.io/bite-studio/)**。手机无需安装 Node.js 或 APK。
+直接打开 **[Bite Studio 在线编辑器 · Cloudflare Pages](https://bite-studio.pages.dev/)**。手机无需安装 Node.js 或 APK。也可使用 [GitHub Pages 备用入口](https://141grayfox.github.io/bite-studio/)。两个入口的实际访问速度因网络而异。
 
 [查看在线版手机布局](在线手机界面.jpg)。页面底部可打开本项目的 GitHub 仓库。
 
 上传图片、调整图层、导出 PNG 和保存工程都在当前浏览器内完成。手机导出可使用系统分享面板或浏览器下载；不同手机的文件保存入口可能不同。
 
-暂存属于当前设备和浏览器。电脑上的暂存不会自动出现在手机上，需要在电脑「保存工程」，把 `.bite` 文件传到手机后「打开工程」。手机首次使用可先选择宽 2000 的导出尺寸。
+暂存属于当前设备、浏览器和网站地址。电脑上的暂存不会自动出现在手机上，GitHub Pages 与 Cloudflare Pages 也不共享暂存；切换设备或入口前先「保存工程」，在新入口「打开工程」导入 `.bite` 文件。手机首次使用可先选择宽 2000 的导出尺寸。
 
 ### Windows / 本机使用
 
@@ -52,7 +52,7 @@ node build.cjs
 node tests/renderer.test.cjs
 ```
 
-修改 `src/` 后重新构建，刷新浏览器即可使用。构建同时更新独立主程序和 `docs/index.html`；提交并推送到 `main` 后，GitHub Pages 自动发布 `docs/`。当前数值回归测试为 25 项，覆盖默认白色与自定义描边颜色、半透明颜色混合、边缘透明度、杂点排除、淡图回退、旋转/翻转后收紧边界时的像素位置保持，以及嘴型端点直线标定和厘米比例换算。
+修改 `src/` 后重新构建，刷新浏览器即可使用。构建同时更新独立主程序和 `docs/index.html`；提交并推送到 `main` 后，GitHub Pages 自动发布 `docs/`，Cloudflare Pages 运行 `node build.cjs` 并发布 `docs/`。Cloudflare 项目名为 `bite-studio`，框架预设为 None，不需要环境变量。当前数值回归测试为 25 项，覆盖默认白色与自定义描边颜色、半透明颜色混合、边缘透明度、杂点排除、淡图回退、旋转/翻转后收紧边界时的像素位置保持，以及嘴型端点直线标定和厘米比例换算。
 
 打印推算的浏览器回归运行 `node tests/print-size.browser.test.cjs`，与效果测试使用相同的 Playwright / Chrome 环境变量。覆盖最终非透明像素边界、分辨率不改变物理尺寸、图层变换后重新计算、异步旧结果丢弃、工程兼容与自动恢复，以及手机布局、极淡像素与空画布。
 
