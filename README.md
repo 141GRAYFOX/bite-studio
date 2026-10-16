@@ -30,6 +30,12 @@
 
 ### Windows / 本机使用
 
+**[下载离线版 ZIP](https://bite-studio.pages.dev/BiteStudio-offline.zip)** · [GitHub 下载备用地址](https://github.com/141GRAYFOX/bite-studio/raw/refs/heads/main/docs/BiteStudio-offline.zip)
+
+下载后先完整解压，再用 Chrome 或 Edge 打开 `BiteStudio.html`，无需联网，也无需安装 Node.js。ZIP 包含主程序、使用说明和可选的本地服务启动器；与在线版同一次构建，发布时自动更新。在线页面底部也提供“下载离线版”入口。
+
+直接打开文件时，暂存和下载行为取决于浏览器；请用“保存工程”保留 `.bite` 文件。在线站点与离线文件不共享暂存。手机需要支持打开本地 HTML 的浏览器，文件管理器预览可能无法运行程序，手机通常建议使用在线版。
+
 Windows 用户可双击 **启动工坊.cmd**。本机已有 Node.js 时，会启动仅监听本机的服务并打开浏览器。
 
 跨平台运行：
@@ -69,10 +75,11 @@ node tests/renderer.test.cjs
 | `src/renderer.js` | Canvas 合成、可见边界检测、平滑描边 |
 | `tests/mockup.browser.test.cjs` | 效果测试浏览器交互与合成 PNG 验证（需 Playwright） |
 | `tests/renderer.test.cjs` | 无依赖数值回归测试 |
-| `build.cjs` | 单文件打包 |
+| `build.cjs` | 单文件与离线 ZIP 打包，无第三方依赖 |
 | `server.cjs` | 本机预览服务 |
 | `BiteStudio.html` | 可直接使用的构建产物 |
 | `docs/index.html` | GitHub Pages 的在线入口，与独立主程序一致 |
+| `docs/BiteStudio-offline.zip` | 与在线版同步构建的离线下载包 |
 | `示例-吐司.bite` / `示例-吐司.png` | 可编辑示例与导出示例 |
 
 完整操作说明见 [使用说明](使用说明.md)，架构、验证范围和 Android 移植说明见 [技术说明与验证](技术说明与验证.md)。

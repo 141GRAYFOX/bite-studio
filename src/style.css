@@ -22,6 +22,7 @@ dialog{border:1px solid var(--line);border-radius:16px;padding:28px;background:v
 .bounds-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.bounds-tools small{color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:640px){.bounds-tools{grid-column:1/-1;margin-top:0}}
 
 footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:11px;text-decoration:none;font-weight:500}.github-link:hover{text-decoration:underline}
+.offline-download{min-height:44px;color:var(--green);font-size:11px;text-decoration:none}.offline-download svg{width:15px;height:15px}.offline-download:hover{background:#edf3e8}
 
 #testSticker{border-color:#b8cdbd;background:#edf3e8;color:var(--green)}
 #mockupDialog{width:min(1060px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:24px;overflow:auto}

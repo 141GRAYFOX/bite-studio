@@ -10,6 +10,7 @@ work/
 *.local.bite
 *.log
 *.zip
+!docs/BiteStudio-offline.zip
 
 # OS/editor files
 Thumbs.db

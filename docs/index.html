@@ -23,6 +23,7 @@ dialog{border:1px solid var(--line);border-radius:16px;padding:28px;background:v
 .bounds-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.bounds-tools small{color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:640px){.bounds-tools{grid-column:1/-1;margin-top:0}}
 
 footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:11px;text-decoration:none;font-weight:500}.github-link:hover{text-decoration:underline}
+.offline-download{min-height:44px;color:var(--green);font-size:11px;text-decoration:none}.offline-download svg{width:15px;height:15px}.offline-download:hover{background:#edf3e8}
 
 #testSticker{border-color:#b8cdbd;background:#edf3e8;color:var(--green)}
 #mockupDialog{width:min(1060px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
@@ -93,7 +94,7 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 <p id="printStatus" class="subtle" role="status" aria-live="polite">输入距离后，点击推算打印尺寸。</p>
 </div>
 </aside></main>
-<footer><span>BITE STUDIO <span class="footer-dot">/</span> 让灵感，咬一口。</span><span class="footer-note">工程文件保留原素材与全部参数，可再次打开编辑。</span><a class="github-link" href="https://github.com/141GRAYFOX/bite-studio" target="_blank" rel="noopener noreferrer" title="查看项目源代码与使用说明">GitHub · 141GRAYFOX/bite-studio ↗</a></footer>
+<footer><span>BITE STUDIO <span class="footer-dot">/</span> 让灵感，咬一口。</span><span class="footer-note">工程文件保留原素材与全部参数，可再次打开编辑。</span><a class="button quiet offline-download" href="https://bite-studio.pages.dev/BiteStudio-offline.zip" download="BiteStudio-offline.zip" title="下载后完整解压，用浏览器打开 BiteStudio.html；无需联网或安装 Node.js"><span data-icon="download"></span>下载离线版 · ZIP</a><a class="github-link" href="https://github.com/141GRAYFOX/bite-studio" target="_blank" rel="noopener noreferrer" title="查看项目源代码与使用说明">GitHub · 141GRAYFOX/bite-studio ↗</a></footer>
 <dialog id="studioDialog"><form id="dialogForm"><h2 id="dialogTitle"></h2><p id="dialogDescription"></p><input id="dialogName" type="text" maxlength="80" aria-label="暂存名称"><div class="dialog-actions"><button id="dialogCancel" type="button" class="button quiet">取消</button><button id="dialogConfirm" type="submit" class="button primary">暂存</button></div></form></dialog>
 <dialog id="mockupDialog" aria-labelledby="mockupTitle" aria-describedby="mockupDescription">
 <div class="mockup-heading"><div><span class="eyebrow">TRY IT ON</span><h2 id="mockupTitle">贴纸效果测试</h2></div><button id="mockupClose" class="button quiet small" type="button">返回编辑</button></div>
