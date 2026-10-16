@@ -19,7 +19,7 @@
     { name:'小鱼饼', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="850" height="600" viewBox="0 0 850 600"><defs><linearGradient id="f" x2="0" y2="1"><stop stop-color="#ffc765"/><stop offset="1" stop-color="#e79a3f"/></linearGradient></defs><path d="M206 214Q327 71 527 192L752 107 704 301 764 486 533 406Q332 536 188 390L87 306Z" fill="url(#f)" stroke="#74401f" stroke-width="16" stroke-linejoin="round"/><path d="m460 196-99-72-23 89m100 212-78 62-26-62" fill="#edaf55" stroke="#74401f" stroke-width="12" stroke-linejoin="round"/><path d="M491 210q-44 86 0 183m-99-146 17 19-17 18m51 24 18 19-18 19m-60 17 17 19-17 18m234-150 61 77-61 71" fill="none" stroke="#cb8635" stroke-width="9" stroke-linecap="round"/><circle cx="261" cy="270" r="18" fill="#573824"/><circle cx="266" cy="263" r="6" fill="#fff4dd"/><path d="m204 327q26 22 44 0" fill="none" stroke="#74401f" stroke-width="8" stroke-linecap="round"/><ellipse cx="268" cy="319" rx="22" ry="10" fill="#ef9870"/></svg>' },
     { name:'星星糖', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="620" height="950" viewBox="0 0 620 950"><path d="M314 490v402" stroke="#695344" stroke-width="40" stroke-linecap="round"/><path d="M314 490v402" stroke="#fff0cb" stroke-width="26" stroke-linecap="round"/><path d="m310 51 78 155 172 22-125 125 32 175-157-80-157 80 32-175L60 228l172-22Z" fill="#efaabb" stroke="#663e47" stroke-width="14" stroke-linejoin="round"/><path d="m310 94 58 140 142 17-106 88 32 139-126-70-126 70 32-139-106-88 142-17Z" fill="#f8c2c5"/><path d="m252 265 24-63" stroke="#fff7e4" stroke-width="20" stroke-linecap="round"/><circle cx="272" cy="329" r="10" fill="#694451"/><circle cx="352" cy="329" r="10" fill="#694451"/><path d="m297 360q15 19 30 0" fill="none" stroke="#694451" stroke-width="6" stroke-linecap="round"/></svg>' }
   ].map(x => ({name:x.name, src:svgData(x.svg)}));
-  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, name:'奶油吐司', src:samples[0].src,bounds:null,
+  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, includePrintSize:false, name:'奶油吐司', src:samples[0].src,bounds:null,
     object:{x:.5,y:.545,scale:.86,angle:0,flip:false}, mouth:{x:.5,y:.30,scale:.55,angle:0,weight:.023,color:'#000000',visible:true,bite:true,tooth:true} });
   let state = defaults(), image, selected = 'object', undo = [], redo = [], savedSignature = '', toastTimer, saveTimer, previewTimer;
   let db, autosaveChain = Promise.resolve(), renderSerial = 0, worker, exporting = false, exportToken = 0;
@@ -73,16 +73,19 @@
     $('calculatePrintSize').textContent=printBusy?'正在测量图案…':'推算打印尺寸';
     $('printResult').hidden=true;
     let status=!valid?($('mouthDistanceCm').value===''?'输入距离后，点击推算打印尺寸。':'请输入大于 0 的有效距离。'):printBusy?'正在检测最终图案的非透明像素边界…':printCache?'作品已调整，请重新推算。':'点击推算，测量当前贴纸的实际图案。';
-    if(valid&&printCache&&printCache.key===key&&printCache.src===state.src){
+    if(valid&&!printBusy&&printCache&&printCache.key===key&&printCache.src===state.src){
       try{
         const size=R.printSize(state,printCache.bounds,state.mouthDistanceCm);
-        const format=v=>v<.01?'< 0.01':v.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
-        $('printWidth').textContent=format(size.width);$('printHeight').textContent=format(size.height);$('printResult').hidden=false;
+        $('printWidth').textContent=R.formatCm(size.width);$('printHeight').textContent=R.formatCm(size.height);$('printResult').hidden=false;
         status='按当前画布方向的图案宽、高计算。'+(state.mouth.visible?'':'嘴型已隐藏，使用保存的嘴型比例。');
       }catch(e){status=e.message;}
     }
+    $('includePrintSize').checked=state.includePrintSize;
+    $('includePrintSize').disabled=$('printResult').hidden&&!state.includePrintSize;
+    $('printExportHelp').textContent=state.includePrintSize&&$('printResult').hidden?'已勾选尺寸标注，请先完成当前图案的推算再导出；也可取消勾选。':'先推算再勾选。勾选后增加顶部透明标注区，PNG 高度相应增加；宽、高厘米数只指贴纸图案。';
     $('printStatus').textContent=printError||status;
   }
+  $('includePrintSize').onchange=()=>{remember();state.includePrintSize=$('includePrintSize').checked;changed();};
   $('calculatePrintSize').onclick=async()=>{
     if(printBusy||!image||!(state.mouthDistanceCm>0))return;
     const s=clone(state),key=measurementKey(s);let source;
@@ -215,6 +218,7 @@
     if(next.width*next.height>50000000||next.width>16384||next.height>16384){if(next.close)next.close();throw new Error('素材分辨率过大，请先缩小图片。');}
     const prepared=clone(s);if(prepared.outlineColor===undefined)prepared.outlineColor=defaults().outlineColor;
     if(prepared.mouthDistanceCm===undefined)prepared.mouthDistanceCm=null;
+    if(prepared.includePrintSize===undefined)prepared.includePrintSize=false;
     try{
       const before=R.crop(prepared,next);
       if(before.x<0||before.y<0||before.width<1||before.height<1||before.x+before.width>next.width||before.y+before.height>next.height)throw new Error('工程中的素材边界无效。');
@@ -285,6 +289,8 @@
     if(!Number.isFinite(s.outline)||s.outline<0||s.outline>10240)throw new Error('描边参数无效。');
     if(s.mouthDistanceCm!=null&&(!Number.isFinite(s.mouthDistanceCm)||s.mouthDistanceCm<=0))throw new Error('嘴型端点距离无效。');
     d.mouthDistanceCm=s.mouthDistanceCm??null;
+    if(s.includePrintSize!==undefined&&typeof s.includePrintSize!=='boolean')throw new Error('打印尺寸标注选项无效。');
+    d.includePrintSize=s.includePrintSize??false;
     if(s.outlineColor!==undefined&&(typeof s.outlineColor!=='string'||!/^#[0-9a-f]{6}$/i.test(s.outlineColor)))throw new Error('描边颜色无效。');
     if(!/^#[0-9a-f]{6}$/i.test(s.mouth.color)||!Number.isFinite(s.mouth.weight)||s.mouth.weight<.005||s.mouth.weight>.06)throw new Error('嘴部参数无效。');
     for(const key of ['visible','bite','tooth'])d.mouth[key]=!!s.mouth[key];d.mouth.color=s.mouth.color;d.mouth.weight=s.mouth.weight;d.object.flip=!!s.object.flip;
@@ -295,19 +301,25 @@
   $('openProject').onclick=()=>$('projectFile').click();$('projectFile').onchange=async e=>{try{await openProject(e.target.files[0]);}catch(e){toast(e.message);}finally{$('projectFile').value='';}};
   $('newProject').onclick=()=>load(defaults()).then(()=>toast('已新建作品，之前的画布可通过撤销找回。'));
   function makeWorker() {
-    const source='self.R=('+window.BiteRendererFactory.toString()+')();self.onmessage=async function(e){try{const image=e.data.image;const c=await R.render(e.data.state,image,{progress:function(p){self.postMessage({progress:p});}});const b=await R.blob(c);image.close();c.width=c.height=1;self.postMessage({blob:b});}catch(e){self.postMessage({error:e.message});}}';
+    const source='self.R=('+window.BiteRendererFactory.toString()+')();self.onmessage=async function(e){try{const image=e.data.image;const c=await R.render(e.data.state,image,{printSize:e.data.printSize,progress:function(p){self.postMessage({progress:p});}});const b=await R.blob(c);image.close();c.width=c.height=1;self.postMessage({blob:b});}catch(e){self.postMessage({error:e.message});}}';
     const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));try{return new Worker(url);}finally{URL.revokeObjectURL(url);}
   }
   function progress(p){$('progressText').textContent=p<90?'渲染透明轮廓与平滑描边… '+p+'%':'正在编码 PNG…';}
   async function exportImage() {
-    if(exporting||!image)return;exporting=true;const token=++exportToken,s=clone(state);$('exportProgress').hidden=false;$('export').disabled=true;progress(0);
+    if(exporting||!image)return;
+    const s=clone(state);let printSize=null,outputHeight=s.height;
+    if(s.includePrintSize){
+      if(printBusy||!printCache||printCache.key!==measurementKey(s)||printCache.src!==s.src||!(s.mouthDistanceCm>0)){toast('请先重新推算当前图案的打印尺寸，或取消“导出时附打印尺寸”。');return;}
+      try{printSize=R.printSize(s,printCache.bounds,s.mouthDistanceCm);outputHeight=R.printLabelLayout(s.width,s.height,printSize).height;}catch(e){toast(e.message);return;}
+    }
+    exporting=true;const token=++exportToken;$('exportProgress').hidden=false;$('export').disabled=true;progress(0);
     try{
       let blob;
       if(typeof Worker!=='undefined'&&typeof OffscreenCanvas!=='undefined'&&typeof createImageBitmap==='function'){
-        try{const bitmap=await createImageBitmap(image);worker=makeWorker();blob=await new Promise((resolve,reject)=>{worker.onmessage=e=>{if(e.data.blob)resolve(e.data.blob);else if(e.data.error)reject(new Error(e.data.error));else progress(e.data.progress);};worker.onerror=()=>reject(new Error('后台渲染不可用'));worker.postMessage({state:s,image:bitmap},[bitmap]);});}
-        catch(e){if(token!==exportToken)return;if(worker)worker.terminate();worker=null;const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
-      }else{const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
-      if(token!==exportToken)return;progress(95);await download(blob,filename('-'+s.width+'x'+s.height+'.png'));toast('PNG 已生成：'+s.width+' × '+s.height+'，透明背景，已应用当前描边设置。');
+        try{const bitmap=await createImageBitmap(image);worker=makeWorker();blob=await new Promise((resolve,reject)=>{worker.onmessage=e=>{if(e.data.blob)resolve(e.data.blob);else if(e.data.error)reject(new Error(e.data.error));else progress(e.data.progress);};worker.onerror=()=>reject(new Error('后台渲染不可用'));worker.postMessage({state:s,image:bitmap,printSize},[bitmap]);});}
+        catch(e){if(token!==exportToken)return;if(worker)worker.terminate();worker=null;const c=await R.render(s,image,{printSize,cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      }else{const c=await R.render(s,image,{printSize,cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      if(token!==exportToken)return;progress(95);await download(blob,filename('-'+s.width+'x'+outputHeight+(printSize?'-含打印尺寸':'')+'.png'));toast('PNG 已生成：'+s.width+' × '+outputHeight+'，透明背景'+(printSize?'，上方已附图案打印尺寸。':'，已应用当前描边设置。'));
     }catch(e){if(token===exportToken)toast('导出失败：'+e.message+'。可以降低分辨率重试。');}
     finally{if(token===exportToken){if(worker)worker.terminate();worker=null;exporting=false;$('exportProgress').hidden=true;$('export').disabled=false;}}
   }

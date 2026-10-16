@@ -65,6 +65,25 @@ async function main(){
   assert.deepEqual(R.printSize(calibration,box,12),{width:cm.width*2,height:cm.height*2});
   assert.deepEqual(R.printSize({...calibration,mouth:{scale:1}},box,6),{width:cm.width/2,height:cm.height/2});
   for(const invalid of [null,0,-1,NaN,Infinity,'6'])assert.throws(()=>R.printSize(calibration,box,invalid),/大于 0/);passed++;
-  console.log(passed+' renderer checks passed (outline colors and blending, alpha fringe, faint artwork, empty image, cancellation, reframe under rotation/flip).');
+  const labelSize={width:6.123,height:3.456},layout=R.printLabelLayout(1000,940,labelSize);
+  assert.deepEqual(layout,{width:1000,height:1000,headerHeight:60,fontSize:22,text:'宽 6.12 cm  ×  高 3.46 cm'});passed++;
+  assert.equal(R.printLabelLayout(4003,3764,labelSize).height,4005);
+  assert.equal(R.printLabelLayout(64,64,labelSize).headerHeight,24);
+  assert.match(R.printLabelLayout(800,752,{width:.001,height:100.5}).text,/< 0.01 cm.*100.50 cm/);passed++;
+  for(const size of [null,{width:0,height:1},{width:1,height:NaN},{width:-1,height:1},{width:1,height:Infinity}])assert.throws(()=>R.printLabelLayout(1000,940,size),/重新推算/);passed++;
+  for(const [w,h] of [[1000,8190],[6000,4000],[8193,100]])assert.throws(()=>R.printLabelLayout(w,h,labelSize),/降低导出分辨率/);passed++;
+  // Independent pixel copy check: the annotation strip cannot resize or paint over the sticker.
+  const textCalls=[];
+  globalThis.OffscreenCanvas=class {
+    constructor(w,h){this.width=w;this.height=h;this.data=new Uint8ClampedArray(w*h*4);}
+    getContext(){const target=this;return {drawImage(source,dx,dy){for(let y=0;y<source.height;y++)target.data.set(source.data.subarray(y*source.width*4,(y+1)*source.width*4),((y+dy)*target.width+dx)*4);},strokeText(...args){textCalls.push(args);},fillText(...args){textCalls.push(args);}};}
+  };
+  const original=fakeCanvas(80,60,[[1,1],[40,20,120],[79,59]]),labeled=R.addPrintLabel(original,labelSize),head=labeled.height-original.height;
+  assert.equal(labeled.width,original.width);assert.ok(head>0);
+  assert.deepEqual(labeled.data.slice(head*80*4),original.data,'all sticker RGBA bytes preserved after header translation');
+  assert.ok(labeled.data.slice(0,head*80*4).every(v=>v===0),'header background is never filled');
+  assert.equal(textCalls.length,2);assert.ok(textCalls.every(args=>args[0]===layout.text&&args[2]>0&&args[2]<head),'label stays above the sticker');
+  delete globalThis.OffscreenCanvas;passed++;
+  console.log(passed+' renderer checks passed (outlines, alpha, transforms, print calibration and annotated export layout/pixels).');
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

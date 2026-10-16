@@ -13,6 +13,24 @@
       if (!Number.isFinite(width) || !Number.isFinite(height)) throw new Error('输入距离过大，请减小数值。');
       return {width, height};
     }
+    function formatCm(value) { return value<.01?'< 0.01':value.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function printLabelLayout(width,height,size) {
+      if(!size||![size.width,size.height].every(v=>Number.isFinite(v)&&v>0))throw new Error('打印尺寸无效，请重新推算。');
+      const headerHeight=Math.max(24,Math.ceil(width*.06)),outputHeight=height+headerHeight;
+      if(width>8192||outputHeight>8192||width*outputHeight>24000000)throw new Error('附加标注后超过 8192 边长或 2400 万像素，请降低导出分辨率。');
+      return {width,height:outputHeight,headerHeight,fontSize:Math.max(8,Math.round(width*.022)),text:'宽 '+formatCm(size.width)+' cm  ×  高 '+formatCm(size.height)+' cm'};
+    }
+    function addPrintLabel(sticker,size) {
+      const layout=printLabelLayout(sticker.width,sticker.height,size),out=canvas(layout.width,layout.height),ctx=out.getContext('2d');
+      // Only text occupies the added transparent strip; the sticker pixels are untouched.
+      ctx.drawImage(sticker,0,layout.headerHeight);
+      ctx.font='600 '+layout.fontSize+'px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
+      const x=layout.width/2,y=layout.headerHeight/2,maxWidth=Math.max(1,layout.width-Math.max(8,layout.width*.04));
+      ctx.lineWidth=Math.max(1,layout.fontSize*.09);ctx.strokeStyle='#ffffff';ctx.fillStyle='#17251f';
+      ctx.strokeText(layout.text,x,y,maxWidth);ctx.fillText(layout.text,x,y,maxWidth);
+      return out;
+    }
     async function printBounds(s, image, {cancelled}={}) {
       // A fixed measurement precision avoids tying cm values to export raster rounding.
       // The longest side stays bounded even for very tall or wide canvases.
@@ -136,20 +154,23 @@
     }
     async function render(s, image, options = {}) {
       const w = options.width || s.width, h = options.height || s.height;
+      if(options.printSize)printLabelLayout(w,h,options.printSize);
       // Supersample smaller exports, cap working area to keep mobile memory bounded.
       const factor = options.preview ? 1 : Math.min(2, Math.max(1, Math.sqrt(18000000 / (w * h))));
       const rw = Math.round(w * factor), rh = Math.round(h * factor), c = canvas(rw, rh);
       paint(c.getContext('2d'), s, image, rw, rh);
       if (options.progress) options.progress(15);
       await outline(c, s.outline * rw / s.width, options.progress, options.cooperative, options.cancelled, s.outlineColor);
-      if (rw === w && rh === h) return c;
-      const out = canvas(w, h), ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, w, h); c.width = c.height = 1; return out;
+      let out=c;
+      if(rw!==w||rh!==h){out=canvas(w,h);const ctx=out.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(c,0,0,w,h);c.width=c.height=1;}
+      if(options.printSize){const annotated=addPrintLabel(out,options.printSize);out.width=out.height=1;return annotated;}
+      return out;
     }
     async function blob(c) {
       if (c.convertToBlob) return c.convertToBlob({ type: 'image/png' });
       return new Promise((resolve, reject) => c.toBlob(b => b ? resolve(b) : reject(new Error('PNG 编码失败，请降低分辨率重试。')), 'image/png'));
     }
-    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds };
+    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds, formatCm, printLabelLayout, addPrintLabel };
   }
   root.BiteRendererFactory = createRenderer; root.BiteRenderer = createRenderer();
 })(globalThis);

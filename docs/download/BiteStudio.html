@@ -11,6 +11,7 @@
 .print-result>div{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:10px;font-size:11px}
 .print-result strong{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
 .print-settings input[aria-invalid="true"]{border-color:#b95c50}
+.print-export{margin-top:18px}.print-export input:disabled+span{opacity:.55}#printExportHelp{line-height:1.8}
 :root{--bg:#f5f2eb;--paper:#fffdf9;--ink:#292e2c;--muted:#838780;--line:#e7e6de;--green:#276453;--accent:#e9b972;--font:"Segoe UI","Microsoft YaHei",sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible{outline:2px solid var(--green);outline-offset:3px}button{transition:background .15s,transform .15s}button:hover:not(:disabled){filter:brightness(.97)}button:active:not(:disabled){transform:translateY(1px)}svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.topbar{height:90px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:18px;background:var(--paper)}.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-size:25px;font-weight:700;letter-spacing:-1px}.brand-icon{height:44px;width:44px;background:var(--green);color:#fff4d6;border-radius:14px;display:grid;place-items:center;font-size:40px;font-weight:400;line-height:1;padding-bottom:15px;transform:rotate(-10deg)}.brand-light{font-weight:400}.brand small{display:block;font-size:10px;letter-spacing:3px;font-weight:400;color:var(--muted);margin-top:3px}.top-note{color:var(--muted);font-size:11px;display:flex;align-items:center;gap:8px}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#779c83}.top-actions{display:flex;gap:10px}.button{border:1px solid transparent;border-radius:9px;padding:11px 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:500;white-space:nowrap;color:var(--ink);background:transparent}.button.primary{background:var(--green);color:white;box-shadow:0 4px 10px #27645316}.button.quiet{border-color:var(--line);background:var(--paper)}.button.secondary{background:#f3f3ec;border-color:#ebebe3;padding:9px 10px;font-size:12px}.button.small{padding:7px 11px;font-size:11px}.workspace{display:grid;grid-template-columns:255px minmax(320px,1fr) 285px;gap:25px;width:100%;margin:0 auto;padding:30px}.panel{padding:3px 0}.eyebrow{font-size:9px;letter-spacing:2.3px;color:#8d978b;font-weight:600}h1{font-size:21px;line-height:1.65;margin:12px 0 8px;font-weight:600;letter-spacing:-.5px}h2{font-size:14px;margin:0;font-weight:600}.intro{color:var(--muted);font-size:12px;line-height:1.9;margin:0 0 22px}.upload-card{width:100%;background:#fffdf7;border:1.5px dashed #c8d3c3;min-height:156px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--green)}.upload-card:hover{background:#f0f4e9;border-color:var(--green)}.upload-icon{background:#edf1e6;border-radius:10px;padding:10px;margin-bottom:3px}.upload-icon svg{width:23px;height:23px}.upload-card strong{font-size:13px}.upload-card span:not(.upload-icon){font-size:11px;color:var(--muted)}.upload-card small{color:#a2a699;font-size:9px}.section-line{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px;gap:8px}.section-line>span{font-size:10px;color:var(--muted)}.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.sample{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;color:var(--muted)}.sample img{width:51px;height:49px;object-fit:contain}.sample.selected{border-color:#84a18e;background:#eef2e8;color:var(--green)}.layer{border:1px solid transparent;width:100%;display:flex;align-items:center;gap:11px;background:transparent;padding:10px 9px;border-radius:10px;text-align:left;margin-bottom:6px}.layer.active{background:var(--paper);border-color:var(--line);box-shadow:0 2px 5px #33333303}.layer-thumb{flex:none;width:38px;height:38px;border-radius:8px;background:#f3efde;display:grid;place-items:center;overflow:hidden}.layer-thumb img{width:100%;height:100%;object-fit:contain}.mouth-thumb{font-size:36px;color:#000000;padding-bottom:12px}.layer strong{font-size:12px;font-weight:600;display:block;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.layer small{display:block;font-size:10px;color:var(--muted);margin-top:5px}.layer-dot{width:6px;height:6px;background:#bdc3b9;border-radius:50%;margin-left:auto}.active .layer-dot{background:var(--green)}.tip{display:flex;gap:10px;margin-top:26px;padding:14px 12px;background:#eaeede;border-radius:11px;color:#6f8065}.tip svg{flex:none;width:18px}.tip p{font-size:11px;line-height:1.8;margin:0}.tip strong{display:block;margin-bottom:4px;color:#57704d;font-size:11px}.new-project{width:100%;margin-top:16px;font-size:11px;color:var(--muted)}.editor{min-width:0}.editor-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px;min-height:49px;flex-wrap:wrap;gap:10px}.editor-heading h2{margin-top:7px;font-size:17px}.tag{font-size:9px;background:#e8ece2;color:#7b8a73;padding:4px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;font-weight:400}.history{display:flex;align-items:center;gap:3px}.icon-button{width:31px;height:31px;display:grid;place-items:center;background:transparent;border:0;border-radius:6px;color:#657361}.divider{width:1px;height:20px;background:var(--line);margin:0 9px}.canvas-area{background:#eeeee7;border:1px solid #e0e2d8;border-radius:15px;position:relative;padding:15px 12px 10px;overflow:hidden}.preview-controls{display:flex;align-items:center;gap:8px;color:#8c9589;font-size:10px;height:22px;margin-bottom:13px}.swatch{border:1px solid #d6dbcf;border-radius:50%;width:17px;height:17px;padding:0}.swatch.selected{outline:1.5px solid var(--green);outline-offset:3px}.checker{background-color:#fffefa;background-image:linear-gradient(45deg,#e9e9e0 25%,transparent 25%),linear-gradient(-45deg,#e9e9e0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e9e9e0 75%),linear-gradient(-45deg,transparent 75%,#e9e9e0 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}.light{background:#fffdf7}.dark{background:#333a37}.preview-only{font-size:9px;margin-left:3px;color:#a3a99d}.stage-wrap{width:100%;aspect-ratio:var(--canvas-ratio,4003/3764);min-height:220px;max-height:1600px;display:flex;align-items:center;justify-content:center}.stage{position:relative;box-shadow:0 6px 25px #30372a12;border-radius:2px;overflow:hidden}.stage canvas{position:absolute;inset:0;width:100%;height:100%}#controls{touch-action:none;cursor:grab}#controls:active{cursor:grabbing}.canvas-caption{display:flex;justify-content:space-between;gap:10px;align-items:center;height:33px;margin-top:7px;color:#8c9586;font-size:10px}.canvas-caption>span:first-child{display:flex;gap:7px;align-items:center}.gesture-hint{display:flex;justify-content:center;align-items:center;gap:8px;color:#959e8e;font-size:10px;margin-top:13px;flex-wrap:wrap}.gesture-hint svg{width:13px;height:13px}.gesture-hint>span{color:#bcc1b6}.draft-section{margin-top:24px}.draft-section .section-line{margin-top:0}.save-status{font-size:9px;color:#929c87;font-weight:400;margin-left:7px}.drafts{display:flex;gap:10px;overflow:auto;padding-bottom:7px;min-height:87px}.empty{color:#a3ab9a;background:#eeeee6;border:1px dashed #dce0d2;border-radius:10px;width:100%;padding:24px 15px;font-size:11px;margin:0}.draft-card{position:relative;width:125px;flex:none;border:1px solid var(--line);border-radius:9px;background:var(--paper);overflow:hidden}.draft-card>button:first-child{width:100%;border:0;background:transparent;padding:6px;text-align:left}.draft-card img{width:100%;height:72px;object-fit:contain;background:#f3f1e8;border-radius:5px}.draft-card strong{display:block;font-size:10px;margin-top:5px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-weight:500}.draft-card small{font-size:9px;color:var(--muted)}.draft-delete{position:absolute;right:4px;top:4px;background:#fffdf9e0;border:0;border-radius:4px;color:#7a8472;padding:3px 6px}.settings{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 20px;height:fit-content}.settings>h2{font-size:17px;margin-top:10px}.subtle{font-size:10px;color:#92978d;line-height:1.8;margin:8px 0 14px}.field{margin:19px 0}.field>label{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:10px}.field label>span{font-size:9px;color:#9ba191}output{font-size:10px;color:var(--green);background:#edf1e7;border-radius:4px;padding:3px 6px;font-variant-numeric:tabular-nums}input[type=range]{accent-color:var(--green);width:100%;height:4px;cursor:pointer;display:block;margin:10px 0}input[type=checkbox]{accent-color:var(--green);margin-right:6px}input[type=number]{border:1px solid var(--line);background:#fafbf6;border-radius:6px;min-width:0;width:100%;padding:8px;color:var(--ink);font-size:11px}input[type=number]::-webkit-inner-spin-button{opacity:0}.range-number{display:flex;gap:10px;align-items:center}.range-number>input[type=number]{width:64px}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.inline-input{display:flex;align-items:center;background:#fafbf6;border:1px solid var(--line);border-radius:6px;padding-left:9px;color:#8d9987;font-size:10px}.inline-input input{border:0;background:none}.two-buttons{display:flex;gap:8px}.two-buttons .button{flex:1}.settings-section{border-top:1px solid var(--line);padding-top:20px;margin-top:22px}.settings-section .section-line{margin:0 0 16px}.check-row{display:flex;align-items:start;font-size:11px;margin:14px 0}.check-row small{display:block;font-size:9px;color:#969e8c;margin-top:4px}.switch input{position:absolute;opacity:0;pointer-events:none}.switch>span{display:block;width:29px;height:17px;background:#d6dbc9;border-radius:10px;position:relative;cursor:pointer}.switch>span:before{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:white;left:3px;top:3px;transition:left .15s}.switch input:checked+span{background:var(--green)}.switch input:checked+span:before{left:15px}.mouth-options{display:flex;align-items:center;gap:15px;color:#8e9786;font-size:10px}.mouth-options>label{display:flex;align-items:center;gap:6px}.mouth-options input[type=color]{width:23px;height:22px;border:0;padding:0;background:none;cursor:pointer}.mouth-options input[type=range]{width:65px}.outline-color input[type=color]{width:40px;height:28px;border:1px solid var(--line);border-radius:6px;padding:2px;background:var(--paper);cursor:pointer}.settings-section .field{margin-bottom:7px}.dimension{font-size:10px;color:#909988;margin-top:14px}.dimension input{display:block;margin-top:7px}.size-tools{display:flex;justify-content:space-between;align-items:center;margin:10px 0 14px;font-size:9px;color:#8e9687}.text-button{border:0;background:transparent;padding:2px;color:var(--green);font-size:9px}select{width:100%;padding:9px 6px;background:#fafbf6;border:1px solid var(--line);border-radius:6px;color:#6f7d64;font-size:10px}.export-note{font-size:10px;color:#6d8364;line-height:1.9;margin-bottom:0}.export-note svg{width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px}.export-note small{font-size:9px;color:#a0a690}.drop-overlay{position:absolute;inset:0;background:#e9f0e3e8;border:3px dashed #527761;border-radius:15px;display:none;place-items:center;font-size:20px;color:var(--green);z-index:3}.drop-overlay.show{display:grid}footer{max-width:1640px;margin:auto;padding:0 30px 22px;display:flex;justify-content:space-between;font-size:9px;color:#a2ab98;letter-spacing:.4px}.footer-dot{margin:0 10px;color:#c2c9ba}#toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,20px);padding:12px 20px;border-radius:9px;background:#293f35;color:#fff;box-shadow:0 8px 25px #0002;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;max-width:90vw;font-size:12px;line-height:1.7}#toast.show{opacity:1;transform:translate(-50%,0)}.export-progress{position:fixed;inset:0;background:#f5f2ebc9;backdrop-filter:blur(8px);z-index:30;display:grid;place-items:center}.export-progress[hidden]{display:none}.export-progress>div{background:var(--paper);padding:35px 45px;border-radius:18px;border:1px solid var(--line);text-align:center;box-shadow:0 15px 60px #0001}.export-progress h2{font-size:17px;margin:18px 0 10px}.export-progress p{color:var(--muted);font-size:12px}.spinner{display:inline-block;width:30px;height:30px;border:3px solid #dce5d4;border-top-color:var(--green);border-radius:50%;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 @media(min-width:1550px){.workspace{grid-template-columns:280px minmax(320px,1fr) 310px;gap:35px}}
 @media(max-width:1150px){.workspace{grid-template-columns:210px minmax(280px,1fr) 250px;gap:17px;padding:23px 20px}.topbar{padding:0 22px}.top-note{display:none}.settings{padding:18px 15px}.topbar{height:80px}.gesture-hint{font-size:9px;gap:5px}h1{font-size:18px}.sample img{width:43px}.two-buttons{gap:5px}.two-buttons .button{font-size:10px;padding:9px 5px}}
@@ -92,6 +93,8 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
 <button id="calculatePrintSize" class="button secondary" type="button" disabled>推算打印尺寸</button>
 <div id="printResult" class="print-result" hidden><span>图案打印尺寸 · 约</span><div><span>宽 <strong id="printWidth"></strong> cm</span><span>高 <strong id="printHeight"></strong> cm</span></div></div>
 <p id="printStatus" class="subtle" role="status" aria-live="polite">输入距离后，点击推算打印尺寸。</p>
+<label class="check-row print-export"><input id="includePrintSize" type="checkbox" disabled aria-describedby="printExportHelp"><span>导出时附打印尺寸<small>宽、高厘米数显示在图片上方</small></span></label>
+<p id="printExportHelp" class="subtle">先推算再勾选。勾选后增加顶部透明标注区，PNG 高度相应增加；宽、高厘米数只指贴纸图案。</p>
 </div>
 </aside></main>
 <footer><span>BITE STUDIO <span class="footer-dot">/</span> 让灵感，咬一口。</span><span class="footer-note">工程文件保留原素材与全部参数，可再次打开编辑。</span><a class="button quiet offline-download" href="https://bite-studio.pages.dev/download/BiteStudio.html" download="BiteStudio.html" title="仅一个 HTML 文件，下载后用浏览器打开；无需解压、安装或联网"><span data-icon="download"></span>下载离线版 · 单文件</a><a class="github-link" href="https://github.com/141GRAYFOX/bite-studio" target="_blank" rel="noopener noreferrer" title="查看项目源代码与使用说明">GitHub · 141GRAYFOX/bite-studio ↗</a></footer>
@@ -124,6 +127,24 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
       const width = bounds.width * cmPerPixel, height = bounds.height * cmPerPixel;
       if (!Number.isFinite(width) || !Number.isFinite(height)) throw new Error('输入距离过大，请减小数值。');
       return {width, height};
+    }
+    function formatCm(value) { return value<.01?'< 0.01':value.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function printLabelLayout(width,height,size) {
+      if(!size||![size.width,size.height].every(v=>Number.isFinite(v)&&v>0))throw new Error('打印尺寸无效，请重新推算。');
+      const headerHeight=Math.max(24,Math.ceil(width*.06)),outputHeight=height+headerHeight;
+      if(width>8192||outputHeight>8192||width*outputHeight>24000000)throw new Error('附加标注后超过 8192 边长或 2400 万像素，请降低导出分辨率。');
+      return {width,height:outputHeight,headerHeight,fontSize:Math.max(8,Math.round(width*.022)),text:'宽 '+formatCm(size.width)+' cm  ×  高 '+formatCm(size.height)+' cm'};
+    }
+    function addPrintLabel(sticker,size) {
+      const layout=printLabelLayout(sticker.width,sticker.height,size),out=canvas(layout.width,layout.height),ctx=out.getContext('2d');
+      // Only text occupies the added transparent strip; the sticker pixels are untouched.
+      ctx.drawImage(sticker,0,layout.headerHeight);
+      ctx.font='600 '+layout.fontSize+'px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
+      const x=layout.width/2,y=layout.headerHeight/2,maxWidth=Math.max(1,layout.width-Math.max(8,layout.width*.04));
+      ctx.lineWidth=Math.max(1,layout.fontSize*.09);ctx.strokeStyle='#ffffff';ctx.fillStyle='#17251f';
+      ctx.strokeText(layout.text,x,y,maxWidth);ctx.fillText(layout.text,x,y,maxWidth);
+      return out;
     }
     async function printBounds(s, image, {cancelled}={}) {
       // A fixed measurement precision avoids tying cm values to export raster rounding.
@@ -248,20 +269,23 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     }
     async function render(s, image, options = {}) {
       const w = options.width || s.width, h = options.height || s.height;
+      if(options.printSize)printLabelLayout(w,h,options.printSize);
       // Supersample smaller exports, cap working area to keep mobile memory bounded.
       const factor = options.preview ? 1 : Math.min(2, Math.max(1, Math.sqrt(18000000 / (w * h))));
       const rw = Math.round(w * factor), rh = Math.round(h * factor), c = canvas(rw, rh);
       paint(c.getContext('2d'), s, image, rw, rh);
       if (options.progress) options.progress(15);
       await outline(c, s.outline * rw / s.width, options.progress, options.cooperative, options.cancelled, s.outlineColor);
-      if (rw === w && rh === h) return c;
-      const out = canvas(w, h), ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, w, h); c.width = c.height = 1; return out;
+      let out=c;
+      if(rw!==w||rh!==h){out=canvas(w,h);const ctx=out.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(c,0,0,w,h);c.width=c.height=1;}
+      if(options.printSize){const annotated=addPrintLabel(out,options.printSize);out.width=out.height=1;return annotated;}
+      return out;
     }
     async function blob(c) {
       if (c.convertToBlob) return c.convertToBlob({ type: 'image/png' });
       return new Promise((resolve, reject) => c.toBlob(b => b ? resolve(b) : reject(new Error('PNG 编码失败，请降低分辨率重试。')), 'image/png'));
     }
-    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds };
+    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds, formatCm, printLabelLayout, addPrintLabel };
   }
   root.BiteRendererFactory = createRenderer; root.BiteRenderer = createRenderer();
 })(globalThis);
@@ -481,7 +505,7 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     { name:'小鱼饼', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="850" height="600" viewBox="0 0 850 600"><defs><linearGradient id="f" x2="0" y2="1"><stop stop-color="#ffc765"/><stop offset="1" stop-color="#e79a3f"/></linearGradient></defs><path d="M206 214Q327 71 527 192L752 107 704 301 764 486 533 406Q332 536 188 390L87 306Z" fill="url(#f)" stroke="#74401f" stroke-width="16" stroke-linejoin="round"/><path d="m460 196-99-72-23 89m100 212-78 62-26-62" fill="#edaf55" stroke="#74401f" stroke-width="12" stroke-linejoin="round"/><path d="M491 210q-44 86 0 183m-99-146 17 19-17 18m51 24 18 19-18 19m-60 17 17 19-17 18m234-150 61 77-61 71" fill="none" stroke="#cb8635" stroke-width="9" stroke-linecap="round"/><circle cx="261" cy="270" r="18" fill="#573824"/><circle cx="266" cy="263" r="6" fill="#fff4dd"/><path d="m204 327q26 22 44 0" fill="none" stroke="#74401f" stroke-width="8" stroke-linecap="round"/><ellipse cx="268" cy="319" rx="22" ry="10" fill="#ef9870"/></svg>' },
     { name:'星星糖', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="620" height="950" viewBox="0 0 620 950"><path d="M314 490v402" stroke="#695344" stroke-width="40" stroke-linecap="round"/><path d="M314 490v402" stroke="#fff0cb" stroke-width="26" stroke-linecap="round"/><path d="m310 51 78 155 172 22-125 125 32 175-157-80-157 80 32-175L60 228l172-22Z" fill="#efaabb" stroke="#663e47" stroke-width="14" stroke-linejoin="round"/><path d="m310 94 58 140 142 17-106 88 32 139-126-70-126 70 32-139-106-88 142-17Z" fill="#f8c2c5"/><path d="m252 265 24-63" stroke="#fff7e4" stroke-width="20" stroke-linecap="round"/><circle cx="272" cy="329" r="10" fill="#694451"/><circle cx="352" cy="329" r="10" fill="#694451"/><path d="m297 360q15 19 30 0" fill="none" stroke="#694451" stroke-width="6" stroke-linecap="round"/></svg>' }
   ].map(x => ({name:x.name, src:svgData(x.svg)}));
-  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, name:'奶油吐司', src:samples[0].src,bounds:null,
+  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, includePrintSize:false, name:'奶油吐司', src:samples[0].src,bounds:null,
     object:{x:.5,y:.545,scale:.86,angle:0,flip:false}, mouth:{x:.5,y:.30,scale:.55,angle:0,weight:.023,color:'#000000',visible:true,bite:true,tooth:true} });
   let state = defaults(), image, selected = 'object', undo = [], redo = [], savedSignature = '', toastTimer, saveTimer, previewTimer;
   let db, autosaveChain = Promise.resolve(), renderSerial = 0, worker, exporting = false, exportToken = 0;
@@ -535,16 +559,19 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     $('calculatePrintSize').textContent=printBusy?'正在测量图案…':'推算打印尺寸';
     $('printResult').hidden=true;
     let status=!valid?($('mouthDistanceCm').value===''?'输入距离后，点击推算打印尺寸。':'请输入大于 0 的有效距离。'):printBusy?'正在检测最终图案的非透明像素边界…':printCache?'作品已调整，请重新推算。':'点击推算，测量当前贴纸的实际图案。';
-    if(valid&&printCache&&printCache.key===key&&printCache.src===state.src){
+    if(valid&&!printBusy&&printCache&&printCache.key===key&&printCache.src===state.src){
       try{
         const size=R.printSize(state,printCache.bounds,state.mouthDistanceCm);
-        const format=v=>v<.01?'< 0.01':v.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
-        $('printWidth').textContent=format(size.width);$('printHeight').textContent=format(size.height);$('printResult').hidden=false;
+        $('printWidth').textContent=R.formatCm(size.width);$('printHeight').textContent=R.formatCm(size.height);$('printResult').hidden=false;
         status='按当前画布方向的图案宽、高计算。'+(state.mouth.visible?'':'嘴型已隐藏，使用保存的嘴型比例。');
       }catch(e){status=e.message;}
     }
+    $('includePrintSize').checked=state.includePrintSize;
+    $('includePrintSize').disabled=$('printResult').hidden&&!state.includePrintSize;
+    $('printExportHelp').textContent=state.includePrintSize&&$('printResult').hidden?'已勾选尺寸标注，请先完成当前图案的推算再导出；也可取消勾选。':'先推算再勾选。勾选后增加顶部透明标注区，PNG 高度相应增加；宽、高厘米数只指贴纸图案。';
     $('printStatus').textContent=printError||status;
   }
+  $('includePrintSize').onchange=()=>{remember();state.includePrintSize=$('includePrintSize').checked;changed();};
   $('calculatePrintSize').onclick=async()=>{
     if(printBusy||!image||!(state.mouthDistanceCm>0))return;
     const s=clone(state),key=measurementKey(s);let source;
@@ -677,6 +704,7 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     if(next.width*next.height>50000000||next.width>16384||next.height>16384){if(next.close)next.close();throw new Error('素材分辨率过大，请先缩小图片。');}
     const prepared=clone(s);if(prepared.outlineColor===undefined)prepared.outlineColor=defaults().outlineColor;
     if(prepared.mouthDistanceCm===undefined)prepared.mouthDistanceCm=null;
+    if(prepared.includePrintSize===undefined)prepared.includePrintSize=false;
     try{
       const before=R.crop(prepared,next);
       if(before.x<0||before.y<0||before.width<1||before.height<1||before.x+before.width>next.width||before.y+before.height>next.height)throw new Error('工程中的素材边界无效。');
@@ -747,6 +775,8 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
     if(!Number.isFinite(s.outline)||s.outline<0||s.outline>10240)throw new Error('描边参数无效。');
     if(s.mouthDistanceCm!=null&&(!Number.isFinite(s.mouthDistanceCm)||s.mouthDistanceCm<=0))throw new Error('嘴型端点距离无效。');
     d.mouthDistanceCm=s.mouthDistanceCm??null;
+    if(s.includePrintSize!==undefined&&typeof s.includePrintSize!=='boolean')throw new Error('打印尺寸标注选项无效。');
+    d.includePrintSize=s.includePrintSize??false;
     if(s.outlineColor!==undefined&&(typeof s.outlineColor!=='string'||!/^#[0-9a-f]{6}$/i.test(s.outlineColor)))throw new Error('描边颜色无效。');
     if(!/^#[0-9a-f]{6}$/i.test(s.mouth.color)||!Number.isFinite(s.mouth.weight)||s.mouth.weight<.005||s.mouth.weight>.06)throw new Error('嘴部参数无效。');
     for(const key of ['visible','bite','tooth'])d.mouth[key]=!!s.mouth[key];d.mouth.color=s.mouth.color;d.mouth.weight=s.mouth.weight;d.object.flip=!!s.object.flip;
@@ -757,19 +787,25 @@ footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-fl
   $('openProject').onclick=()=>$('projectFile').click();$('projectFile').onchange=async e=>{try{await openProject(e.target.files[0]);}catch(e){toast(e.message);}finally{$('projectFile').value='';}};
   $('newProject').onclick=()=>load(defaults()).then(()=>toast('已新建作品，之前的画布可通过撤销找回。'));
   function makeWorker() {
-    const source='self.R=('+window.BiteRendererFactory.toString()+')();self.onmessage=async function(e){try{const image=e.data.image;const c=await R.render(e.data.state,image,{progress:function(p){self.postMessage({progress:p});}});const b=await R.blob(c);image.close();c.width=c.height=1;self.postMessage({blob:b});}catch(e){self.postMessage({error:e.message});}}';
+    const source='self.R=('+window.BiteRendererFactory.toString()+')();self.onmessage=async function(e){try{const image=e.data.image;const c=await R.render(e.data.state,image,{printSize:e.data.printSize,progress:function(p){self.postMessage({progress:p});}});const b=await R.blob(c);image.close();c.width=c.height=1;self.postMessage({blob:b});}catch(e){self.postMessage({error:e.message});}}';
     const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));try{return new Worker(url);}finally{URL.revokeObjectURL(url);}
   }
   function progress(p){$('progressText').textContent=p<90?'渲染透明轮廓与平滑描边… '+p+'%':'正在编码 PNG…';}
   async function exportImage() {
-    if(exporting||!image)return;exporting=true;const token=++exportToken,s=clone(state);$('exportProgress').hidden=false;$('export').disabled=true;progress(0);
+    if(exporting||!image)return;
+    const s=clone(state);let printSize=null,outputHeight=s.height;
+    if(s.includePrintSize){
+      if(printBusy||!printCache||printCache.key!==measurementKey(s)||printCache.src!==s.src||!(s.mouthDistanceCm>0)){toast('请先重新推算当前图案的打印尺寸，或取消“导出时附打印尺寸”。');return;}
+      try{printSize=R.printSize(s,printCache.bounds,s.mouthDistanceCm);outputHeight=R.printLabelLayout(s.width,s.height,printSize).height;}catch(e){toast(e.message);return;}
+    }
+    exporting=true;const token=++exportToken;$('exportProgress').hidden=false;$('export').disabled=true;progress(0);
     try{
       let blob;
       if(typeof Worker!=='undefined'&&typeof OffscreenCanvas!=='undefined'&&typeof createImageBitmap==='function'){
-        try{const bitmap=await createImageBitmap(image);worker=makeWorker();blob=await new Promise((resolve,reject)=>{worker.onmessage=e=>{if(e.data.blob)resolve(e.data.blob);else if(e.data.error)reject(new Error(e.data.error));else progress(e.data.progress);};worker.onerror=()=>reject(new Error('后台渲染不可用'));worker.postMessage({state:s,image:bitmap},[bitmap]);});}
-        catch(e){if(token!==exportToken)return;if(worker)worker.terminate();worker=null;const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
-      }else{const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
-      if(token!==exportToken)return;progress(95);await download(blob,filename('-'+s.width+'x'+s.height+'.png'));toast('PNG 已生成：'+s.width+' × '+s.height+'，透明背景，已应用当前描边设置。');
+        try{const bitmap=await createImageBitmap(image);worker=makeWorker();blob=await new Promise((resolve,reject)=>{worker.onmessage=e=>{if(e.data.blob)resolve(e.data.blob);else if(e.data.error)reject(new Error(e.data.error));else progress(e.data.progress);};worker.onerror=()=>reject(new Error('后台渲染不可用'));worker.postMessage({state:s,image:bitmap,printSize},[bitmap]);});}
+        catch(e){if(token!==exportToken)return;if(worker)worker.terminate();worker=null;const c=await R.render(s,image,{printSize,cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      }else{const c=await R.render(s,image,{printSize,cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      if(token!==exportToken)return;progress(95);await download(blob,filename('-'+s.width+'x'+outputHeight+(printSize?'-含打印尺寸':'')+'.png'));toast('PNG 已生成：'+s.width+' × '+outputHeight+'，透明背景'+(printSize?'，上方已附图案打印尺寸。':'，已应用当前描边设置。'));
     }catch(e){if(token===exportToken)toast('导出失败：'+e.message+'。可以降低分辨率重试。');}
     finally{if(token===exportToken){if(worker)worker.terminate();worker=null;exporting=false;$('exportProgress').hidden=true;$('export').disabled=false;}}
   }
