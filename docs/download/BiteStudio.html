@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f5f2eb"><title>Bite Studio · 叼物贴纸工坊</title><style>@charset "UTF-8";
+.print-reference{width:100%;height:80px;margin-top:12px;color:var(--green);stroke-width:1.3;overflow:visible}
+.print-reference .print-chord{stroke:var(--green);stroke-dasharray:4 4}
+.print-reference circle{fill:var(--green);stroke:var(--paper)}
+.print-reference text{fill:var(--muted);stroke:none;font-size:10px;font-family:var(--font)}
+.print-settings>.button{width:100%}
+.print-result{margin-top:14px;padding:13px 12px;background:#edf3e8;border:1px solid #dce6d7;border-radius:9px;color:var(--green)}
+.print-result[hidden]{display:none}
+.print-result>span{font-size:10px}
+.print-result>div{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:10px;font-size:11px}
+.print-result strong{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+.print-settings input[aria-invalid="true"]{border-color:#b95c50}
+:root{--bg:#f5f2eb;--paper:#fffdf9;--ink:#292e2c;--muted:#838780;--line:#e7e6de;--green:#276453;--accent:#e9b972;--font:"Segoe UI","Microsoft YaHei",sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible{outline:2px solid var(--green);outline-offset:3px}button{transition:background .15s,transform .15s}button:hover:not(:disabled){filter:brightness(.97)}button:active:not(:disabled){transform:translateY(1px)}svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.topbar{height:90px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:18px;background:var(--paper)}.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-size:25px;font-weight:700;letter-spacing:-1px}.brand-icon{height:44px;width:44px;background:var(--green);color:#fff4d6;border-radius:14px;display:grid;place-items:center;font-size:40px;font-weight:400;line-height:1;padding-bottom:15px;transform:rotate(-10deg)}.brand-light{font-weight:400}.brand small{display:block;font-size:10px;letter-spacing:3px;font-weight:400;color:var(--muted);margin-top:3px}.top-note{color:var(--muted);font-size:11px;display:flex;align-items:center;gap:8px}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#779c83}.top-actions{display:flex;gap:10px}.button{border:1px solid transparent;border-radius:9px;padding:11px 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:500;white-space:nowrap;color:var(--ink);background:transparent}.button.primary{background:var(--green);color:white;box-shadow:0 4px 10px #27645316}.button.quiet{border-color:var(--line);background:var(--paper)}.button.secondary{background:#f3f3ec;border-color:#ebebe3;padding:9px 10px;font-size:12px}.button.small{padding:7px 11px;font-size:11px}.workspace{display:grid;grid-template-columns:255px minmax(320px,1fr) 285px;gap:25px;width:100%;margin:0 auto;padding:30px}.panel{padding:3px 0}.eyebrow{font-size:9px;letter-spacing:2.3px;color:#8d978b;font-weight:600}h1{font-size:21px;line-height:1.65;margin:12px 0 8px;font-weight:600;letter-spacing:-.5px}h2{font-size:14px;margin:0;font-weight:600}.intro{color:var(--muted);font-size:12px;line-height:1.9;margin:0 0 22px}.upload-card{width:100%;background:#fffdf7;border:1.5px dashed #c8d3c3;min-height:156px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--green)}.upload-card:hover{background:#f0f4e9;border-color:var(--green)}.upload-icon{background:#edf1e6;border-radius:10px;padding:10px;margin-bottom:3px}.upload-icon svg{width:23px;height:23px}.upload-card strong{font-size:13px}.upload-card span:not(.upload-icon){font-size:11px;color:var(--muted)}.upload-card small{color:#a2a699;font-size:9px}.section-line{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px;gap:8px}.section-line>span{font-size:10px;color:var(--muted)}.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.sample{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;color:var(--muted)}.sample img{width:51px;height:49px;object-fit:contain}.sample.selected{border-color:#84a18e;background:#eef2e8;color:var(--green)}.layer{border:1px solid transparent;width:100%;display:flex;align-items:center;gap:11px;background:transparent;padding:10px 9px;border-radius:10px;text-align:left;margin-bottom:6px}.layer.active{background:var(--paper);border-color:var(--line);box-shadow:0 2px 5px #33333303}.layer-thumb{flex:none;width:38px;height:38px;border-radius:8px;background:#f3efde;display:grid;place-items:center;overflow:hidden}.layer-thumb img{width:100%;height:100%;object-fit:contain}.mouth-thumb{font-size:36px;color:#000000;padding-bottom:12px}.layer strong{font-size:12px;font-weight:600;display:block;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.layer small{display:block;font-size:10px;color:var(--muted);margin-top:5px}.layer-dot{width:6px;height:6px;background:#bdc3b9;border-radius:50%;margin-left:auto}.active .layer-dot{background:var(--green)}.tip{display:flex;gap:10px;margin-top:26px;padding:14px 12px;background:#eaeede;border-radius:11px;color:#6f8065}.tip svg{flex:none;width:18px}.tip p{font-size:11px;line-height:1.8;margin:0}.tip strong{display:block;margin-bottom:4px;color:#57704d;font-size:11px}.new-project{width:100%;margin-top:16px;font-size:11px;color:var(--muted)}.editor{min-width:0}.editor-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px;min-height:49px;flex-wrap:wrap;gap:10px}.editor-heading h2{margin-top:7px;font-size:17px}.tag{font-size:9px;background:#e8ece2;color:#7b8a73;padding:4px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;font-weight:400}.history{display:flex;align-items:center;gap:3px}.icon-button{width:31px;height:31px;display:grid;place-items:center;background:transparent;border:0;border-radius:6px;color:#657361}.divider{width:1px;height:20px;background:var(--line);margin:0 9px}.canvas-area{background:#eeeee7;border:1px solid #e0e2d8;border-radius:15px;position:relative;padding:15px 12px 10px;overflow:hidden}.preview-controls{display:flex;align-items:center;gap:8px;color:#8c9589;font-size:10px;height:22px;margin-bottom:13px}.swatch{border:1px solid #d6dbcf;border-radius:50%;width:17px;height:17px;padding:0}.swatch.selected{outline:1.5px solid var(--green);outline-offset:3px}.checker{background-color:#fffefa;background-image:linear-gradient(45deg,#e9e9e0 25%,transparent 25%),linear-gradient(-45deg,#e9e9e0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e9e9e0 75%),linear-gradient(-45deg,transparent 75%,#e9e9e0 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}.light{background:#fffdf7}.dark{background:#333a37}.preview-only{font-size:9px;margin-left:3px;color:#a3a99d}.stage-wrap{width:100%;aspect-ratio:var(--canvas-ratio,4003/3764);min-height:220px;max-height:1600px;display:flex;align-items:center;justify-content:center}.stage{position:relative;box-shadow:0 6px 25px #30372a12;border-radius:2px;overflow:hidden}.stage canvas{position:absolute;inset:0;width:100%;height:100%}#controls{touch-action:none;cursor:grab}#controls:active{cursor:grabbing}.canvas-caption{display:flex;justify-content:space-between;gap:10px;align-items:center;height:33px;margin-top:7px;color:#8c9586;font-size:10px}.canvas-caption>span:first-child{display:flex;gap:7px;align-items:center}.gesture-hint{display:flex;justify-content:center;align-items:center;gap:8px;color:#959e8e;font-size:10px;margin-top:13px;flex-wrap:wrap}.gesture-hint svg{width:13px;height:13px}.gesture-hint>span{color:#bcc1b6}.draft-section{margin-top:24px}.draft-section .section-line{margin-top:0}.save-status{font-size:9px;color:#929c87;font-weight:400;margin-left:7px}.drafts{display:flex;gap:10px;overflow:auto;padding-bottom:7px;min-height:87px}.empty{color:#a3ab9a;background:#eeeee6;border:1px dashed #dce0d2;border-radius:10px;width:100%;padding:24px 15px;font-size:11px;margin:0}.draft-card{position:relative;width:125px;flex:none;border:1px solid var(--line);border-radius:9px;background:var(--paper);overflow:hidden}.draft-card>button:first-child{width:100%;border:0;background:transparent;padding:6px;text-align:left}.draft-card img{width:100%;height:72px;object-fit:contain;background:#f3f1e8;border-radius:5px}.draft-card strong{display:block;font-size:10px;margin-top:5px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-weight:500}.draft-card small{font-size:9px;color:var(--muted)}.draft-delete{position:absolute;right:4px;top:4px;background:#fffdf9e0;border:0;border-radius:4px;color:#7a8472;padding:3px 6px}.settings{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 20px;height:fit-content}.settings>h2{font-size:17px;margin-top:10px}.subtle{font-size:10px;color:#92978d;line-height:1.8;margin:8px 0 14px}.field{margin:19px 0}.field>label{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:10px}.field label>span{font-size:9px;color:#9ba191}output{font-size:10px;color:var(--green);background:#edf1e7;border-radius:4px;padding:3px 6px;font-variant-numeric:tabular-nums}input[type=range]{accent-color:var(--green);width:100%;height:4px;cursor:pointer;display:block;margin:10px 0}input[type=checkbox]{accent-color:var(--green);margin-right:6px}input[type=number]{border:1px solid var(--line);background:#fafbf6;border-radius:6px;min-width:0;width:100%;padding:8px;color:var(--ink);font-size:11px}input[type=number]::-webkit-inner-spin-button{opacity:0}.range-number{display:flex;gap:10px;align-items:center}.range-number>input[type=number]{width:64px}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.inline-input{display:flex;align-items:center;background:#fafbf6;border:1px solid var(--line);border-radius:6px;padding-left:9px;color:#8d9987;font-size:10px}.inline-input input{border:0;background:none}.two-buttons{display:flex;gap:8px}.two-buttons .button{flex:1}.settings-section{border-top:1px solid var(--line);padding-top:20px;margin-top:22px}.settings-section .section-line{margin:0 0 16px}.check-row{display:flex;align-items:start;font-size:11px;margin:14px 0}.check-row small{display:block;font-size:9px;color:#969e8c;margin-top:4px}.switch input{position:absolute;opacity:0;pointer-events:none}.switch>span{display:block;width:29px;height:17px;background:#d6dbc9;border-radius:10px;position:relative;cursor:pointer}.switch>span:before{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:white;left:3px;top:3px;transition:left .15s}.switch input:checked+span{background:var(--green)}.switch input:checked+span:before{left:15px}.mouth-options{display:flex;align-items:center;gap:15px;color:#8e9786;font-size:10px}.mouth-options>label{display:flex;align-items:center;gap:6px}.mouth-options input[type=color]{width:23px;height:22px;border:0;padding:0;background:none;cursor:pointer}.mouth-options input[type=range]{width:65px}.outline-color input[type=color]{width:40px;height:28px;border:1px solid var(--line);border-radius:6px;padding:2px;background:var(--paper);cursor:pointer}.settings-section .field{margin-bottom:7px}.dimension{font-size:10px;color:#909988;margin-top:14px}.dimension input{display:block;margin-top:7px}.size-tools{display:flex;justify-content:space-between;align-items:center;margin:10px 0 14px;font-size:9px;color:#8e9687}.text-button{border:0;background:transparent;padding:2px;color:var(--green);font-size:9px}select{width:100%;padding:9px 6px;background:#fafbf6;border:1px solid var(--line);border-radius:6px;color:#6f7d64;font-size:10px}.export-note{font-size:10px;color:#6d8364;line-height:1.9;margin-bottom:0}.export-note svg{width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:4px}.export-note small{font-size:9px;color:#a0a690}.drop-overlay{position:absolute;inset:0;background:#e9f0e3e8;border:3px dashed #527761;border-radius:15px;display:none;place-items:center;font-size:20px;color:var(--green);z-index:3}.drop-overlay.show{display:grid}footer{max-width:1640px;margin:auto;padding:0 30px 22px;display:flex;justify-content:space-between;font-size:9px;color:#a2ab98;letter-spacing:.4px}.footer-dot{margin:0 10px;color:#c2c9ba}#toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,20px);padding:12px 20px;border-radius:9px;background:#293f35;color:#fff;box-shadow:0 8px 25px #0002;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;max-width:90vw;font-size:12px;line-height:1.7}#toast.show{opacity:1;transform:translate(-50%,0)}.export-progress{position:fixed;inset:0;background:#f5f2ebc9;backdrop-filter:blur(8px);z-index:30;display:grid;place-items:center}.export-progress[hidden]{display:none}.export-progress>div{background:var(--paper);padding:35px 45px;border-radius:18px;border:1px solid var(--line);text-align:center;box-shadow:0 15px 60px #0001}.export-progress h2{font-size:17px;margin:18px 0 10px}.export-progress p{color:var(--muted);font-size:12px}.spinner{display:inline-block;width:30px;height:30px;border:3px solid #dce5d4;border-top-color:var(--green);border-radius:50%;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+@media(min-width:1550px){.workspace{grid-template-columns:280px minmax(320px,1fr) 310px;gap:35px}}
+@media(max-width:1150px){.workspace{grid-template-columns:210px minmax(280px,1fr) 250px;gap:17px;padding:23px 20px}.topbar{padding:0 22px}.top-note{display:none}.settings{padding:18px 15px}.topbar{height:80px}.gesture-hint{font-size:9px;gap:5px}h1{font-size:18px}.sample img{width:43px}.two-buttons{gap:5px}.two-buttons .button{font-size:10px;padding:9px 5px}}
+@media(max-width:950px){.workspace{grid-template-columns:190px minmax(280px,1fr);gap:20px}.settings{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0 25px}.settings>.eyebrow,.settings>h2,.settings>.subtle{grid-column:1/-1}.settings-section{margin:10px 0}.top-actions .quiet span:not([data-icon]){display:none}.layer strong{max-width:110px}}
+@media(max-width:640px){.topbar{height:72px;padding:0 15px;gap:8px}.brand{font-size:20px;gap:8px}.brand-icon{width:33px;height:33px;font-size:30px;padding-bottom:13px;border-radius:10px}.brand small{font-size:8px;letter-spacing:2px}.top-actions{gap:5px}.top-actions .button{padding:9px}.top-actions .primary{font-size:11px}.top-actions svg{width:16px;height:16px}.workspace{display:flex;flex-direction:column;padding:20px 15px;gap:20px}.materials{display:grid;grid-template-columns:1fr 1fr;gap:10px}.materials>.eyebrow,.materials>h1,.materials>.intro,.materials>.tip,.materials>.section-line,.materials>.new-project{display:none}.upload-card{grid-row:1;min-height:104px;padding:8px}.upload-icon{display:none}.samples{align-items:stretch;gap:5px}.sample{min-width:0;font-size:9px}.sample img{width:35px;height:49px}.layer{margin:0;padding:8px 5px}.layer small{font-size:9px}.layer strong{max-width:110px}.layer-thumb{width:29px;height:29px}.editor-heading{margin-bottom:12px}.editor-heading h2{font-size:15px}.editor-heading .tag{font-size:8px}.history .divider{margin:0 3px}.canvas-area{padding:12px 12px 5px}.stage-wrap{max-height:80vh}.gesture-hint{font-size:9px}.settings{display:block;padding:20px}.settings-section{margin-top:22px}.settings .field{margin:17px 0}.settings>.subtle{margin-bottom:18px}.draft-section{margin-top:20px}.save-status{display:block;margin:5px 0 0;font-size:9px}footer{padding:0 15px 20px;font-size:8px}footer>.footer-note{display:none}.export-progress>div{padding:30px 25px}.canvas-caption{font-size:9px}.preview-controls{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.spinner{animation:none}}
+dialog{border:1px solid var(--line);border-radius:16px;padding:28px;background:var(--paper);color:var(--ink);width:min(410px,90vw);box-shadow:0 20px 80px #0002}dialog::backdrop{background:#293a3260;backdrop-filter:blur(3px)}dialog h2{font-size:18px}dialog p{font-size:12px;color:var(--muted);line-height:1.8;margin:12px 0 20px}dialog input[type=text]{width:100%;border:1px solid var(--line);background:#f8faf4;border-radius:7px;padding:12px;font:inherit;color:var(--ink)}.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+
+#moveTogether[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:white}.history{flex-wrap:wrap;justify-content:flex-end}@media(max-width:640px){.editor-heading .history{width:100%}}
+.bounds-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.bounds-tools small{color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:640px){.bounds-tools{grid-column:1/-1;margin-top:0}}
+
+footer{align-items:center;gap:12px;flex-wrap:wrap}.github-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:11px;text-decoration:none;font-weight:500}.github-link:hover{text-decoration:underline}
+.offline-download{min-height:44px;color:var(--green);font-size:11px;text-decoration:none}.offline-download svg{width:15px;height:15px}.offline-download:hover{background:#edf3e8}
+
+#testSticker{border-color:#b8cdbd;background:#edf3e8;color:var(--green)}
+#mockupDialog{width:min(1060px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
+.mockup-heading,.mockup-toolbar,.mockup-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mockup-heading h2{margin-top:7px;font-size:21px}
+#mockupDescription{margin:12px 0 18px}
+.mockup-toolbar{justify-content:flex-start;margin-bottom:14px}
+.mockup-layers{display:flex;gap:8px;margin-bottom:12px}
+.mockup-layers [aria-pressed="true"]{background:var(--green);border-color:var(--green);color:white}
+.mockup-fields .mockup-field-name{font-size:11px;color:var(--ink)}
+#mockupSize{margin-left:auto;color:var(--muted);font-size:11px}
+.mockup-view{height:min(53vh,530px);min-height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:12px}
+.mockup-empty{display:flex;flex-direction:column;align-items:center;gap:15px;padding:25px;text-align:center;color:var(--muted);font-size:12px}
+.mockup-empty strong{font-size:18px;color:var(--green)}
+.mockup-empty small{font-size:10px}
+#mockupEmpty[hidden],#mockupStage[hidden]{display:none}
+#mockupStage{position:relative;flex:none;box-shadow:0 4px 24px #0002}
+#mockupStage canvas{position:absolute;inset:0;width:100%;height:100%}
+#mockupControls{touch-action:none;cursor:grab}
+#mockupControls:active{cursor:grabbing}
+.mockup-fields{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.mockup-fields .field{margin:18px 0 8px}
+.mockup-fields .range-number>input[type=number]{width:76px}
+#mockupDialog .mockup-hint{margin:8px 0 15px;font-size:10px}
+#mockupStatus{margin:0;flex:1;min-width:160px;font-size:11px;color:var(--green)}
+#mockupDialog .mockup-note{margin:13px 0 0;font-size:10px}
+@media(min-width:951px){
+  #mockupDialog{width:80vw;height:80dvh;max-width:none;max-height:80dvh}
+  #mockupDialog[open]{display:grid;grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:auto auto auto minmax(150px,1fr) auto auto auto;grid-template-areas:"heading heading" "description description" "toolbar layers" "view fields" "view hint" "view bottom" "note note";column-gap:22px}
+  .mockup-heading{grid-area:heading}
+  #mockupDescription{grid-area:description}
+  .mockup-toolbar{grid-area:toolbar}
+  .mockup-layers{grid-area:layers;align-items:center}
+  .mockup-view{grid-area:view;height:auto;min-height:180px}
+  .mockup-fields{grid-area:fields;display:flex;flex-direction:column;gap:8px;align-self:start}
+  .mockup-fields .field{margin:8px 0}
+  #mockupDialog .mockup-hint{grid-area:hint}
+  .mockup-bottom{grid-area:bottom;flex-direction:column;align-items:stretch;gap:12px}
+  #mockupStatus{min-width:0;flex:none}
+  #mockupDialog .mockup-note{grid-area:note}
+}
+@media(max-width:640px){#mockupDialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);padding:16px}.mockup-heading h2{font-size:18px}.mockup-toolbar{gap:8px}.mockup-toolbar .button{font-size:11px;padding:10px}.mockup-view{height:42vh;min-height:160px}.mockup-fields{gap:14px}.mockup-fields .range-number{gap:5px}.mockup-fields .range-number>input[type=number]{width:59px}#mockupDialog .mockup-hint{line-height:1.8}.mockup-empty{gap:12px;padding:18px}.mockup-empty strong{font-size:16px}}
+</style></head>
+<body>
+<header class="topbar"><a class="brand" href="#"><span class="brand-icon">◡</span><span>Bite<span class="brand-light"> Studio</span><small>叼物贴纸工坊</small></span></a><div class="top-note"><span class="dot"></span> 本地创作 · 图片不会上传</div><div class="top-actions"><button id="openProject" class="button quiet"><span data-icon="folder"></span><span>打开工程</span></button><button id="saveProject" class="button quiet"><span data-icon="save"></span><span>保存工程</span></button><button id="export" class="button primary"><span data-icon="download"></span><span>导出 PNG</span></button></div></header>
+<main class="workspace">
+<aside class="materials panel"><div class="eyebrow">YOUR INGREDIENTS</div><h1>给角色，叼点新花样。</h1><p class="intro">一张透明素材，加一点想象。<br>把喜欢的物品变成专属磁吸贴纸。</p>
+<button id="upload" class="upload-card"><span class="upload-icon" data-icon="upload"></span><strong>添加物品素材</strong><span>点击选择，或拖入图片</span><small>PNG / WebP · 推荐透明背景</small></button>
+<div class="section-line"><h2>先试试这些</h2><span>内置素材</span></div><div id="samples" class="samples"></div>
+<div class="section-line"><h2>图层</h2><span>点击切换编辑</span></div><button class="layer active" id="objectLayer"><span class="layer-thumb" id="sourceThumb"></span><span><strong id="sourceName">奶油吐司</strong><small>拖拽移动 · 调整物品</small></span><span class="layer-dot"></span></button><button class="layer" id="mouthLayer"><span class="layer-thumb mouth-thumb">◡</span><span><strong>叼嘴模板</strong><small>按图1弧线与小白牙重绘</small></span><span class="layer-dot"></span></button>
+<div class="bounds-tools"><button id="tightenBounds" class="button quiet small" title="按可见物品重新检测边界，排除外围透明留白">收紧物品选框</button><small id="boundsInfo"></small></div>
+<div class="tip"><span data-icon="spark"></span><p><strong>一点小技巧</strong>让物品稍微穿过嘴线，开启「咬合遮挡」，会更像真的被叼住。</p></div><button id="newProject" class="button quiet new-project"><span data-icon="plus"></span> 新建作品</button></aside>
+<section class="editor"><div class="editor-heading"><div><span class="eyebrow">CANVAS</span><h2>创作画布 <span class="tag">透明背景</span></h2></div><div class="history"><button id="undo" class="icon-button" title="撤销 Ctrl+Z" aria-label="撤销"><span data-icon="undo"></span></button><button id="redo" class="icon-button" title="重做 Ctrl+Shift+Z" aria-label="重做"><span data-icon="redo"></span></button><span class="divider"></span><button id="moveTogether" class="button quiet small" aria-pressed="false" title="开启后，拖动画布会同时移动嘴部和物品">整体移动</button><button id="fit" class="button quiet small">适应画布</button><button id="testSticker" class="button quiet small" title="将当前贴纸贴到照片上查看效果">效果测试</button></div></div>
+<div class="canvas-area" id="canvasArea"><div class="preview-controls"><span>预览底色</span><button data-bg="checker" class="swatch checker selected" aria-label="透明网格"></button><button data-bg="light" class="swatch light" aria-label="浅色"></button><button data-bg="dark" class="swatch dark" aria-label="深色"></button><span class="preview-only">仅预览</span></div><div class="stage-wrap" id="stageWrap"><div id="stage" class="stage checker"><canvas id="art"></canvas><canvas id="controls" tabindex="0" aria-label="编辑画布，拖拽物品，四角缩放，四个金色手柄旋转，旋转手柄始终位于画布内"></canvas></div></div><div class="canvas-caption"><span><span class="dot"></span><span id="resolutionLabel">4003 × 3764 px</span></span><span id="selectionLabel">正在调整：物品</span></div><div id="dropOverlay" class="drop-overlay">松开，添加你的物品</div></div>
+<div id="gestureHint" class="gesture-hint" title="按住 Alt 在画布任意位置拖动旋转；Alt + 滚轮缩放"><span data-icon="move"></span> 拖拽移动 <span>·</span> 四角缩放 <span>·</span> 四个金色手柄旋转 <span>·</span> 双指缩放 / 旋转</div>
+<section class="draft-section"><div class="section-line"><h2>我的暂存 <span id="saveStatus" class="save-status">自动暂存准备中</span></h2><button id="saveDraft" class="button quiet small"><span data-icon="plus"></span> 暂存一份</button></div><div id="drafts" class="drafts"><p class="empty">留住每一个好点子。暂存后可继续编辑。</p></div></section></section>
+<aside class="settings panel"><div class="eyebrow">MAKE IT YOURS</div><h2 id="settingsTitle">物品调整</h2><p class="subtle" id="settingsHelp">在画布上直接拖拽，也可以精确输入。</p>
+<div class="field"><label for="scale">大小 <output id="scaleValue"></output></label><input id="scale" type="range" min="5" max="180" step="0.5"></div><div class="field"><label for="angle">旋转角度 <output id="angleValue"></output></label><div class="range-number"><input id="angle" type="range" min="-180" max="180" step="0.1"><input id="angleNumber" type="number" min="-180" max="180" step="0.1" aria-label="旋转角度精确值"></div></div><div class="field"><label>位置 <span>占画布百分比</span></label><div class="two-fields"><label class="inline-input">X<input id="posX" type="number" min="-100" max="200" step="0.1"></label><label class="inline-input">Y<input id="posY" type="number" min="-100" max="200" step="0.1"></label></div></div><div class="two-buttons"><button id="flip" class="button secondary"><span data-icon="flip"></span> 水平翻转</button><button id="resetTransform" class="button secondary">重置位置</button></div>
+<div class="settings-section"><div class="section-line"><h2>叼嘴效果</h2><label class="switch"><input id="mouthVisible" type="checkbox" checked><span></span></label></div><label class="check-row"><input id="bite" type="checkbox" checked><span>咬合遮挡<small>隐藏嘴线上方的物品部分</small></span></label><label class="check-row"><input id="tooth" type="checkbox" checked><span>保留小白牙</span></label><div class="mouth-options"><label>嘴线颜色<input id="mouthColor" type="color" value="#000000"></label><label>嘴线粗细<input id="mouthWeight" type="range" min="0.005" max="0.06" step="0.001" value="0.023"></label></div></div>
+<div class="settings-section"><h2>贴纸外描边</h2><div class="field outline-color"><label for="outlineColor">描边颜色<input id="outlineColor" type="color" value="#ffffff"></label></div><div class="field"><label for="outline">描边宽度 <output id="outlineValue"></output></label><input id="outline" type="range" min="0" max="80" step="1" value="14"></div><p class="subtle">沿最终透明轮廓描边，圆润边缘。宽度按导出像素计算。</p></div>
+<div class="settings-section"><h2>导出尺寸</h2><div class="two-fields"><label class="dimension">宽度 px<input id="width" type="number" min="64" max="8192" value="4003"></label><label class="dimension">高度 px<input id="height" type="number" min="64" max="8192" value="3764"></label></div><div class="size-tools"><label><input id="lockRatio" type="checkbox" checked> 锁定比例</label><button id="originalSize" class="text-button">图1原始尺寸</button></div><select id="sizePreset" aria-label="分辨率预设"><option value="">自定义分辨率</option value="original">图1原尺寸 · 4003 × 3764</option><option value="2000">轻量高清 · 宽 2000</option><option value="1000">快速预览 · 宽 1000</option><option value="square">正方形 · 2048 × 2048</option></select><p class="export-note"><span data-icon="check"></span> 透明 PNG · 自定义颜色描边<br><small>最大 8192 边长 / 2400 万像素；手机建议宽 2000。</small></p></div>
+<div class="settings-section print-settings"><h2>打印尺寸推算</h2>
+<svg class="print-reference" viewBox="0 0 230 80" role="img" aria-label="测量经典嘴线左右端点 A、B 之间的直线距离"><path d="M -.5 -.035 C -.48 .035 -.43 .07 -.39 .075 C -.29 .105 -.24 .01 -.12 .02 C .07 .05 .26 .065 .39 -.01 C .445 -.035 .475 -.08 .5 -.12" transform="translate(115 45) scale(180)" stroke="#000000" stroke-width=".023"/><path d="M25 38.7 205 23.4" class="print-chord"/><circle cx="25" cy="38.7" r="3"/><circle cx="205" cy="23.4" r="3"/><text x="18" y="25">A</text><text x="201" y="13">B</text><text x="115" y="72" text-anchor="middle">A — B 直线距离</text></svg>
+<div class="field"><label for="mouthDistanceCm">嘴型两端距离 <span>cm</span></label><input id="mouthDistanceCm" type="number" min="0" step="any" inputmode="decimal" placeholder="例如 6" aria-describedby="printHelp printStatus"></div>
+<p class="subtle" id="printHelp">测量嘴线两端中心点之间的直线距离，不沿弧线测量。结果按非透明图案边界计算，包含描边，排除透明留白；不按 DPI 或导出分辨率换算。</p>
+<button id="calculatePrintSize" class="button secondary" type="button" disabled>推算打印尺寸</button>
+<div id="printResult" class="print-result" hidden><span>图案打印尺寸 · 约</span><div><span>宽 <strong id="printWidth"></strong> cm</span><span>高 <strong id="printHeight"></strong> cm</span></div></div>
+<p id="printStatus" class="subtle" role="status" aria-live="polite">输入距离后，点击推算打印尺寸。</p>
+</div>
+</aside></main>
+<footer><span>BITE STUDIO <span class="footer-dot">/</span> 让灵感，咬一口。</span><span class="footer-note">工程文件保留原素材与全部参数，可再次打开编辑。</span><a class="button quiet offline-download" href="https://bite-studio.pages.dev/download/BiteStudio.html" download="BiteStudio.html" title="仅一个 HTML 文件，下载后用浏览器打开；无需解压、安装或联网"><span data-icon="download"></span>下载离线版 · 单文件</a><a class="github-link" href="https://github.com/141GRAYFOX/bite-studio" target="_blank" rel="noopener noreferrer" title="查看项目源代码与使用说明">GitHub · 141GRAYFOX/bite-studio ↗</a></footer>
+<dialog id="studioDialog"><form id="dialogForm"><h2 id="dialogTitle"></h2><p id="dialogDescription"></p><input id="dialogName" type="text" maxlength="80" aria-label="暂存名称"><div class="dialog-actions"><button id="dialogCancel" type="button" class="button quiet">取消</button><button id="dialogConfirm" type="submit" class="button primary">暂存</button></div></form></dialog>
+<dialog id="mockupDialog" aria-labelledby="mockupTitle" aria-describedby="mockupDescription">
+<div class="mockup-heading"><div><span class="eyebrow">TRY IT ON</span><h2 id="mockupTitle">贴纸效果测试</h2></div><button id="mockupClose" class="button quiet small" type="button">返回编辑</button></div>
+<p id="mockupDescription">把当前贴纸贴到你的照片上，看看实际效果。每次打开时会重新合成当前作品。</p>
+<div class="mockup-toolbar"><button id="mockupUpload" class="button primary" type="button">上传 / 更换背景图</button><button id="mockupReset" class="button quiet" type="button" disabled>重置贴纸位置</button><span id="mockupSize"></span></div>
+<div class="mockup-layers" role="group" aria-label="选择要调整的图层"><button id="mockupStickerLayer" class="button quiet small" type="button" aria-pressed="true" disabled>调整贴纸</button><button id="mockupBackgroundLayer" class="button quiet small" type="button" aria-pressed="false" disabled>调整背景</button></div>
+<div id="mockupView" class="mockup-view checker"><div id="mockupEmpty" class="mockup-empty"><strong>选张照片，试试贴在哪里</strong><span>车身、电脑、杯子……都可以成为你的背景。</span><button id="mockupEmptyUpload" class="button primary" type="button">上传背景图</button><small>PNG / JPEG / WebP · 也可拖入图片</small></div><div id="mockupStage" hidden><canvas id="mockupArt"></canvas><canvas id="mockupControls" tabindex="0" aria-label="效果测试画布：拖动移动贴纸，四角缩放，金色手柄旋转，双指缩放旋转，方向键微调"></canvas></div></div>
+<div class="mockup-fields"><div class="field"><label for="mockupScale"><span id="mockupScaleLabel" class="mockup-field-name">贴纸大小</span><span>相对画布宽度 %</span></label><div class="range-number"><input id="mockupScale" type="range" min="1" max="500" step="0.1" disabled><input id="mockupScaleNumber" type="number" min="1" max="500" step="0.1" aria-label="效果测试贴纸大小百分比" disabled></div></div><div class="field"><label for="mockupAngle">旋转角度 <span>°</span></label><div class="range-number"><input id="mockupAngle" type="range" min="-180" max="180" step="0.1" disabled><input id="mockupAngleNumber" type="number" min="-180" max="180" step="0.1" aria-label="效果测试贴纸旋转角度" disabled></div></div></div>
+<p class="mockup-hint">拖动移动 · 四角缩放 · 金色手柄旋转 · 滚轮缩放 · 双指缩放 / 旋转</p>
+<div class="mockup-bottom"><p id="mockupStatus" role="status" aria-live="polite"></p><button id="mockupSave" class="button primary" type="button" disabled>保存效果图</button></div>
+<p class="mockup-note">图片仅在当前浏览器内处理。背景与贴纸可独立调整，不影响原作品。画布边界固定，背景移开后的空白导出为透明；测试设置仅在本次页面中保留。</p>
+<input id="mockupFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+</dialog>
+<input type="file" id="imageFile" accept="image/png,image/webp,image/jpeg" hidden><input type="file" id="projectFile" accept=".bite,.json" hidden><div id="toast" role="status" aria-live="polite"></div><div id="exportProgress" class="export-progress" hidden><div><span class="spinner"></span><h2>正在制作你的贴纸</h2><p id="progressText">高质量渲染中…</p><button id="cancelExport" class="button secondary">取消导出</button></div></div>
+<script>
+(function (root) {
+  'use strict';
+  function createRenderer() {
+    const lip = 'M -.5 -.035 C -.48 .035 -.43 .07 -.39 .075 C -.29 .105 -.24 .01 -.12 .02 C .07 .05 .26 .065 .39 -.01 C .445 -.035 .475 -.08 .5 -.12';
+    const tooth = 'M .25 .046 Q .27 .16 .303 .157 Q .33 .15 .353 .008 Q .303 .03 .25 .046 Z';
+    // Lip centreline endpoints: calibrate against the chord, not the curve length.
+    function mouthSpan(s) { return s.mouth.scale * s.width * Math.hypot(1, .085); }
+    function printSize(s, bounds, distanceCm) {
+      if (!Number.isFinite(distanceCm) || distanceCm <= 0) throw new Error('请输入大于 0 的嘴型端点距离。');
+      const span = mouthSpan(s), cmPerPixel = distanceCm / span;
+      if (!Number.isFinite(span) || span <= 0 || !bounds || bounds.width <= 0 || bounds.height <= 0) throw new Error('无法测量当前图案。');
+      const width = bounds.width * cmPerPixel, height = bounds.height * cmPerPixel;
+      if (!Number.isFinite(width) || !Number.isFinite(height)) throw new Error('输入距离过大，请减小数值。');
+      return {width, height};
+    }
+    async function printBounds(s, image, {cancelled}={}) {
+      // A fixed measurement precision avoids tying cm values to export raster rounding.
+      // The longest side stays bounded even for very tall or wide canvases.
+      const factor=4003/Math.max(s.width,s.height),width=Math.max(1,Math.round(s.width*factor)),height=Math.max(1,Math.round(s.height*factor));
+      const measured={...s,width,height,outline:s.outline*width/s.width};let c;
+      try{
+        c=await render(measured,image,{cooperative:true,cancelled});
+        if(cancelled&&cancelled())throw new Error('已取消渲染');
+        const b=await visibleBounds(c,{alphaThreshold:0}),k=s.width/width;
+        return {x:b.x*k,y:b.y*k,width:b.width*k,height:b.height*k};
+      }finally{if(c)c.width=c.height=1;}
+    }
+    function canvas(w, h) {
+      if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
+      const c = document.createElement('canvas'); c.width = w; c.height = h; return c;
+    }
+    async function decode(src) {
+      if (typeof createImageBitmap === 'function') {
+        try { return await createImageBitmap(await (await fetch(src)).blob()); } catch (_) { /* SVG fallback in browsers */ }
+      }
+      if (typeof Image === 'undefined') throw new Error('当前浏览器无法解码素材，请使用新版 Chrome 或 Edge。');
+      return new Promise((resolve, reject) => { const i = new Image(); i.onload = () => resolve(i); i.onerror = () => reject(new Error('图片无法读取')); i.src = src; });
+    }
+    async function visibleBounds(image, {alphaThreshold=8}={}) {
+      const w=image.width,h=image.height,rows=Math.min(128,h),c=canvas(w,rows),ctx=c.getContext('2d',{willReadFrequently:true});
+      let left=w,top=h,right=-1,bottom=-1,allLeft=w,allTop=h,allRight=-1,allBottom=-1;
+      // Inspect bounded strips instead of allocating another full-resolution image.
+      for(let y=0;y<h;y+=rows){
+        const count=Math.min(rows,h-y);ctx.clearRect(0,0,w,rows);ctx.drawImage(image,0,y,w,count,0,0,w,count);
+        const data=ctx.getImageData(0,0,w,count).data;
+        for(let row=0;row<count;row++)for(let x=0;x<w;x++){
+          const alpha=data[(row*w+x)*4+3];if(!alpha)continue;
+          if(x<allLeft)allLeft=x;if(x>allRight)allRight=x;if(y+row<allTop)allTop=y+row;if(y+row>allBottom)allBottom=y+row;
+          if(alpha<=alphaThreshold)continue;
+          if(x<left)left=x;if(x>right)right=x;if(y+row<top)top=y+row;if(y+row>bottom)bottom=y+row;
+        }
+        await new Promise(resolve=>setTimeout(resolve,0));
+      }
+      c.width=c.height=1;
+      if(allRight<allLeft)throw new Error('这张图片完全透明，没有可以编辑的物品。');
+      // Invisible fringe must not enlarge handles; retain deliberately faint artwork.
+      if(right<left){left=allLeft;top=allTop;right=allRight;bottom=allBottom;}
+      return {x:left,y:top,width:right-left+1,height:bottom-top+1};
+    }
+    function crop(s,image){return s.bounds||{x:0,y:0,width:image.width,height:image.height};}
+    function reframeBounds(s,image,bounds){
+      const before=crop(s,image),t=s.object,pixelsPerSource=t.scale*s.width/before.width;
+      const dx=(bounds.x+bounds.width/2-before.x-before.width/2)*pixelsPerSource*(t.flip?-1:1);
+      const dy=(bounds.y+bounds.height/2-before.y-before.height/2)*pixelsPerSource,a=t.angle*Math.PI/180;
+      s.object={...t,x:t.x+(dx*Math.cos(a)-dy*Math.sin(a))/s.width,y:t.y+(dx*Math.sin(a)+dy*Math.cos(a))/s.height,scale:t.scale*bounds.width/before.width};
+      s.bounds={...bounds};
+    }
+    function objectSize(s, image) { const b=crop(s,image);return { w: s.object.scale, h: s.object.scale * (b.height / b.width) * s.width / s.height }; }
+    function paint(ctx, s, image, w, h) {
+      ctx.clearRect(0, 0, w, h); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.save(); ctx.scale(w / s.width, h / s.height);
+      if (s.mouth.bite && s.mouth.visible) {
+        ctx.save(); ctx.translate(s.mouth.x * s.width, s.mouth.y * s.height); ctx.rotate(s.mouth.angle * Math.PI / 180);
+        ctx.scale(s.mouth.scale * s.width, s.mouth.scale * s.width);
+        // Continue the curve to both sides, retaining only the object below the lips.
+        ctx.clip(new Path2D('M -100 -.035 L -.5 -.035 ' + lip.slice(lip.indexOf('C')) + ' L 100 -.12 L 100 100 L -100 100 Z'));
+        ctx.setTransform(w / s.width, 0, 0, h / s.height, 0, 0);
+      }
+      ctx.save(); ctx.translate(s.object.x * s.width, s.object.y * s.height); ctx.rotate(s.object.angle * Math.PI / 180);
+      ctx.scale(s.object.flip ? -1 : 1, 1);
+      const b=crop(s,image),ow = s.object.scale * s.width, oh = ow * b.height / b.width;
+      ctx.drawImage(image,b.x,b.y,b.width,b.height, -ow / 2, -oh / 2, ow, oh); ctx.restore();
+      if (s.mouth.bite && s.mouth.visible) ctx.restore();
+      if (s.mouth.visible) {
+        ctx.save(); ctx.translate(s.mouth.x * s.width, s.mouth.y * s.height); ctx.rotate(s.mouth.angle * Math.PI / 180);
+        const mw = s.mouth.scale * s.width; ctx.scale(mw, mw);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = s.mouth.color; ctx.fillStyle = '#fffdfa';
+        ctx.lineWidth = s.mouth.weight; ctx.stroke(new Path2D(lip));
+        if (s.mouth.tooth) { ctx.fill(new Path2D(tooth)); ctx.stroke(new Path2D(tooth)); }
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+    // Exact separable Euclidean distance transform (linear time), for a round alpha outline.
+    function edt1d(f, d, n, v, z) {
+      let k = 0; v[0] = 0; z[0] = -Infinity; z[1] = Infinity;
+      for (let q = 1; q < n; q++) {
+        let a;
+        do { const p = v[k]; a = ((f[q] + q * q) - (f[p] + p * p)) / (2 * (q - p)); if (a <= z[k]) k--; else break; } while (k >= 0);
+        k++; v[k] = q; z[k] = a; z[k + 1] = Infinity;
+      }
+      k = 0;
+      for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; const p = v[k]; d[q] = (q - p) * (q - p) + f[p]; }
+    }
+    async function outline(c, radius, progress, cooperative, cancelled, color = '#ffffff') {
+      if (radius <= 0) return c;
+      const rgb = [1, 3, 5].map(start => parseInt(color.slice(start, start + 2), 16));
+      const ctx = c.getContext('2d', { willReadFrequently: true }); const w = c.width, h = c.height;
+      const pixels = ctx.getImageData(0, 0, w, h), data = pixels.data, field = new Float32Array(w * h);
+      const n = Math.max(w, h), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+      const yieldUI = () => new Promise(r => setTimeout(r, 0));
+      for (let y = 0; y < h; y++) {
+        if (cancelled && cancelled()) throw new Error('已取消渲染');
+        for (let x = 0; x < w; x++) { const a = data[(y * w + x) * 4 + 3] / 255; f[x] = a > .06 ? (1 - a) * (1 - a) : 1e12; }
+        edt1d(f, d, w, v, z); field.set(d.subarray(0, w), y * w);
+        if (y % 128 === 0 && cooperative) await yieldUI();
+      }
+      if (progress) progress(45);
+      for (let x = 0; x < w; x++) {
+        if (cancelled && cancelled()) throw new Error('已取消渲染');
+        for (let y = 0; y < h; y++) f[y] = field[y * w + x];
+        edt1d(f, d, h, v, z);
+        for (let y = 0; y < h; y++) {
+          const i = (y * w + x) * 4, a = data[i + 3] / 255;
+          const edge = Math.max(0, Math.min(1, radius + .5 - Math.sqrt(d[y])));
+          const alpha = a + edge * (1 - a);
+          if (alpha > 0) {
+            const ratio = a / alpha, border = edge * (1 - a) / alpha;
+            for (let channel = 0; channel < 3; channel++) data[i + channel] = data[i + channel] * ratio + rgb[channel] * border;
+            data[i + 3] = Math.round(alpha * 255);
+          }
+        }
+        if (x % 128 === 0 && cooperative) await yieldUI();
+      }
+      ctx.putImageData(pixels, 0, 0); return c;
+    }
+    async function render(s, image, options = {}) {
+      const w = options.width || s.width, h = options.height || s.height;
+      // Supersample smaller exports, cap working area to keep mobile memory bounded.
+      const factor = options.preview ? 1 : Math.min(2, Math.max(1, Math.sqrt(18000000 / (w * h))));
+      const rw = Math.round(w * factor), rh = Math.round(h * factor), c = canvas(rw, rh);
+      paint(c.getContext('2d'), s, image, rw, rh);
+      if (options.progress) options.progress(15);
+      await outline(c, s.outline * rw / s.width, options.progress, options.cooperative, options.cancelled, s.outlineColor);
+      if (rw === w && rh === h) return c;
+      const out = canvas(w, h), ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, w, h); c.width = c.height = 1; return out;
+    }
+    async function blob(c) {
+      if (c.convertToBlob) return c.convertToBlob({ type: 'image/png' });
+      return new Promise((resolve, reject) => c.toBlob(b => b ? resolve(b) : reject(new Error('PNG 编码失败，请降低分辨率重试。')), 'image/png'));
+    }
+    return { canvas, decode, paint, render, blob, outline, objectSize, visibleBounds, crop, reframeBounds, mouthSpan, printSize, printBounds };
+  }
+  root.BiteRendererFactory = createRenderer; root.BiteRenderer = createRenderer();
+})(globalThis);
+
+</script><script>
+/* Composite the current sticker onto a local photo for placement testing. */
+(function (root) {
+  'use strict';
+  root.BiteMockup = function ({createSticker, download}) {
+    const $ = id => document.getElementById(id), R = root.BiteRenderer;
+    const dialog = $('mockupDialog'), art = $('mockupArt'), controls = $('mockupControls');
+    let background, sticker, transform = {x:.5,y:.5,scale:.35,angle:0};
+    let backgroundTransform = {x:.5,y:.5,scale:1,angle:0}, selected = 'sticker';
+    let busy = false, serial = 0, gesture, frame = 0;
+    const pointers = new Map();
+    const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+    const normalize = a => ((a+180)%360+360)%360-180;
+    const distance = (a,b) => Math.hypot(a.x-b.x,a.y-b.y);
+    const angle = (a,b) => Math.atan2(b.y-a.y,b.x-a.x);
+    function message(text) { $('mockupStatus').textContent = text; }
+    function ready() { return !!(background && sticker && !busy); }
+    function activeTransform() { return selected==='background'?backgroundTransform:transform; }
+    function sync() {
+      const t=activeTransform(),name=selected==='background'?'背景':'贴纸';
+      $('mockupScale').value = t.scale*100;
+      $('mockupScaleNumber').value = +(t.scale*100).toFixed(1);
+      $('mockupAngle').value = t.angle;
+      $('mockupAngleNumber').value = +t.angle.toFixed(1);
+      $('mockupScaleLabel').textContent=name+'大小';
+      $('mockupReset').textContent='重置'+name+'位置';
+      $('mockupScaleNumber').setAttribute('aria-label','效果测试'+name+'大小百分比');
+      $('mockupAngleNumber').setAttribute('aria-label','效果测试'+name+'旋转角度');
+      controls.setAttribute('aria-label','效果测试画布：正在调整'+name+'，拖动移动，四角缩放，金色手柄旋转，双指缩放旋转，方向键微调');
+      $('mockupStickerLayer').setAttribute('aria-pressed',String(selected==='sticker'));
+      $('mockupBackgroundLayer').setAttribute('aria-pressed',String(selected==='background'));
+      for (const id of ['mockupScale','mockupScaleNumber','mockupAngle','mockupAngleNumber','mockupReset','mockupSave','mockupStickerLayer','mockupBackgroundLayer']) $(id).disabled = !ready();
+      $('mockupUpload').disabled = busy;
+      $('mockupEmptyUpload').disabled = busy;
+      $('mockupEmpty').hidden = !!background;
+      $('mockupStage').hidden = !background;
+      $('mockupSize').textContent = background ? background.width+' × '+background.height+' px' : '';
+    }
+    function composite(ctx,w,h) {
+      ctx.clearRect(0,0,w,h);
+      if (!background) return;
+      // Both layers use the fixed output canvas, so photo edits never move the sticker.
+      for (const [image,t] of [[background,backgroundTransform],[sticker,transform]]) {
+        if (!image) continue;
+        const sw=t.scale*w,sh=sw*image.height/image.width;
+        ctx.save();ctx.translate(t.x*w,t.y*h);ctx.rotate(t.angle*Math.PI/180);
+        ctx.drawImage(image,-sw/2,-sh/2,sw,sh);ctx.restore();
+      }
+    }
+    function geometry() {
+      const t=activeTransform(),image=selected==='background'?background:sticker;
+      const b = controls.getBoundingClientRect(), w = b.width*t.scale, h = w*image.height/image.width;
+      const cx = t.x*b.width, cy = t.y*b.height, a = t.angle*Math.PI/180;
+      const point = (x,y) => ({x:cx+x*Math.cos(a)-y*Math.sin(a),y:cy+x*Math.sin(a)+y*Math.cos(a)});
+      const anchor = point(0,-h/2), rotation = point(0,-h/2-30);
+      return {cx,cy,corners:[point(-w/2,-h/2),point(w/2,-h/2),point(w/2,h/2),point(-w/2,h/2)],anchor,
+        rotation:{x:clamp(rotation.x,14,b.width-14),y:clamp(rotation.y,14,b.height-14)}};
+    }
+    function draw() {
+      frame = 0;
+      if (!dialog.open || !background) return;
+      composite(art.getContext('2d'),art.width,art.height);
+      const ctx = controls.getContext('2d'), b = controls.getBoundingClientRect();
+      ctx.clearRect(0,0,controls.width,controls.height);
+      if (!ready() || !b.width || !b.height) return;
+      const g = geometry();ctx.save();ctx.scale(controls.width/b.width,controls.height/b.height);
+      ctx.strokeStyle = '#276453';ctx.lineWidth = 1.5;ctx.setLineDash([5,4]);
+      ctx.beginPath();g.corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.stroke();ctx.setLineDash([]);
+      for (const p of g.corners) {ctx.fillStyle='#fffdf9';ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);ctx.fill();ctx.stroke();}
+      ctx.strokeStyle='#ab742a';ctx.beginPath();ctx.moveTo(g.anchor.x,g.anchor.y);ctx.lineTo(g.rotation.x,g.rotation.y);ctx.stroke();
+      ctx.fillStyle='#fff4dc';ctx.beginPath();ctx.arc(g.rotation.x,g.rotation.y,12,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#80561f';ctx.font='17px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('↻',g.rotation.x,g.rotation.y);
+      ctx.restore();
+    }
+    function schedule() { if (!frame) frame=requestAnimationFrame(draw); }
+    function size() {
+      if (!dialog.open || !background) return;
+      const box = $('mockupView').getBoundingClientRect(), k = Math.min((box.width-16)/background.width,(box.height-16)/background.height);
+      const w = Math.max(1,Math.floor(background.width*k)), h = Math.max(1,Math.floor(background.height*k));
+      $('mockupStage').style.width=w+'px';$('mockupStage').style.height=h+'px';
+      const density=Math.min(devicePixelRatio||1,2,1600/Math.max(w,h));
+      for (const c of [art,controls]) {c.width=Math.max(1,Math.round(w*density));c.height=Math.max(1,Math.round(h*density));}
+      schedule();
+    }
+    function reset() {
+      if (selected==='background') {backgroundTransform={x:.5,y:.5,scale:1,angle:0};sync();schedule();return;}
+      // Fit to both photo dimensions, including narrow portrait backgrounds.
+      transform={x:.5,y:.5,scale:sticker&&background?Math.min(.4,.55*background.height/background.width*sticker.width/sticker.height):.35,angle:0};
+      transform.scale=clamp(transform.scale,.01,5);sync();schedule();
+    }
+    function select(layer) {
+      pointers.clear();gesture=null;selected=layer;sync();schedule();
+      message('正在调整'+(layer==='background'?'背景':'贴纸')+'：拖动移动，四角缩放，金色手柄旋转。');
+    }
+    $('mockupStickerLayer').onclick=()=>select('sticker');
+    $('mockupBackgroundLayer').onclick=()=>select('background');
+    async function refreshSticker() {
+      if (busy) return;
+      const request=++serial;busy=true;sync();message('正在合成当前贴纸…');
+      if (sticker) {sticker.width=sticker.height=1;sticker=undefined;schedule();}
+      let next;
+      try {
+        next=await createSticker();
+        if (request!==serial) {next.width=next.height=1;return;}
+        sticker=next;
+        message(background?'可切换「调整贴纸 / 调整背景」，分别移动、缩放和旋转。':'贴纸已合成，请上传一张背景图开始测试。');
+      } catch(e) {if(request===serial)message('贴纸合成失败：'+e.message);}
+      finally {if(request===serial){busy=false;sync();size();}}
+    }
+    async function upload(file) {
+      if (!file || busy) return;
+      if (!['image/png','image/jpeg','image/webp'].includes(file.type)) {message('请选择 PNG、JPEG 或 WebP 背景图。');return;}
+      if (file.size>30*1024*1024) {message('背景图请控制在 30 MB 以内。');return;}
+      const request=++serial,url=URL.createObjectURL(file);let decoded,next;
+      busy=true;sync();message('正在读取背景图…');
+      try {
+        decoded=await R.decode(url);
+        if (decoded.width>16384||decoded.height>16384||decoded.width*decoded.height>50000000) throw new Error('图片过大，请缩小至 5000 万像素以内。');
+        const k=Math.min(1,4096/Math.max(decoded.width,decoded.height),Math.sqrt(12000000/(decoded.width*decoded.height)));
+        next=R.canvas(Math.max(1,Math.round(decoded.width*k)),Math.max(1,Math.round(decoded.height*k)));
+        next.getContext('2d').drawImage(decoded,0,0,next.width,next.height);
+        if (request!==serial) {next.width=next.height=1;return;}
+        if (background) background.width=background.height=1;
+        background=next;backgroundTransform={x:.5,y:.5,scale:1,angle:0};selected='sticker';reset();
+        message('背景已载入，可切换调整背景或贴纸。'+(k<1?'大图已缩小，效果图按下方显示的尺寸保存。':''));
+      } catch(e) {if(next&&next!==background)next.width=next.height=1;if(request===serial)message('背景图读取失败：'+e.message);}
+      finally {if(decoded&&decoded.close)decoded.close();URL.revokeObjectURL(url);if(request===serial){busy=false;sync();size();}}
+    }
+    function update() {sync();schedule();}
+    for (const id of ['mockupScale','mockupScaleNumber','mockupAngle','mockupAngleNumber']) {
+      $(id).oninput=()=>{
+        if (!ready()||$(id).value==='') return;
+        const value=Number($(id).value);if(!Number.isFinite(value))return;
+        const t=activeTransform();
+        if(id.includes('Scale'))t.scale=clamp(value/100,.01,5);else t.angle=clamp(value,-180,180);
+        // Leave the active number field intact while typing a decimal or minus sign.
+        const active=document.activeElement,raw=active.value;update();if(active===$(id)&&active.type==='number')active.value=raw;
+      };
+      $(id).onchange=update;$(id).onblur=update;
+    }
+    function coords(e) {const b=controls.getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top};}
+    function begin() {
+      const points=[...pointers.values()],original={...activeTransform()},g=geometry();
+      if(points.length===2){const[a,b]=points;gesture={mode:'pinch',original,distance:Math.max(1,distance(a,b)),angle:angle(a,b),mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}};}
+      else if(points.length===1){const p=points[0];gesture={mode:distance(p,g.rotation)<22?'rotate':g.corners.some(c=>distance(p,c)<20)?'scale':'move',original,start:p,center:{x:g.cx,y:g.cy},distance:Math.max(1,distance(p,{x:g.cx,y:g.cy})),angle:angle({x:g.cx,y:g.cy},p)};}
+      else gesture=null;
+    }
+    controls.onpointerdown=e=>{
+      if(!ready()||pointers.size>=2)return;e.preventDefault();controls.focus({preventScroll:true});controls.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId,coords(e));begin();if(e.altKey&&pointers.size===1)gesture.mode='rotate';
+    };
+    controls.onpointermove=e=>{
+      if(!pointers.has(e.pointerId)||!gesture||!ready())return;
+      const p=coords(e);pointers.set(e.pointerId,p);const o=gesture.original,b=controls.getBoundingClientRect(),t=activeTransform();
+      if(gesture.mode==='pinch'&&pointers.size===2){const[a,z]=[...pointers.values()];t.scale=clamp(o.scale*distance(a,z)/gesture.distance,.01,5);t.angle=normalize(o.angle+(angle(a,z)-gesture.angle)*180/Math.PI);t.x=clamp(o.x+((a.x+z.x)/2-gesture.mid.x)/b.width,0,1);t.y=clamp(o.y+((a.y+z.y)/2-gesture.mid.y)/b.height,0,1);}
+      else if(gesture.mode==='move'){t.x=clamp(o.x+(p.x-gesture.start.x)/b.width,0,1);t.y=clamp(o.y+(p.y-gesture.start.y)/b.height,0,1);}
+      else if(gesture.mode==='scale')t.scale=clamp(o.scale*distance(p,gesture.center)/gesture.distance,.01,5);
+      else if(gesture.mode==='rotate')t.angle=normalize(o.angle+(angle(gesture.center,p)-gesture.angle)*180/Math.PI);
+      update();
+    };
+    function end(e) {if(pointers.delete(e.pointerId))begin();}
+    controls.onpointerup=end;controls.onpointercancel=end;controls.onlostpointercapture=end;
+    controls.addEventListener('wheel',e=>{if(!ready())return;e.preventDefault();const t=activeTransform();if(e.altKey)t.angle=normalize(t.angle+e.deltaY*.1);else t.scale=clamp(t.scale*Math.exp(-e.deltaY*.001),.01,5);update();},{passive:false});
+    controls.onkeydown=e=>{
+      if(!ready())return;const delta=e.shiftKey?10:1,t=activeTransform();
+      if(e.key==='ArrowLeft')t.x=clamp(t.x-delta/background.width,0,1);
+      else if(e.key==='ArrowRight')t.x=clamp(t.x+delta/background.width,0,1);
+      else if(e.key==='ArrowUp')t.y=clamp(t.y-delta/background.height,0,1);
+      else if(e.key==='ArrowDown')t.y=clamp(t.y+delta/background.height,0,1);
+      else return;e.preventDefault();update();
+    };
+    dialog.addEventListener('keydown',e=>e.stopPropagation());
+    for(const name of ['dragenter','dragleave','dragover'])dialog.addEventListener(name,e=>{e.preventDefault();e.stopPropagation();});
+    dialog.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();upload(e.dataTransfer.files[0]);});
+    $('mockupUpload').onclick=()=>$('mockupFile').click();
+    $('mockupEmptyUpload').onclick=()=>$('mockupFile').click();
+    $('mockupFile').onchange=e=>{upload(e.target.files[0]);e.target.value='';};
+    $('mockupReset').onclick=reset;
+    $('mockupClose').onclick=()=>dialog.close();
+    dialog.addEventListener('close',()=>{serial++;busy=false;pointers.clear();gesture=null;});
+    $('mockupSave').onclick=async()=>{
+      if(!ready())return;const request=++serial;busy=true;sync();message('正在保存效果图…');let c;
+      try{c=R.canvas(background.width,background.height);composite(c.getContext('2d'),c.width,c.height);const blob=await R.blob(c);if(request!==serial)return;await download(blob,'贴纸效果测试.png');if(request===serial)message('效果图已生成。');}
+      catch(e){if(request===serial)message('保存失败：'+e.message);}finally{if(c)c.width=c.height=1;if(request===serial){busy=false;sync();schedule();}}
+    };
+    new ResizeObserver(size).observe($('mockupView'));
+    return {
+      open(){if(dialog.open)return;dialog.showModal();sync();size();refreshSticker();},
+      getState:()=>({transform:{...transform},backgroundTransform:{...backgroundTransform},selected,hasBackground:!!background,hasSticker:!!sticker,busy})
+    };
+  };
+})(globalThis);
+
+</script><script>
+/* Bite Studio: no network service, no runtime dependencies. */
+(async function () {
+  'use strict';
+  const $ = id => document.getElementById(id), R = window.BiteRenderer;
+  document.querySelector('.workspace').inert=true;document.querySelector('.top-actions').inert=true;
+  const icons = {
+    upload:'M12 16V3m-5 5 5-5 5 5M3 15v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5',
+    download:'M12 3v13m-5-5 5 5 5-5M3 17v4h18v-4', folder:'M3 7V4h7l2 3h9v13H3z',
+    save:'M4 3h13l4 4v14H3V3h1m3 0v7h10V3M7 21v-7h10v7',
+    undo:'M9 4 3 10l6 6M3 10h10a7 7 0 0 1 7 7v3', redo:'m15 4 6 6-6 6m6-6H11a7 7 0 0 0-7 7v3',
+    flip:'M12 3v18M3 17 8 7v10zm18 0L16 7v10z', plus:'M12 5v14M5 12h14',
+    spark:'m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z',
+    move:'M12 2v20M2 12h20m-7-7-3-3-3 3m6 14-3 3-3-3M5 9l-3 3 3 3m14-6 3 3-3 3',check:'m5 12 4 4 10-10'
+  };
+  document.querySelectorAll('[data-icon]').forEach(e => { e.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+icons[e.dataset.icon]+'"/></svg>'; });
+  const svgData = s => 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(s)));
+  const samples = [
+    { name:'奶油吐司', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="900" height="880" viewBox="0 0 900 880"><defs><linearGradient id="b" x2="0" y2="1"><stop stop-color="#ffdf64"/><stop offset="1" stop-color="#ffb521"/></linearGradient></defs><path d="M150 55 Q450 5 725 85 Q845 120 835 250 L854 700 Q855 826 735 842 L184 850 Q65 850 65 709 L55 260 Q55 123 150 55Z" fill="url(#b)" stroke="#6b210f" stroke-width="18"/><path d="M160 52 Q444 5 714 79 Q813 108 817 220 L822 674 Q833 769 728 777 L219 792 Q137 790 134 681 L124 283 Q67 259 83 180 Q106 84 160 52Z" fill="#fff0d5" stroke="#762414" stroke-width="13"/><path d="M223 386 Q229 300 305 291 Q412 245 530 290 Q609 307 665 353 Q738 415 735 558 Q708 658 484 652 Q269 662 216 572 Q186 500 223 386Z" fill="#ffd432"/><path d="M264 354 Q243 280 303 285 L348 312 Q485 245 628 321 Q714 269 739 392 Q756 436 709 454 Q744 578 598 604 Q376 638 276 557 Q232 520 253 447 Q204 418 264 354Z" fill="#ffe260" stroke="#ee9000" stroke-width="11"/><path d="M465 321 Q541 293 553 350 Q518 443 589 462 Q668 466 710 451 Q746 577 598 604 Q376 638 276 557 Q232 520 253 447 Q307 493 411 468 Q492 439 465 321Z" fill="#ffd000"/><ellipse cx="413" cy="427" rx="13" ry="27" fill="#e68900" transform="rotate(8 413 427)"/><ellipse cx="563" cy="431" rx="12" ry="27" fill="#e68900"/><path d="m477 450 12 6m17 0 12-9m-18 27 3 37" stroke="#e68900" stroke-width="10" stroke-linecap="round"/><path d="M270 336q-26 22-17 37m37 114q-5 46 24 51m347 10-27 17" fill="none" stroke="#fffefa" stroke-width="15" stroke-linecap="round"/><g fill="#f4c48a"><ellipse cx="247" cy="192" rx="6" ry="12" transform="rotate(20 247 192)"/><ellipse cx="686" cy="214" rx="5" ry="10"/><ellipse cx="738" cy="697" rx="8" ry="15" transform="rotate(30 738 697)"/><ellipse cx="221" cy="723" rx="12" ry="5"/></g></svg>' },
+    { name:'小鱼饼', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="850" height="600" viewBox="0 0 850 600"><defs><linearGradient id="f" x2="0" y2="1"><stop stop-color="#ffc765"/><stop offset="1" stop-color="#e79a3f"/></linearGradient></defs><path d="M206 214Q327 71 527 192L752 107 704 301 764 486 533 406Q332 536 188 390L87 306Z" fill="url(#f)" stroke="#74401f" stroke-width="16" stroke-linejoin="round"/><path d="m460 196-99-72-23 89m100 212-78 62-26-62" fill="#edaf55" stroke="#74401f" stroke-width="12" stroke-linejoin="round"/><path d="M491 210q-44 86 0 183m-99-146 17 19-17 18m51 24 18 19-18 19m-60 17 17 19-17 18m234-150 61 77-61 71" fill="none" stroke="#cb8635" stroke-width="9" stroke-linecap="round"/><circle cx="261" cy="270" r="18" fill="#573824"/><circle cx="266" cy="263" r="6" fill="#fff4dd"/><path d="m204 327q26 22 44 0" fill="none" stroke="#74401f" stroke-width="8" stroke-linecap="round"/><ellipse cx="268" cy="319" rx="22" ry="10" fill="#ef9870"/></svg>' },
+    { name:'星星糖', svg:'<svg xmlns="http://www.w3.org/2000/svg" width="620" height="950" viewBox="0 0 620 950"><path d="M314 490v402" stroke="#695344" stroke-width="40" stroke-linecap="round"/><path d="M314 490v402" stroke="#fff0cb" stroke-width="26" stroke-linecap="round"/><path d="m310 51 78 155 172 22-125 125 32 175-157-80-157 80 32-175L60 228l172-22Z" fill="#efaabb" stroke="#663e47" stroke-width="14" stroke-linejoin="round"/><path d="m310 94 58 140 142 17-106 88 32 139-126-70-126 70 32-139-106-88 142-17Z" fill="#f8c2c5"/><path d="m252 265 24-63" stroke="#fff7e4" stroke-width="20" stroke-linecap="round"/><circle cx="272" cy="329" r="10" fill="#694451"/><circle cx="352" cy="329" r="10" fill="#694451"/><path d="m297 360q15 19 30 0" fill="none" stroke="#694451" stroke-width="6" stroke-linecap="round"/></svg>' }
+  ].map(x => ({name:x.name, src:svgData(x.svg)}));
+  const defaults = () => ({ width:4003, height:3764, outline:14, outlineColor:'#ffffff', mouthDistanceCm:null, name:'奶油吐司', src:samples[0].src,bounds:null,
+    object:{x:.5,y:.545,scale:.86,angle:0,flip:false}, mouth:{x:.5,y:.30,scale:.55,angle:0,weight:.023,color:'#000000',visible:true,bite:true,tooth:true} });
+  let state = defaults(), image, selected = 'object', undo = [], redo = [], savedSignature = '', toastTimer, saveTimer, previewTimer;
+  let db, autosaveChain = Promise.resolve(), renderSerial = 0, worker, exporting = false, exportToken = 0;
+  let framePending = false, busyPreview = false, pendingPreview = false;
+  let initialized=false,moveTogether=false;
+  const individualHint=$('gestureHint').innerHTML;
+  let thumbnailSource='',thumbnailBounds='';
+  let boundsCacheSource='',boundsCache;
+  let printCache=null, printBusy=false, printError='', printKey='', printSource='';
+  const measurementKey=s=>JSON.stringify([s.width,s.height,s.outline,s.outlineColor,s.bounds,s.object,s.mouth]);
+  let ratio = state.width / state.height;
+  const clone = s => ({...s,bounds:s.bounds?{...s.bounds}:null,object:{...s.object},mouth:{...s.mouth}});
+  const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+  const snapshot = () => JSON.stringify(state);
+  function toast(message) { $('toast').textContent=message; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4800); }
+  function ask({title,description,value,confirmText='暂存'}) {return new Promise(resolve=>{const dialog=$('studioDialog');$('dialogTitle').textContent=title;$('dialogDescription').textContent=description;$('dialogName').hidden=value===undefined;$('dialogName').value=value||'';$('dialogConfirm').textContent=confirmText;let done=false;const finish=result=>{if(done)return;done=true;dialog.close();resolve(result);};$('dialogCancel').onclick=()=>finish(null);dialog.oncancel=e=>{e.preventDefault();finish(null);};$('dialogForm').onsubmit=e=>{e.preventDefault();const name=$('dialogName').value.trim();if(value!==undefined&&!name){$('dialogName').focus();return;}finish(value===undefined?true:name);};dialog.showModal();if(value!==undefined){$('dialogName').focus();$('dialogName').select();}});}
+  function remember() { const s=snapshot(); if (undo[undo.length-1]!==s) undo.push(s); if(undo.length>40) undo.shift(); redo=[]; historyButtons(); }
+  function historyButtons() { $('undo').disabled=!undo.length; $('redo').disabled=!redo.length; }
+  function sync() {
+    const t = state[selected]; $('settingsTitle').textContent = selected==='object'?'物品调整':'嘴部调整';
+    $('settingsHelp').textContent = selected==='object'?'在画布上直接拖拽，也可以精确输入。':'拖拽嘴线位置，调节嘴的大小和角度。';
+    $('objectLayer').classList.toggle('active',selected==='object'); $('mouthLayer').classList.toggle('active',selected==='mouth');
+    $('selectionLabel').textContent=moveTogether?'整体移动：物品 + 嘴部':'正在调整：'+(selected==='object'?'物品':'嘴部');
+    $('moveTogether').setAttribute('aria-pressed',String(moveTogether));
+    if(moveTogether)$('settingsHelp').textContent='画布拖拽同时移动物品与嘴部；右侧参数仍单独调整当前图层。';
+    $('gestureHint').innerHTML=moveTogether?'整体移动已开启 · 拖动画布或双指平移 · 方向键微调 · 关闭后单独调整':individualHint;
+    $('gestureHint').title=moveTogether?'嘴部与物品保持相对位置，整张贴纸一起平移':'按住 Alt 在画布任意位置拖动旋转；Alt + 滚轮缩放';
+    $('controls').setAttribute('aria-label',moveTogether?'整体移动画布，拖拽同时移动嘴部和物品':'编辑画布，拖拽物品，四角缩放，四个金色手柄旋转，旋转手柄始终位于画布内');
+    $('scale').min=Math.min(5,t.scale*100);$('scale').max=Math.max(180,t.scale*100);$('scale').step=.1;$('scale').value=t.scale*100; $('scaleValue').value=(t.scale*100).toFixed(1)+'%'; $('angle').value=t.angle;
+    if(document.activeElement!==$('angleNumber'))$('angleNumber').value=t.angle.toFixed(1); $('angleValue').value=t.angle.toFixed(1)+'°';
+    if(document.activeElement!==$('posX'))$('posX').value=(t.x*100).toFixed(1); if(document.activeElement!==$('posY'))$('posY').value=(t.y*100).toFixed(1);
+    $('outline').max=Math.max(80,Math.ceil(state.outline));$('outline').value=state.outline; $('outlineValue').value=Number(state.outline.toFixed(2))+' px'; $('outlineColor').value=state.outlineColor;
+    $('width').value=state.width; $('height').value=state.height; $('resolutionLabel').textContent=state.width+' × '+state.height+' px';
+    $('mouthVisible').checked=state.mouth.visible; $('bite').checked=state.mouth.bite; $('tooth').checked=state.mouth.tooth;
+    $('mouthColor').value=state.mouth.color; $('mouthWeight').value=state.mouth.weight; $('flip').disabled=selected!=='object';
+    $('sourceName').textContent=state.name; const cropKey=JSON.stringify(state.bounds);
+    $('upload').title=state.bounds?'原图 '+image.width+' × '+image.height+'，有效物品 '+state.bounds.width+' × '+state.bounds.height:'';
+    $('boundsInfo').textContent=state.bounds?'物品范围 '+state.bounds.width+' × '+state.bounds.height+' px':'内置矢量素材';
+    $('tightenBounds').disabled=state.src.startsWith('data:image/svg+xml');
+    if(thumbnailSource!==state.src||thumbnailBounds!==cropKey){thumbnailSource=state.src;thumbnailBounds=cropKey;const thumb=document.createElement('canvas');thumb.width=thumb.height=76;thumb.style.width=thumb.style.height='100%';thumb.setAttribute('aria-label',state.name);const b=R.crop(state,image),fit=Math.min(70/b.width,70/b.height);thumb.getContext('2d').drawImage(image,b.x,b.y,b.width,b.height,(76-b.width*fit)/2,(76-b.height*fit)/2,b.width*fit,b.height*fit);$('sourceThumb').replaceChildren(thumb);}
+    document.querySelectorAll('.sample').forEach((e,i)=>e.classList.toggle('selected',state.src===samples[i].src)); historyButtons();
+    syncPrintSize();
+  }
+  function syncPrintSize() {
+    const key=measurementKey(state);
+    if(key!==printKey||state.src!==printSource){printKey=key;printSource=state.src;printError='';}
+    if(document.activeElement!==$('mouthDistanceCm'))$('mouthDistanceCm').value=state.mouthDistanceCm??'';
+    const valid=Number.isFinite(state.mouthDistanceCm)&&state.mouthDistanceCm>0;
+    $('mouthDistanceCm').setAttribute('aria-invalid',String(!valid&&$('mouthDistanceCm').value!==''));
+    $('calculatePrintSize').disabled=!valid||printBusy;
+    $('calculatePrintSize').textContent=printBusy?'正在测量图案…':'推算打印尺寸';
+    $('printResult').hidden=true;
+    let status=!valid?($('mouthDistanceCm').value===''?'输入距离后，点击推算打印尺寸。':'请输入大于 0 的有效距离。'):printBusy?'正在检测最终图案的非透明像素边界…':printCache?'作品已调整，请重新推算。':'点击推算，测量当前贴纸的实际图案。';
+    if(valid&&printCache&&printCache.key===key&&printCache.src===state.src){
+      try{
+        const size=R.printSize(state,printCache.bounds,state.mouthDistanceCm);
+        const format=v=>v<.01?'< 0.01':v.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
+        $('printWidth').textContent=format(size.width);$('printHeight').textContent=format(size.height);$('printResult').hidden=false;
+        status='按当前画布方向的图案宽、高计算。'+(state.mouth.visible?'':'嘴型已隐藏，使用保存的嘴型比例。');
+      }catch(e){status=e.message;}
+    }
+    $('printStatus').textContent=printError||status;
+  }
+  $('calculatePrintSize').onclick=async()=>{
+    if(printBusy||!image||!(state.mouthDistanceCm>0))return;
+    const s=clone(state),key=measurementKey(s);let source;
+    const stale=()=>key!==measurementKey(state)||s.src!==state.src;
+    printBusy=true;printError='';syncPrintSize();
+    try{
+      // Decode a separate image: loading another project may close the editor bitmap.
+      source=await R.decode(s.src);if(stale())return;
+      const bounds=await R.printBounds(s,source,{cancelled:stale});if(stale())return;
+      printCache={key,src:s.src,bounds};
+    }catch(e){if(!stale()){printCache=null;printError=/完全透明/.test(e.message)?'当前画布没有非透明图案，请先把贴纸移回画布。':'尺寸推算失败：'+e.message;}}
+    finally{if(source&&source.close)source.close();printBusy=false;syncPrintSize();}
+  };
+  function changed() { sync(); schedule(); queueSave(); }
+  function select(layer) { selected=layer; sync(); drawControls(); }
+  function sizeStage() {
+    $('stageWrap').style.setProperty('--canvas-ratio',state.width+'/'+state.height);
+    const box=$('stageWrap').getBoundingClientRect(); const fit=Math.min(box.width/state.width,box.height/state.height);
+    const w=Math.max(1,Math.floor(state.width*fit)),h=Math.max(1,Math.floor(state.height*fit));
+    $('stage').style.width=w+'px';$('stage').style.height=h+'px';
+    const density=Math.min(window.devicePixelRatio||1,1.5,850/Math.max(w,h));
+    for(const id of ['art','controls']) { $(id).width=Math.round(w*density);$(id).height=Math.round(h*density); }
+    schedule();
+  }
+  function schedule() {
+    renderSerial++;
+    if(!framePending) { framePending=true;requestAnimationFrame(()=>{framePending=false;if(!image)return;R.paint($('art').getContext('2d'),state,image,$('art').width,$('art').height);drawControls();}); }
+    clearTimeout(previewTimer);previewTimer=setTimeout(refinePreview,110);
+  }
+  async function refinePreview() {
+    if(!image)return;if(busyPreview){pendingPreview=true;return;}busyPreview=true;
+    const serial=renderSerial,s=clone(state);
+    try { const c=await R.render(s,image,{width:$('art').width,height:$('art').height,preview:true});
+      if(serial===renderSerial){const ctx=$('art').getContext('2d');ctx.clearRect(0,0,$('art').width,$('art').height);ctx.drawImage(c,0,0);} c.width=c.height=1;
+    }catch(e){console.error('Preview render failed',e);}finally{busyPreview=false;if(pendingPreview){pendingPreview=false;refinePreview();}}
+  }
+  function geometry(layer=selected) {
+    const t=state[layer],b=$('stage').getBoundingClientRect(),mw=t.scale*b.width;
+    const visible=R.crop(state,image),w=mw,h=layer==='object'?mw*visible.height/visible.width:mw*.35;
+    const cx=t.x*b.width,cy=t.y*b.height,a=t.angle*Math.PI/180;
+    const point=(x,y)=>({x:cx+x*Math.cos(a)-y*Math.sin(a),y:cy+x*Math.sin(a)+y*Math.cos(a)});
+    const corners=[point(-w/2,-h/2),point(w/2,-h/2),point(w/2,h/2),point(-w/2,h/2)];
+    const anchors=[point(0,-h/2),point(w/2,0),point(0,h/2),point(-w/2,0)];
+    const raw=[point(0,-h/2-27),point(w/2+27,0),point(0,h/2+27),point(-w/2-27,0)];
+    const rotations=raw.map((p,i)=>{let x=clamp(p.x,13,b.width-13),y=clamp(p.y,13,b.height-13);
+      // Keep rotation targets away from the small scale handles at the corners.
+      if(corners.some(c=>dist({x,y},c)<23)){if(i%2===0)x=clamp(x+27,13,b.width-13);else y=clamp(y+27,13,b.height-13);}
+      return{x,y,anchor:anchors[i]};});
+    return{cx,cy,w,h,point,corners,rotations};
+  }
+  function drawControls() {
+    if(!image)return;const c=$('controls'),ctx=c.getContext('2d'),b=c.getBoundingClientRect(),g=geometry();ctx.clearRect(0,0,c.width,c.height);ctx.save();ctx.scale(c.width/b.width,c.height/b.height);
+    if(moveTogether){
+      const points=[...geometry('object').corners,...(state.mouth.visible?geometry('mouth').corners:[])];
+      const left=Math.min(...points.map(p=>p.x)),top=Math.min(...points.map(p=>p.y)),right=Math.max(...points.map(p=>p.x)),bottom=Math.max(...points.map(p=>p.y));
+      ctx.strokeStyle='#488871';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);ctx.strokeRect(left,top,right-left,bottom-top);ctx.setLineDash([]);
+      ctx.fillStyle='#488871';ctx.beginPath();ctx.arc((left+right)/2,(top+bottom)/2,3,0,Math.PI*2);ctx.fill();ctx.restore();return;
+    }
+    ctx.strokeStyle='#488871';ctx.lineWidth=1;ctx.setLineDash([5,4]);ctx.beginPath();g.corners.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.stroke();ctx.setLineDash([]);
+    for(const p of g.corners) {ctx.beginPath();ctx.arc(p.x,p.y,5.5,0,Math.PI*2);ctx.fillStyle='#fffdf8';ctx.fill();ctx.lineWidth=1.5;ctx.stroke();}
+    for(const p of g.rotations){ctx.strokeStyle='#b38b4e';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.anchor.x,p.anchor.y);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.fillStyle='#fff4dc';ctx.fill();ctx.stroke();ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(p.x,p.y,4.3,.3,5.5);ctx.stroke();ctx.beginPath();ctx.moveTo(p.x+4,p.y-4);ctx.lineTo(p.x+4,p.y-.5);ctx.lineTo(p.x+.5,p.y-1.5);ctx.stroke();}
+    ctx.fillStyle='#488871';ctx.beginPath();ctx.arc(g.cx,g.cy,2.5,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  $('objectLayer').onclick=()=>select('object');$('mouthLayer').onclick=()=>select('mouth');$('fit').onclick=sizeStage;
+  $('moveTogether').onclick=()=>{moveTogether=!moveTogether;sync();drawControls();};
+  function moveSticker(original,dx,dy){
+    // Clamp one shared translation so both layers retain their relative position.
+    dx=clamp(dx,Math.max(-1-original.object.x,-1-original.mouth.x),Math.min(2-original.object.x,2-original.mouth.x));
+    dy=clamp(dy,Math.max(-1-original.object.y,-1-original.mouth.y),Math.min(2-original.object.y,2-original.mouth.y));
+    for(const layer of ['object','mouth']){state[layer].x=original[layer].x+dx;state[layer].y=original[layer].y+dy;}
+  }
+  const pointers=new Map();let gesture;
+  function coords(e) {const b=$('controls').getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top};}
+  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),ang=(a,b)=>Math.atan2(b.y-a.y,b.x-a.x);
+  function startGesture(p,forceRotate=false) {
+    if(moveTogether){gesture={mode:'group',start:p,original:clone(state)};return;}
+    const g=geometry(),t=clone(state)[selected];let mode='move';
+    if(forceRotate||g.rotations.some(r=>dist(p,r)<19))mode='rotate';else if(g.corners.some(c=>dist(p,c)<20))mode='scale';
+    gesture={mode,start:p,original:t,cx:g.cx,cy:g.cy,angle:ang({x:g.cx,y:g.cy},p),distance:Math.max(10,dist(p,{x:g.cx,y:g.cy}))};
+  }
+  function beginPinch() {const[a,b]=[...pointers.values()];gesture={mode:moveTogether?'groupPinch':'pinch',original:moveTogether?clone(state):{...state[selected]},distance:Math.max(10,dist(a,b)),angle:ang(a,b),mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}};}
+  const controls=$('controls');
+  controls.onpointerdown=e=>{if(exporting||pointers.size>=2)return;e.preventDefault();controls.focus({preventScroll:true});controls.setPointerCapture(e.pointerId);if(!pointers.size)remember();pointers.set(e.pointerId,coords(e));if(pointers.size===1)startGesture(coords(e),e.altKey);else if(pointers.size===2)beginPinch();};
+  controls.onpointermove=e=>{if(!pointers.has(e.pointerId)||!gesture)return;pointers.set(e.pointerId,coords(e));const p=coords(e),t=state[selected],o=gesture.original,b=controls.getBoundingClientRect();
+    if(gesture.mode==='group')moveSticker(o,(p.x-gesture.start.x)/b.width,(p.y-gesture.start.y)/b.height);
+    else if(gesture.mode==='groupPinch'&&pointers.size>=2){const[a,z]=[...pointers.values()];moveSticker(o,((a.x+z.x)/2-gesture.mid.x)/b.width,((a.y+z.y)/2-gesture.mid.y)/b.height);}
+    else if(gesture.mode==='pinch'&&pointers.size>=2){const[a,z]=[...pointers.values()];t.scale=clamp(o.scale*dist(a,z)/gesture.distance,.05,1.8);t.angle=normalizeAngle(o.angle+(ang(a,z)-gesture.angle)*180/Math.PI);t.x=clamp(o.x+((a.x+z.x)/2-gesture.mid.x)/b.width,-1,2);t.y=clamp(o.y+((a.y+z.y)/2-gesture.mid.y)/b.height,-1,2);}
+    else if(gesture.mode==='move'){t.x=clamp(o.x+(p.x-gesture.start.x)/b.width,-1,2);t.y=clamp(o.y+(p.y-gesture.start.y)/b.height,-1,2);}
+    else if(gesture.mode==='scale')t.scale=clamp(o.scale*dist(p,{x:gesture.cx,y:gesture.cy})/gesture.distance,.05,1.8);
+    else if(gesture.mode==='rotate')t.angle=normalizeAngle(o.angle+(ang({x:gesture.cx,y:gesture.cy},p)-gesture.angle)*180/Math.PI);
+    sync();schedule();};
+  function endPointer(e) {pointers.delete(e.pointerId);if(pointers.size===1)startGesture([...pointers.values()][0]);else if(!pointers.size){gesture=null;queueSave();}}
+  controls.onpointerup=endPointer;controls.onpointercancel=endPointer;controls.onlostpointercapture=e=>{if(pointers.has(e.pointerId))endPointer(e);};
+  function normalizeAngle(a){return ((a+180)%360+360)%360-180;}
+  let wheelActive=false,wheelTimer;
+  controls.addEventListener('wheel',e=>{if(!e.altKey||moveTogether)return;e.preventDefault();if(!wheelActive){remember();wheelActive=true;}state[selected].scale=clamp(state[selected].scale*Math.exp(-e.deltaY*.001),.05,1.8);changed();clearTimeout(wheelTimer);wheelTimer=setTimeout(()=>wheelActive=false,220);},{passive:false});
+  function bindRange(id,apply) {let active=false;$(id).addEventListener('input',()=>{if(!active){remember();active=true;}apply(Number($(id).value));changed();});$(id).addEventListener('change',()=>active=false);$(id).addEventListener('blur',()=>active=false);}
+  bindRange('scale',v=>state[selected].scale=v/100);bindRange('angle',v=>state[selected].angle=v);bindRange('outline',v=>state.outline=v);bindRange('mouthWeight',v=>state.mouth.weight=v);
+  for(const[id,key]of[['posX','x'],['posY','y'],['angleNumber','angle']]){
+    let editing=false;const commit=()=>{if($(id).value==='')return;const v=Number($(id).value);if(!Number.isFinite(v))return;const next=key==='angle'?clamp(v,-180,180):clamp(v/100,-1,2);if(next===state[selected][key])return;if(!editing){remember();editing=true;}state[selected][key]=next;changed();};
+    $(id).oninput=commit;$(id).onchange=commit;$(id).onblur=()=>{commit();editing=false;sync();};
+  }
+  for(const[id,key]of[['mouthVisible','visible'],['bite','bite'],['tooth','tooth']])$(id).onchange=()=>{remember();state.mouth[key]=$(id).checked;changed();};
+  $('mouthColor').onchange=()=>{remember();state.mouth.color=$('mouthColor').value;changed();};
+  let editingOutlineColor=false;
+  $('outlineColor').oninput=()=>{if(!editingOutlineColor){remember();editingOutlineColor=true;}state.outlineColor=$('outlineColor').value;changed();};
+  $('outlineColor').onchange=()=>{if(state.outlineColor!==$('outlineColor').value)$('outlineColor').oninput();editingOutlineColor=false;};
+  $('outlineColor').onblur=()=>editingOutlineColor=false;
+  let editingPrintDistance=false;
+  $('mouthDistanceCm').oninput=()=>{
+    const v=$('mouthDistanceCm').valueAsNumber,next=Number.isFinite(v)&&v>0?v:null;
+    printError='';if(next!==state.mouthDistanceCm){if(!editingPrintDistance){remember();editingPrintDistance=true;}state.mouthDistanceCm=next;changed();}else syncPrintSize();
+  };
+  $('mouthDistanceCm').onblur=()=>{editingPrintDistance=false;syncPrintSize();};
+  $('flip').onclick=()=>{remember();state.object.flip=!state.object.flip;changed();};
+  $('resetTransform').onclick=()=>{remember();state[selected]={...state[selected],...defaults()[selected]};changed();};
+  function validSize(w,h) {return Number.isInteger(w)&&Number.isInteger(h)&&w>=64&&h>=64&&w<=8192&&h<=8192&&w*h<=24000000;}
+  function resize(w,h) {if(!validSize(w,h)){toast('尺寸需要在 64–8192 像素之间，总像素不能超过 2400 万。');sync();return;}if(w===state.width&&h===state.height)return;remember();state.outline*=w/state.width;state.width=w;state.height=h;ratio=w/h;changed();sizeStage();}
+  $('width').onchange=()=>{const w=Math.round(Number($('width').value));resize(w,$('lockRatio').checked?Math.round(w/ratio):state.height);};
+  $('height').onchange=()=>{const h=Math.round(Number($('height').value));resize($('lockRatio').checked?Math.round(h*ratio):state.width,h);};
+  $('width').onblur=$('width').onchange;$('height').onblur=$('height').onchange;
+  $('lockRatio').onchange=()=>ratio=state.width/state.height;
+  $('originalSize').onclick=()=>resize(4003,3764);
+  $('sizePreset').onchange=()=>{const v=$('sizePreset').value;if(v==='original')resize(4003,3764);else if(v==='square')resize(2048,2048);else if(v)resize(Number(v),Math.round(Number(v)/ratio));};
+  document.querySelectorAll('[data-bg]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-bg]').forEach(e=>e.classList.toggle('selected',e===b));$('stage').className='stage '+b.dataset.bg;});
+  let loadSerial=0;
+  async function load(s,{track=true,decoded,fitObject=false}={}) {
+    const serial=++loadSerial,next=decoded||await R.decode(s.src);
+    if(serial!==loadSerial){if(next.close)next.close();return;}
+    if(next.width*next.height>50000000||next.width>16384||next.height>16384){if(next.close)next.close();throw new Error('素材分辨率过大，请先缩小图片。');}
+    const prepared=clone(s);if(prepared.outlineColor===undefined)prepared.outlineColor=defaults().outlineColor;
+    if(prepared.mouthDistanceCm===undefined)prepared.mouthDistanceCm=null;
+    try{
+      const before=R.crop(prepared,next);
+      if(before.x<0||before.y<0||before.width<1||before.height<1||before.x+before.width>next.width||before.y+before.height>next.height)throw new Error('工程中的素材边界无效。');
+      if(!prepared.src.startsWith('data:image/svg+xml')){
+        if(boundsCacheSource!==prepared.src){const detected=await R.visibleBounds(next);boundsCacheSource=prepared.src;boundsCache=detected;}
+        if(fitObject)prepared.bounds={...boundsCache};else R.reframeBounds(prepared,next,boundsCache);
+      }
+      const b=R.crop(prepared,next);
+      if(b.x<0||b.y<0||b.width<1||b.height<1||b.x+b.width>next.width||b.y+b.height>next.height)throw new Error('工程中的素材边界无效。');
+      if(fitObject)prepared.object.scale=clamp(Math.min(.86,.84*prepared.height/prepared.width*b.width/b.height),.05,1.8);
+    }catch(e){if(next.close)next.close();throw e;}
+    if(serial!==loadSerial){if(next.close)next.close();return;}
+    if(track)remember();if(image&&image.close)image.close();image=next;state=prepared;ratio=state.width/state.height;selected='object';changed();sizeStage();
+  }
+  for(const sample of samples){const b=document.createElement('button');b.className='sample';b.title='使用'+sample.name;const img=Object.assign(document.createElement('img'),{src:sample.src,alt:sample.name});b.append(img,document.createTextNode(sample.name));b.onclick=()=>load({...clone(state),name:sample.name,src:sample.src,bounds:null,object:{...defaults().object}}).catch(e=>toast(e.message));$('samples').append(b);}
+  $('upload').onclick=()=>$('imageFile').click();
+  $('tightenBounds').onclick=async()=>{
+    if(exporting||!image)return;const source=state.src,current=image;
+    $('tightenBounds').disabled=true;
+    try{const bounds=await R.visibleBounds(current);if(state.src!==source||image!==current)return;
+      const next=clone(state);R.reframeBounds(next,image,bounds);remember();state=next;boundsCacheSource=source;boundsCache=bounds;moveTogether=false;selected='object';changed();
+      toast('物品选框已收紧到可见像素范围，原素材完整保留。');
+    }catch(e){toast(e.message);}finally{sync();}
+  };
+  const readData=file=>new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('文件读取失败'));r.readAsDataURL(file);});
+  async function upload(file) {
+    if(!file)return;if(!['image/png','image/webp','image/jpeg'].includes(file.type))throw new Error('请选择 PNG、WebP 或 JPEG 图片；透明素材推荐 PNG。');
+    if(file.size>30*1024*1024)throw new Error('素材请控制在 30 MB 以内。');
+    const src=await readData(file),test=await R.decode(src);
+    if(test.width*test.height>50000000||test.width>16384||test.height>16384){if(test.close)test.close();throw new Error('素材分辨率过大，请先缩小至 5000 万像素以内。');}
+    const c=R.canvas(80,80),ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(test,0,0,80,80);const p=ctx.getImageData(0,0,80,80).data;let transparent=false;for(let i=3;i<p.length;i+=4)if(p[i]<250){transparent=true;break;}
+    await load({...clone(state),src,bounds:null,name:file.name.replace(/\.[^.]+$/,''),object:{...defaults().object}},{decoded:test,fitObject:true});
+    toast(transparent?'素材已添加，已自动收紧到非透明物品边界。':'这张图片没有检测到透明背景，导出时会保留它的背景。建议使用已抠图的 PNG。');
+  }
+  $('imageFile').onchange=async e=>{try{await upload(e.target.files[0]);}catch(e){toast(e.message);}finally{$('imageFile').value='';}};
+  let dragCount=0;
+  document.addEventListener('dragenter',e=>{if(e.dataTransfer.types.includes('Files')){e.preventDefault();dragCount++;$('dropOverlay').classList.add('show');}});
+  document.addEventListener('dragleave',()=>{if(--dragCount<=0){dragCount=0;$('dropOverlay').classList.remove('show');}});
+  document.addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('Files'))e.preventDefault();});
+  document.addEventListener('drop',async e=>{e.preventDefault();dragCount=0;$('dropOverlay').classList.remove('show');try{const f=e.dataTransfer.files[0];if(f&&/\.(bite|json)$/i.test(f.name))await openProject(f);else await upload(f);}catch(e){toast(e.message);}});
+  async function restoreHistory(from,to) {if(!from.length)return;const raw=from.pop();to.push(snapshot());try{await load(JSON.parse(raw),{track:false});}catch(e){from.push(raw);to.pop();toast(e.message);}historyButtons();}
+  $('undo').onclick=()=>restoreHistory(undo,redo);$('redo').onclick=()=>restoreHistory(redo,undo);
+  document.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||exporting)return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?$('redo').click():$('undo').click();}
+    else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();$('saveProject').click();}
+    else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();if(!e.repeat)remember();const v=(e.shiftKey?10:1),dx=(e.key==='ArrowLeft'?-v:e.key==='ArrowRight'?v:0)/state.width,dy=(e.key==='ArrowUp'?-v:e.key==='ArrowDown'?v:0)/state.height;if(moveTogether)moveSticker(clone(state),dx,dy);else{state[selected].x=clamp(state[selected].x+dx,-1,2);state[selected].y=clamp(state[selected].y+dy,-1,2);}changed();}});
+  const dbPromise=new Promise((resolve,reject)=>{if(!window.indexedDB){reject(new Error('当前浏览器不支持暂存'));return;}const req=indexedDB.open('BiteStudio',1);req.onupgradeneeded=()=>{req.result.createObjectStore('projects',{keyPath:'id'});};req.onsuccess=()=>{db=req.result;resolve(db);};req.onerror=()=>reject(req.error);});
+  function transaction(mode,operation) {return dbPromise.then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('projects',mode),store=tx.objectStore('projects');let result;const req=operation(store);if(req)req.onsuccess=()=>result=req.result;tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('暂存未完成'));}));}
+  function queueSave() {if(!initialized)return;clearTimeout(saveTimer);$('saveStatus').textContent='等待自动暂存…';saveTimer=setTimeout(()=>{const s=clone(state),signature=JSON.stringify(s);if(signature===savedSignature){$('saveStatus').textContent='已自动暂存';return;}
+    autosaveChain=autosaveChain.catch(()=>{}).then(()=>transaction('readwrite',st=>st.put({id:'autosave',state:s,updated:Date.now()}))).then(()=>{savedSignature=signature;$('saveStatus').textContent='已自动暂存';}).catch(()=>{$('saveStatus').textContent='暂存不可用，请保存工程文件';});},650);}
+  async function refreshDrafts(){try{const list=(await transaction('readonly',st=>st.getAll())).filter(x=>x.id!=='autosave').sort((a,b)=>b.updated-a.updated);$('drafts').replaceChildren();
+    if(!list.length){const p=document.createElement('p');p.className='empty';p.textContent='留住每一个好点子。暂存后可继续编辑。';$('drafts').append(p);}
+    for(const d of list){const card=document.createElement('div');card.className='draft-card';const button=document.createElement('button'),img=Object.assign(document.createElement('img'),{src:d.thumbnail,alt:d.name}),title=document.createElement('strong'),time=document.createElement('small');title.textContent=d.name;time.textContent=new Date(d.updated).toLocaleDateString('zh-CN');button.append(img,title,time);button.onclick=()=>load(d.state).then(()=>toast('已打开暂存：'+d.name)).catch(e=>toast(e.message));const del=document.createElement('button');del.className='draft-delete';del.textContent='×';del.title='删除这份暂存';del.setAttribute('aria-label','删除暂存 '+d.name);del.onclick=async()=>{if(!await ask({title:'删除这份暂存？',description:'「'+d.name+'」将从暂存列表移除，当前画布仍会保留。',confirmText:'删除暂存'}))return;try{await transaction('readwrite',st=>st.delete(d.id));refreshDrafts();}catch(e){toast('删除失败：'+e.message);}};card.append(button,del);$('drafts').append(card);}
+  }catch(_){$('saveStatus').textContent='暂存不可用，请保存工程文件';}}
+  $('saveDraft').onclick=async()=>{const name=await ask({title:'留住这个好点子',description:'保留原素材和所有参数，随时继续编辑。',value:state.name+' · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})});if(!name)return;const s=clone(state);try{const c=await R.render(s,image,{width:220,height:Math.round(220*s.height/s.width),preview:true});const thumb=await readData(await R.blob(c));c.width=c.height=1;await transaction('readwrite',st=>st.put({id:'draft-'+Date.now()+'-'+Math.random().toString(36).slice(2),name:name.slice(0,80),state:s,thumbnail:thumb,updated:Date.now()}));await refreshDrafts();toast('已暂存，可随时点击缩略图继续编辑。');}catch(e){toast('暂存失败，请通过「保存工程」保存到文件。');}};
+  function filename(suffix) {return (state.name||'贴纸').replace(/[\\/:*?"<>|]/g,'_').slice(0,80)+suffix;}
+  async function download(blob,name) {
+    if(/Android|iPhone|iPad/.test(navigator.userAgent)&&navigator.canShare&&navigator.share){const f=new File([blob],name,{type:blob.type});if(navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:name});return;}catch(e){if(e.name==='AbortError')return;}}}
+    const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+  }
+  $('saveProject').onclick=()=>download(new Blob([JSON.stringify({format:'bite-studio',version:1,state},null,2)],{type:'application/json'}),filename('.bite')).catch(e=>toast(e.message));
+  function validateProject(value) {
+    if(!value||value.format!=='bite-studio'||value.version!==1)throw new Error('这不是支持的 Bite Studio 工程文件（版本 1）。');
+    const s=value.state;if(!s||!validSize(s.width,s.height))throw new Error('工程尺寸无效。');
+    if(typeof s.src!=='string'||s.src.length>45000000||!/^data:image\/(png|webp|jpeg|svg\+xml);base64,/.test(s.src))throw new Error('工程中的图片无效。');
+    // Reject user SVG from project files: only the exact built-in vectors are trusted.
+    if(s.src.startsWith('data:image/svg+xml')&&!samples.some(x=>x.src===s.src))throw new Error('外部工程中的 SVG 不受支持，请改用透明 PNG。');
+    const d=defaults();for(const layer of ['object','mouth']){const t=s[layer];if(!t)throw new Error('工程缺少图层参数。');for(const key of ['x','y','scale','angle'])if(!Number.isFinite(t[key]))throw new Error('工程含无效变换。');const isObject=layer==='object';if(t.x < (isObject?-2:-1)||t.x>(isObject?3:2)||t.y < (isObject?-2:-1)||t.y>(isObject?3:2)||t.scale<(isObject?.000001:.05)||t.scale>(isObject?4:1.8)||t.angle < -180||t.angle>180)throw new Error('工程变换超出支持范围。');d[layer]={...d[layer],x:t.x,y:t.y,scale:t.scale,angle:t.angle};}
+    if(!Number.isFinite(s.outline)||s.outline<0||s.outline>10240)throw new Error('描边参数无效。');
+    if(s.mouthDistanceCm!=null&&(!Number.isFinite(s.mouthDistanceCm)||s.mouthDistanceCm<=0))throw new Error('嘴型端点距离无效。');
+    d.mouthDistanceCm=s.mouthDistanceCm??null;
+    if(s.outlineColor!==undefined&&(typeof s.outlineColor!=='string'||!/^#[0-9a-f]{6}$/i.test(s.outlineColor)))throw new Error('描边颜色无效。');
+    if(!/^#[0-9a-f]{6}$/i.test(s.mouth.color)||!Number.isFinite(s.mouth.weight)||s.mouth.weight<.005||s.mouth.weight>.06)throw new Error('嘴部参数无效。');
+    for(const key of ['visible','bite','tooth'])d.mouth[key]=!!s.mouth[key];d.mouth.color=s.mouth.color;d.mouth.weight=s.mouth.weight;d.object.flip=!!s.object.flip;
+    let bounds=null;if(s.bounds){const b=s.bounds;for(const key of ['x','y','width','height'])if(!Number.isInteger(b[key]))throw new Error('工程素材边界无效。');if(b.x<0||b.y<0||b.width<1||b.height<1||b.x+b.width>16384||b.y+b.height>16384)throw new Error('工程素材边界超出范围。');bounds={x:b.x,y:b.y,width:b.width,height:b.height};}
+    return {...d,width:s.width,height:s.height,outline:s.outline,outlineColor:s.outlineColor===undefined?d.outlineColor:s.outlineColor,name:String(s.name||'导入作品').slice(0,160),src:s.src,bounds};
+  }
+  async function openProject(file){if(!file)return;if(file.size>48*1024*1024)throw new Error('工程文件过大。');let json;try{json=JSON.parse(await file.text());}catch(_){throw new Error('工程文件无法解析。');}await load(validateProject(json));toast('工程已恢复，原素材与全部参数均可继续调整。');}
+  $('openProject').onclick=()=>$('projectFile').click();$('projectFile').onchange=async e=>{try{await openProject(e.target.files[0]);}catch(e){toast(e.message);}finally{$('projectFile').value='';}};
+  $('newProject').onclick=()=>load(defaults()).then(()=>toast('已新建作品，之前的画布可通过撤销找回。'));
+  function makeWorker() {
+    const source='self.R=('+window.BiteRendererFactory.toString()+')();self.onmessage=async function(e){try{const image=e.data.image;const c=await R.render(e.data.state,image,{progress:function(p){self.postMessage({progress:p});}});const b=await R.blob(c);image.close();c.width=c.height=1;self.postMessage({blob:b});}catch(e){self.postMessage({error:e.message});}}';
+    const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));try{return new Worker(url);}finally{URL.revokeObjectURL(url);}
+  }
+  function progress(p){$('progressText').textContent=p<90?'渲染透明轮廓与平滑描边… '+p+'%':'正在编码 PNG…';}
+  async function exportImage() {
+    if(exporting||!image)return;exporting=true;const token=++exportToken,s=clone(state);$('exportProgress').hidden=false;$('export').disabled=true;progress(0);
+    try{
+      let blob;
+      if(typeof Worker!=='undefined'&&typeof OffscreenCanvas!=='undefined'&&typeof createImageBitmap==='function'){
+        try{const bitmap=await createImageBitmap(image);worker=makeWorker();blob=await new Promise((resolve,reject)=>{worker.onmessage=e=>{if(e.data.blob)resolve(e.data.blob);else if(e.data.error)reject(new Error(e.data.error));else progress(e.data.progress);};worker.onerror=()=>reject(new Error('后台渲染不可用'));worker.postMessage({state:s,image:bitmap},[bitmap]);});}
+        catch(e){if(token!==exportToken)return;if(worker)worker.terminate();worker=null;const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      }else{const c=await R.render(s,image,{cooperative:true,progress,cancelled:()=>token!==exportToken});blob=await R.blob(c);c.width=c.height=1;}
+      if(token!==exportToken)return;progress(95);await download(blob,filename('-'+s.width+'x'+s.height+'.png'));toast('PNG 已生成：'+s.width+' × '+s.height+'，透明背景，已应用当前描边设置。');
+    }catch(e){if(token===exportToken)toast('导出失败：'+e.message+'。可以降低分辨率重试。');}
+    finally{if(token===exportToken){if(worker)worker.terminate();worker=null;exporting=false;$('exportProgress').hidden=true;$('export').disabled=false;}}
+  }
+  $('export').onclick=exportImage;$('cancelExport').onclick=()=>{exportToken++;if(worker)worker.terminate();worker=null;exporting=false;$('exportProgress').hidden=true;$('export').disabled=false;toast('已取消导出，画布保留。');};
+  window.addEventListener('resize',()=>{clearTimeout(window.biteResizeTimer);window.biteResizeTimer=setTimeout(sizeStage,80);});
+  window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);const s=clone(state);transaction('readwrite',st=>st.put({id:'autosave',state:s,updated:Date.now()})).catch(()=>{});});
+  await load(state,{track:false});
+  try{const previous=await transaction('readonly',st=>st.get('autosave'));if(previous){const s=validateProject({format:'bite-studio',version:1,state:previous.state});await load(s,{track:false});toast('已恢复上次自动暂存的画布。');}}catch(_){/* User can always save portable files. */}
+  undo=[];redo=[];historyButtons();await refreshDrafts();initialized=true;queueSave();document.querySelector('.workspace').inert=false;document.querySelector('.top-actions').inert=false;
+  const mockup=window.BiteMockup({download,createSticker:async()=>{
+    const s=clone(state),source=await R.decode(s.src);let rendered;
+    try{
+      const factor=Math.min(1,1800/Math.max(s.width,s.height));
+      rendered=await R.render(s,source,{width:Math.max(1,Math.round(s.width*factor)),height:Math.max(1,Math.round(s.height*factor)),preview:true,cooperative:true});
+      let bounds;try{bounds=await R.visibleBounds(rendered,{alphaThreshold:0});}catch(_){throw new Error('当前画布没有可见贴纸，请先调整物品位置。');}
+      const merged=R.canvas(bounds.width,bounds.height);
+      merged.getContext('2d').drawImage(rendered,bounds.x,bounds.y,bounds.width,bounds.height,0,0,bounds.width,bounds.height);
+      return merged;
+    }finally{if(source.close)source.close();if(rendered)rendered.width=rendered.height=1;}
+  }});
+  $('testSticker').onclick=()=>mockup.open();
+  // Small inspection surface for repeatable integration tests; no file or network access.
+  window.BiteStudio={getState:()=>clone(state),ready:true,validateProject,render:async(w,h)=>R.blob(await R.render({...clone(state),width:w,height:h},image)),defaultState:defaults,mockup};
+})();
+
+</script></body></html>

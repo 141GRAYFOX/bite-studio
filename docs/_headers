@@ -1,0 +1,3 @@
+/download/*
+  Content-Disposition: attachment; filename="BiteStudio.html"
+  Content-Type: application/octet-stream
